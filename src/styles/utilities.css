@@ -1,0 +1,43 @@
+/* ------Gray------ */
+@utility bg-gray-one {
+  @apply bg-gray-200 dark:bg-gray-800;
+}
+@utility bg-gray-two {
+  @apply bg-gray-200 dark:bg-gray-900;
+}
+@utility bg-gray-three {
+  @apply bg-gray-50 dark:bg-gray-950;
+}
+
+/* ------Slate------ */
+@utility bg-slate-one {
+  @apply bg-slate-200 dark:bg-slate-800;
+}
+@utility bg-slate-two {
+  @apply bg-slate-200 dark:bg-slate-900;
+}
+@utility bg-slate-three {
+  @apply bg-slate-50 dark:bg-slate-950;
+}
+
+/* ------indigo------ */
+@utility bg-indigo-one {
+  @apply bg-indigo-200 dark:bg-indigo-800;
+}
+@utility bg-indigo-two {
+  @apply bg-indigo-200 dark:bg-indigo-900;
+}
+@utility bg-indigo-three {
+  @apply bg-indigo-50 dark:bg-indigo-950;
+}
+
+/* ------Blue------ */
+@utility bg-blue-one {
+  @apply bg-blue-200 dark:bg-blue-800;
+}
+@utility bg-blue-two {
+  @apply bg-blue-200 dark:bg-blue-900;
+}
+@utility bg-blue-three {
+  @apply bg-blue-50 dark:bg-blue-950;
+}

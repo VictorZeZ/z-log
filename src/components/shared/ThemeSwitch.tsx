@@ -31,7 +31,7 @@ export function ThemeSwitch() {
     );
 
   const buttonClass =
-    "flex cursor-pointer items-center justify-between gap-1 text-indigo-950 dark:text-indigo-50 hover:bg-black/20! dark:hover:bg-white/20! duration-100";
+    "flex cursor-pointer items-center justify-between delay-0 my-1 gap-1 text-indigo-950 dark:text-indigo-50 hover:bg-black/20! dark:hover:bg-white/20! duration-100";
 
   if (!mounted) {
     return (
@@ -45,20 +45,18 @@ export function ThemeSwitch() {
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={
-          <button className="flex items-center gap-1 rounded-md border px-4 py-1 text-sm outline-none">
-            Theme
-            <span aria-hidden="true">{icon}</span>
-          </button>
-        }
-      ></DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
+        <button className="flex items-center gap-1 rounded-md border px-4 py-1 text-sm outline-none">
+          Theme
+          <span aria-hidden="true">{icon}</span>
+        </button>
+      </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="start">
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => setThemeLight()}
             disabled={theme === "light"}
-            className={`${theme === "light" ? "border-2 border-indigo-800 bg-indigo-800/30" : ""} ${buttonClass}`}
+            className={`${theme === "light" ? "border-indigo-800 bg-indigo-800/30" : ""} ${buttonClass}`}
           >
             Light
             <span aria-hidden="true">
@@ -68,7 +66,7 @@ export function ThemeSwitch() {
           <DropdownMenuItem
             onClick={() => setThemeDark()}
             disabled={theme === "dark"}
-            className={`${theme === "dark" ? "border-2 border-indigo-800 bg-indigo-800/30" : ""} ${buttonClass}`}
+            className={`${theme === "dark" ? "border-indigo-800 bg-indigo-800/30" : ""} ${buttonClass}`}
           >
             Dark
             <span aria-hidden="true">
@@ -80,7 +78,7 @@ export function ThemeSwitch() {
         <DropdownMenuItem
           onClick={() => setThemeSystem()}
           disabled={theme === "system"}
-          className={`${theme === "system" ? "border-2 border-indigo-800 bg-indigo-800/30" : ""} ${buttonClass}`}
+          className={`${theme === "system" ? "border-indigo-800 bg-indigo-800/30" : ""} ${buttonClass}`}
         >
           System
           <span aria-hidden="true">

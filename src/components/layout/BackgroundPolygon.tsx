@@ -11,34 +11,34 @@ function BackgroundPolygon() {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.2, type: "spring" }}
           className="absolute -translate-x-30 translate-y-40 sm:-translate-x-60 sm:translate-y-50"
         >
-          <TbMessageChatbotFilled className="size-32 fill-indigo-500 sm:size-64 dark:fill-indigo-700" />
+          <TbMessageChatbotFilled className="size-32 fill-indigo-400 sm:size-64 dark:fill-indigo-900" />
         </motion.div>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
           className="absolute translate-x-30 -translate-y-40 sm:translate-x-60 sm:-translate-y-50"
         >
-          <TbMessageFilled className="size-32 rotate-y-190 fill-indigo-500 sm:size-64 dark:fill-indigo-700" />
+          <TbMessageFilled className="size-32 rotate-y-190 fill-indigo-400 sm:size-64 dark:fill-indigo-900" />
         </motion.div>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.4, type: "spring" }}
           className="absolute -translate-x-20 -translate-y-30 sm:-translate-x-120 sm:-translate-y-30"
         >
-          <LuText className="size-32 text-indigo-500 sm:size-64 dark:text-indigo-700" />
+          <LuText className="size-32 text-indigo-400 sm:size-64 dark:text-indigo-900" />
         </motion.div>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.5, type: "spring" }}
           className="absolute translate-x-20 translate-y-30 sm:translate-x-120 sm:translate-y-30"
         >
-          <LuTextQuote className="sm:size-64 size-32 rotate-y-190 text-indigo-500 dark:text-indigo-700" />
+          <LuTextQuote className="size-32 rotate-y-190 text-indigo-400 sm:size-64 dark:text-indigo-900" />
         </motion.div>
       </div>
     </>

@@ -15,12 +15,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (
-    !token &&
-    !(pathname.startsWith("/login") || pathname.startsWith("/register"))
-  ) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // if (
+  //   !token &&
+  //   !(pathname.startsWith("/login") || pathname.startsWith("/register"))
+  // ) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
   return NextResponse.next();
 }

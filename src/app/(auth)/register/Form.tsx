@@ -11,16 +11,16 @@ export default function Form() {
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.4, delay: 1 }}
-      className="xs:h-auto xs:w-100 xs:rounded-lg xs:pt-0 xs:backdrop-blur-[2px] relative flex h-dvh w-full transform-gpu flex-col items-center border bg-neutral-200/90 pt-10 pb-6 shadow-2xl will-change-transform sm:bg-neutral-200/50 dark:bg-neutral-900/90 sm:dark:bg-neutral-900/50"
+      transition={{ duration: 0.4, delay: 1, type: "spring" }}
+      className="xs:h-auto xs:w-116 xs:rounded-lg xs:pt-0 xs:backdrop-blur-[2px] relative flex h-dvh w-full transform-gpu flex-col items-center border bg-gray-200/90 pt-10 pb-6 shadow-2xl will-change-transform sm:bg-gray-200/50 dark:bg-gray-900/90 sm:dark:bg-gray-900/50"
     >
-      <div className="xs:-translate-y-1/2 absolute flex w-full translate-y-2 items-center justify-center tracking-widest">
+      <div className="xs:-translate-y-1/2 absolute flex w-full translate-y-2 items-center justify-start px-8 tracking-widest">
         <Image
           src="/logo/wide-logo.png"
           alt="Vetowo Logo"
-          width={200}
-          height={0}
-          className="object-cover"
+          width={120}
+          height={50}
+          className="h-auto w-auto object-cover"
           priority
         />
       </div>
@@ -38,7 +38,7 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <button className="group flex items-center justify-center gap-2 rounded-md border bg-neutral-200 px-10 py-2 shadow-md dark:bg-neutral-950">
+          <button className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md dark:bg-gray-950">
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
           </button>

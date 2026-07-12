@@ -1,9 +1,65 @@
 @import "tailwindcss";
-@import "./variables.css";
+/* @import "./variables.css"; */
+@import "./utilities.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+
+@layer components {
+  .c-hover {
+    @apply relative z-0 bg-transparent!;
+  }
+
+  .c-hover::after {
+    @apply absolute top-0 right-0 bottom-0 left-0 z-[-1] origin-center scale-0 rounded-sm opacity-0 duration-100 content-[''];
+  }
+
+  .c-hover:hover::after {
+    @apply scale-100 opacity-100;
+  }
+
+  .type-one-hover-color::after {
+    @apply bg-neutral-50;
+  }
+
+  .dark .type-one-hover-color::after {
+    @apply bg-neutral-950;
+  }
+
+  .type-two-hover-color::after {
+    @apply bg-neutral-100;
+  }
+
+  .type-three-hover-color::after {
+    @apply bg-neutral-200;
+  }
+
+  .dark .type-two-hover-color::after,
+  .dark .type-three-hover-color::after {
+    @apply bg-neutral-900;
+  }
+
+  .type-red-hover-color::after {
+    @apply bg-red-400;
+  }
+
+  .type-emerald-hover-color::after {
+    @apply bg-emerald-400;
+  }
+
+  .dark .type-emerald-hover-color::after {
+    @apply bg-emerald-600;
+  }
+
+  .type-indigo-hover-color::after {
+    @apply bg-indigo-400;
+  }
+
+  .dark .type-indigo-hover-color::after {
+    @apply bg-indigo-500;
+  }
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -48,6 +104,10 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
+  --font-quicksand: var(--font-quicksand);
+  --font-inter: var(--font-inter);
+  --font-roboto: var(--font-roboto);
+
   --breakpoint-xs: 480px;
   --breakpoint-2xl: 1536px;
 }
@@ -64,8 +124,6 @@ body {
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -96,6 +154,8 @@ body {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
@@ -202,5 +262,38 @@ html {
 @keyframes theme-cut {
   to {
     --vt-reveal: var(--vt-radius);
+  }
+}
+
+body {
+  @apply bg-slate-200 dark:bg-slate-950;
+  animation: backgroundMove 10s linear infinite;
+  will-change: background-position;
+  background-image:
+    radial-gradient(
+      ellipse at center,
+      rgba(37, 99, 235, 0.12),
+      transparent 70%
+    ),
+    linear-gradient(rgba(96, 165, 250, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.04) 1px, transparent 1px);
+  background-size:
+    120% 120%,
+    50px 50px,
+    50px 50px;
+  background-attachment: fixed;
+}
+@keyframes backgroundMove {
+  from {
+    background-position:
+      center,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      center,
+      -50px 50px,
+      -50px 50px;
   }
 }
