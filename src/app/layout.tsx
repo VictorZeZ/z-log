@@ -20,7 +20,7 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} ${roboto.variable} ${inter.variable}`}
       >
-        <main className="flex flex-col">{children}</main>
+        <div className="flex flex-col">{children}</div>
       </body>
     </html>
   );

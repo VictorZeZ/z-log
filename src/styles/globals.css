@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* @import "./variables.css"; */
+@import "./variables.css";
 @import "./utilities.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -110,6 +110,22 @@
 
   --breakpoint-xs: 480px;
   --breakpoint-2xl: 1536px;
+
+  --color-gray-one: var(--gray-one);
+  --color-gray-two: var(--gray-two);
+  --color-gray-three: var(--gray-three);
+
+  --color-slate-one: var(--slate-one);
+  --color-slate-two: var(--slate-two);
+  --color-slate-three: var(--slate-three);
+
+  --color-indigo-one: var(--indigo-one);
+  --color-indigo-two: var(--indigo-two);
+  --color-indigo-three: var(--indigo-three);
+
+  --color-blue-one: var(--blue-one);
+  --color-blue-two: var(--blue-two);
+  --color-blue-three: var(--blue-three);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -128,18 +144,18 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: var(--color-indigo-600);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: var(--indigo-two);
+  --accent-foreground: var(--color-indigo-900);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: var(--color-indigo-500);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -165,18 +181,18 @@ body {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: var(--color-indigo-500);
+  --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --accent: var(--indigo-two);
+  --accent-foreground: var(--color-indigo-50);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: var(--color-indigo-500);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
