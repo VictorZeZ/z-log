@@ -9,27 +9,26 @@ import { useEffect, useState } from "react";
 export default function Form() {
   const [code, setCode] = useState("");
 
-    const [seconds, setSeconds] = useState(60);
+  const [seconds, setSeconds] = useState(60);
 
-    useEffect(() => {
-      if (seconds <= 0) return;
+  useEffect(() => {
+    if (seconds <= 0) return;
 
-      const timer = setInterval(() => {
-        setSeconds((prev) => prev - 1);
-      }, 1000);
+    const timer = setInterval(() => {
+      setSeconds((prev) => prev - 1);
+    }, 1000);
 
-      return () => clearInterval(timer);
-    }, [seconds]);
+    return () => clearInterval(timer);
+  }, [seconds]);
 
-    const handleResend = () => {
-      // Call API...
+  const handleResend = () => {
+    // Call API...
 
-      setSeconds(60);
-    };
+    setSeconds(60);
+  };
 
-    const minutes = Math.floor(seconds / 60);
-    const remain = seconds % 60;
-
+  const minutes = Math.floor(seconds / 60);
+  const remain = seconds % 60;
 
   return (
     <motion.div
@@ -51,10 +50,10 @@ export default function Form() {
 
       <div className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8">
         <div className="flex w-full flex-col items-center justify-center gap-2 select-none">
-          <h1 className="text-3xl tracking-widest">Confirm Email</h1>
+          <h1 className="text-3xl tracking-widest">Confirm Login</h1>
           <p className="text-center text-sm opacity-70">
             We've sent a 6-character verification code to your email. Enter it
-            below to verify your email address.
+            below to complete your sign in.
           </p>
         </div>
 
