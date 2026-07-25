@@ -5,8 +5,15 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { useState } from "react";
 
 export default function Form() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   return (
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
@@ -34,7 +41,18 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-start gap-4">
-          <Fields />
+          <Fields
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            password={password}
+            confirmPassword={confirmPassword}
+            onFirstNameChange={setFirstName}
+            onLastNameChange={setLastName}
+            onEmailChange={setEmail}
+            onPasswordChange={setPassword}
+            onConfirmPasswordChange={setConfirmPassword}
+          />
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
