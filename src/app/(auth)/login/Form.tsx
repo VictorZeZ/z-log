@@ -5,23 +5,38 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormValues } from "@/lib/validations/auth";
+import { useLogin } from "@/hooks/api/useLogin";
+import { ApiError } from "@/types/api/common";
+import { getErrorMessage } from "@/lib/api/errorMessages";
 
 export default function Form() {
+  const router = useRouter();
+  const { mutate: loginUser, isPending, error } = useLogin();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = (values: LoginFormValues) => {
-    // Wired to the API in a later step.
-    console.log(values);
+    loginUser(values, {
+      onSuccess: (data) => {
+        if (data.requiresTwoFactor && data.challengeId) {
+          router.push(`/confirm-login?challengeId=${data.challengeId}`);
+          return;
+        }
+
+        router.push("/");
+      },
+    });
   };
 
   return (
@@ -56,13 +71,19 @@ export default function Form() {
 
         <div className="flex w-full flex-col items-center justify-start gap-4">
           <Fields register={register} errors={errors} />
+
+          {error instanceof ApiError && (
+            <p className="text-destructive text-center text-sm">
+              {getErrorMessage(error)}
+            </p>
+          )}
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:opacity-50 dark:bg-gray-950"
+            disabled={isPending}
+            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-950"
           >
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
