@@ -1,26 +1,24 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// This function can be marked `async` if using `await` inside
+const AUTH_PATHS = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+  "/confirm-email",
+  "/confirm-login",
+];
+
 export function proxy(request: NextRequest) {
-  // request.cookies.set("token", "fake_token");
-  request.cookies.clear();
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
-  if (
-    token &&
-    (pathname.startsWith("/login") || pathname.startsWith("/register"))
-  ) {
+  const isAuthPath = AUTH_PATHS.some((path) => pathname.startsWith(path));
+
+  if (token && isAuthPath) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
-  // if (
-  //   !token &&
-  //   !(pathname.startsWith("/login") || pathname.startsWith("/register"))
-  // ) {
-  //   return NextResponse.redirect(new URL("/login", request.url));
-  // }
 
   return NextResponse.next();
 }

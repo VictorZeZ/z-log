@@ -8,6 +8,7 @@ import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { loginSchema, type LoginFormValues } from "@/lib/validations/auth";
 import { useLogin } from "@/hooks/api/useLogin";
 import { ApiError } from "@/types/api/common";
@@ -15,7 +16,7 @@ import { getErrorMessage } from "@/lib/api/errorMessages";
 
 export default function Form() {
   const router = useRouter();
-  const { mutate: loginUser, isPending, error } = useLogin();
+  const { mutate: loginUser, isPending } = useLogin();
 
   const {
     register,
@@ -30,11 +31,21 @@ export default function Form() {
     loginUser(values, {
       onSuccess: (data) => {
         if (data.requiresTwoFactor && data.challengeId) {
+          toast.success("Verification code sent to your email.");
           router.push(`/confirm-login?challengeId=${data.challengeId}`);
           return;
         }
 
+        toast.success("Logged in successfully.");
         router.push("/");
+      },
+      onError: (error) => {
+        const message =
+          error instanceof ApiError
+            ? getErrorMessage(error)
+            : "Something went wrong. Please try again.";
+
+        toast.error(message);
       },
     });
   };
@@ -71,12 +82,6 @@ export default function Form() {
 
         <div className="flex w-full flex-col items-center justify-start gap-4">
           <Fields register={register} errors={errors} />
-
-          {error instanceof ApiError && (
-            <p className="text-destructive text-center text-sm">
-              {getErrorMessage(error)}
-            </p>
-          )}
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
