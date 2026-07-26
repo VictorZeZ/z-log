@@ -5,11 +5,24 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginFormValues } from "@/lib/validations/auth";
 
 export default function Form() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+  });
+
+  const onSubmit = (values: LoginFormValues) => {
+    // Wired to the API in a later step.
+    console.log(values);
+  };
 
   return (
     <motion.div
@@ -29,7 +42,11 @@ export default function Form() {
         />
       </div>
 
-      <div className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8"
+        noValidate
+      >
         <div className="flex w-full flex-col items-center justify-center gap-2 select-none">
           <h1 className="text-3xl tracking-widest">LOGIN</h1>
           <p className="text-center text-sm opacity-70">
@@ -38,22 +55,21 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-start gap-4">
-          <Fields
-            email={email}
-            password={password}
-            onEmailChange={setEmail}
-            onPasswordChange={setPassword}
-          />
+          <Fields register={register} errors={errors} />
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <button className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md dark:bg-gray-950">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:opacity-50 dark:bg-gray-950"
+          >
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
           </button>
 
           <p className="text-muted-foreground text-sm">
-            <span className="select-none">Don’t have an account? </span>
+            <span className="select-none">Don't have an account? </span>
             <Link
               href="/register"
               className="text-primary font-medium hover:underline"
@@ -62,7 +78,7 @@ export default function Form() {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </motion.div>
   );
 }
