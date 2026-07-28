@@ -80,3 +80,13 @@ export type ResetPasswordRequest = {
 export type ResetPasswordResponse = {
   success: boolean;
 };
+
+export type ResendLoginVerificationCodeRequest = {
+  challengeId: string;
+};
+
+export type ResendLoginVerificationCodeResponse = {
+  success: boolean;
+  challengeId: string;
+  expiresAt: string;
+};

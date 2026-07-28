@@ -5,11 +5,35 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { useResendLoginVerificationCode } from "@/hooks/api/useResendLoginVerificationCode";
+import { ApiError } from "@/types/api/common";
+import { getErrorMessage } from "@/lib/api/errorMessages";
+import { useConfirmLogin } from "@/hooks/api/Useconfirmlogin";
+
+const CODE_LENGTH = 6;
+const DEFAULT_COUNTDOWN_SECONDS = 60;
+
+function secondsUntil(expiresAt: string): number {
+  const remainingMs = new Date(expiresAt).getTime() - Date.now();
+  return Math.max(0, Math.round(remainingMs / 1000));
+}
 
 export default function Form() {
-  const [code, setCode] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [seconds, setSeconds] = useState(60);
+  const [challengeId, setChallengeId] = useState(
+    searchParams.get("challengeId"),
+  );
+  const [code, setCode] = useState("");
+  const [seconds, setSeconds] = useState(DEFAULT_COUNTDOWN_SECONDS);
+
+  const { mutate: confirmLoginUser, isPending: isConfirming } =
+    useConfirmLogin();
+  const { mutate: resendCode, isPending: isResending } =
+    useResendLoginVerificationCode();
 
   useEffect(() => {
     if (seconds <= 0) return;
@@ -21,10 +45,54 @@ export default function Form() {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  const handleResend = () => {
-    // Call API...
+  useEffect(() => {
+    if (!challengeId) {
+      toast.error("Invalid or missing verification link.");
+      router.replace("/login");
+    }
+  }, [challengeId, router]);
 
-    setSeconds(60);
+  const handleError = (error: unknown) => {
+    const message =
+      error instanceof ApiError
+        ? getErrorMessage(error)
+        : "Something went wrong. Please try again.";
+
+    toast.error(message);
+  };
+
+  const handleResend = () => {
+    if (!challengeId) return;
+
+    resendCode(
+      { challengeId },
+      {
+        onSuccess: (data) => {
+          setChallengeId(data.challengeId);
+          setCode("");
+          setSeconds(secondsUntil(data.expiresAt));
+
+          router.replace(`/confirm-login?challengeId=${data.challengeId}`);
+          toast.success("Verification code resent.");
+        },
+        onError: handleError,
+      },
+    );
+  };
+
+  const handleSubmit = () => {
+    if (!challengeId || code.length !== CODE_LENGTH) return;
+
+    confirmLoginUser(
+      { challengeId, code },
+      {
+        onSuccess: () => {
+          toast.success("Logged in successfully.");
+          router.push("/");
+        },
+        onError: handleError,
+      },
+    );
   };
 
   const minutes = Math.floor(seconds / 60);
@@ -62,7 +130,12 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <button className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md dark:bg-gray-950">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isConfirming || code.length !== CODE_LENGTH}
+            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-950"
+          >
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
           </button>
@@ -80,7 +153,8 @@ export default function Form() {
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-primary font-medium hover:underline"
+                disabled={isResending}
+                className="text-primary font-medium hover:underline disabled:pointer-events-none disabled:opacity-50"
               >
                 Resend code
               </button>

@@ -5,6 +5,8 @@ import type {
   ConfirmLoginResponse,
   LoginRequest,
   LoginResponse,
+  ResendLoginVerificationCodeRequest,
+  ResendLoginVerificationCodeResponse,
 } from "@/types/api/auth";
 
 function storeAuthTokens(accessToken: string, refreshToken: string) {
@@ -36,4 +38,16 @@ export async function confirmLogin(
   storeAuthTokens(result.accessToken, result.refreshToken);
 
   return result;
+}
+
+export async function resendLoginVerificationCode(
+  payload: ResendLoginVerificationCodeRequest,
+): Promise<ResendLoginVerificationCodeResponse> {
+  return apiClient<ResendLoginVerificationCodeResponse>(
+    "/auth/resend-login-code",
+    {
+      method: "POST",
+      body: payload,
+    },
+  );
 }
