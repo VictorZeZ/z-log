@@ -1,34 +1,42 @@
 :root {
+  --gray-zero: var(--color-gray-500);
   --gray-one: var(--color-gray-200);
   --gray-two: var(--color-gray-200);
   --gray-three: var(--color-gray-50);
 
+  --slate-zero: var(--color-slate-500);
   --slate-one: var(--color-slate-200);
   --slate-two: var(--color-slate-200);
   --slate-three: var(--color-slate-50);
 
+  --indigo-zero: var(--color-indigo-500);
   --indigo-one: var(--color-indigo-200);
   --indigo-two: var(--color-indigo-200);
   --indigo-three: var(--color-indigo-50);
 
+  --blue-zero: var(--color-blue-500);
   --blue-one: var(--color-blue-200);
   --blue-two: var(--color-blue-200);
   --blue-three: var(--color-blue-50);
 }
 
 .dark {
+  --gray-zero: var(--color-gray-400);
   --gray-one: var(--color-gray-800);
   --gray-two: var(--color-gray-900);
   --gray-three: var(--color-gray-950);
 
+  --slate-zero: var(--color-slate-400);
   --slate-one: var(--color-slate-800);
   --slate-two: var(--color-slate-900);
   --slate-three: var(--color-slate-950);
 
+  --indigo-zero: var(--color-indigo-400);
   --indigo-one: var(--color-indigo-800);
   --indigo-two: var(--color-indigo-900);
   --indigo-three: var(--color-indigo-950);
 
+  --blue-zero: var(--color-blue-400);
   --blue-one: var(--color-blue-800);
   --blue-two: var(--color-blue-900);
   --blue-three: var(--color-blue-950);

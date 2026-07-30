@@ -111,18 +111,22 @@
   --breakpoint-xs: 480px;
   --breakpoint-2xl: 1536px;
 
+  --color-gray-zero: var(--gray-zero);
   --color-gray-one: var(--gray-one);
   --color-gray-two: var(--gray-two);
   --color-gray-three: var(--gray-three);
 
+  --color-slate-zero: var(--slate-zero);
   --color-slate-one: var(--slate-one);
   --color-slate-two: var(--slate-two);
   --color-slate-three: var(--slate-three);
 
+  --color-indigo-zero: var(--indigo-zero);
   --color-indigo-one: var(--indigo-one);
   --color-indigo-two: var(--indigo-two);
   --color-indigo-three: var(--indigo-three);
 
+  --color-blue-zero: var(--blue-zero);
   --color-blue-one: var(--blue-one);
   --color-blue-two: var(--blue-two);
   --color-blue-three: var(--blue-three);

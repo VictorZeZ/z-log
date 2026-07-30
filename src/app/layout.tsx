@@ -27,7 +27,7 @@ export default function RootLayout({
       >
         <QueryProvider>
           <div className="flex flex-col">{children}</div>
-          <Toaster position="top-right"/>
+          <Toaster position="top-right" />
         </QueryProvider>
       </body>
     </html>
