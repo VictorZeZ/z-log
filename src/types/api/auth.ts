@@ -19,6 +19,7 @@ export type LoginRequest = {
 export type LoginResponse = {
   requiresTwoFactor: boolean;
   challengeId: string | null;
+  expiresAt: string | null;
   accessToken: string | null;
   refreshToken: string | null;
 };

@@ -7,10 +7,10 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { useConfirmLogin } from "@/hooks/api/useConfirmLogin";
 import { useResendLoginVerificationCode } from "@/hooks/api/useResendLoginVerificationCode";
 import { ApiError } from "@/types/api/common";
 import { getErrorMessage } from "@/lib/api/errorMessages";
-import { useConfirmLogin } from "@/hooks/api/Useconfirmlogin";
 
 const CODE_LENGTH = 6;
 const DEFAULT_COUNTDOWN_SECONDS = 60;
@@ -28,7 +28,13 @@ export default function Form() {
     searchParams.get("challengeId"),
   );
   const [code, setCode] = useState("");
-  const [seconds, setSeconds] = useState(DEFAULT_COUNTDOWN_SECONDS);
+
+  const initialExpiresAt = searchParams.get("expiresAt");
+  const [seconds, setSeconds] = useState(
+    initialExpiresAt
+      ? secondsUntil(initialExpiresAt)
+      : DEFAULT_COUNTDOWN_SECONDS,
+  );
 
   const { mutate: confirmLoginUser, isPending: isConfirming } =
     useConfirmLogin();

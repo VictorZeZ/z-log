@@ -32,7 +32,13 @@ export default function Form() {
       onSuccess: (data) => {
         if (data.requiresTwoFactor && data.challengeId) {
           toast.success("Verification code sent to your email.");
-          router.push(`/confirm-login?challengeId=${data.challengeId}`);
+
+          const params = new URLSearchParams({ challengeId: data.challengeId });
+          if (data.expiresAt) {
+            params.set("expiresAt", data.expiresAt);
+          }
+
+          router.push(`/confirm-login?${params.toString()}`);
           return;
         }
 
