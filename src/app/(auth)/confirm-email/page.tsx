@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import Form from "./Form";
 
 export default function ConfirmEmail() {
-  return <Form />;
+  return (
+    <Suspense>
+      <Form />
+    </Suspense>
+  );
 }

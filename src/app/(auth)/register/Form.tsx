@@ -5,14 +5,57 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "@/lib/validations/auth";
+import { useRegister } from "@/hooks/api/useRegister";
+import { handleApiError } from "@/lib/api/errorHandler";
 
 export default function Form() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const router = useRouter();
+  const { mutate: registerUser, isPending } = useRegister();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = (values: RegisterFormValues) => {
+    const { confirmPassword: _confirmPassword, ...payload } = values;
+
+    registerUser(payload, {
+      onSuccess: (data) => {
+        toast.success("Verification code sent to your email.");
+
+        const expiresAt = new Date(
+          Date.now() + data.expiryMinutes * 60_000,
+        ).toISOString();
+
+        const params = new URLSearchParams({
+          email: data.email,
+          expiresAt,
+        });
+
+        router.push(`/confirm-email?${params.toString()}`);
+      },
+      onError: handleApiError,
+    });
+  };
 
   return (
     <motion.div
@@ -32,7 +75,11 @@ export default function Form() {
         />
       </div>
 
-      <div className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8"
+        noValidate
+      >
         <div className="flex w-full flex-col items-center justify-center gap-2 select-none">
           <h1 className="text-3xl tracking-widest">Register</h1>
           <p className="text-center text-sm opacity-70">
@@ -41,22 +88,15 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-start gap-4">
-          <Fields
-            firstName={firstName}
-            lastName={lastName}
-            email={email}
-            password={password}
-            confirmPassword={confirmPassword}
-            onFirstNameChange={setFirstName}
-            onLastNameChange={setLastName}
-            onEmailChange={setEmail}
-            onPasswordChange={setPassword}
-            onConfirmPasswordChange={setConfirmPassword}
-          />
+          <Fields register={register} errors={errors} />
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <button className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md dark:bg-gray-950">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-950"
+          >
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
           </button>
@@ -72,7 +112,7 @@ export default function Form() {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </motion.div>
   );
 }

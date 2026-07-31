@@ -5,31 +5,89 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { useConfirmEmail } from "@/hooks/api/useConfirmEmail";
+import { useResendRegistrationCode } from "@/hooks/api/useResendRegistrationCode";
+import { handleApiError } from "@/lib/api/errorHandler";
+
+const CODE_LENGTH = 6;
+const DEFAULT_COUNTDOWN_SECONDS = 60;
+
+function secondsUntil(expiresAt: string): number {
+  const remainingMs = new Date(expiresAt).getTime() - Date.now();
+  return Math.max(0, Math.round(remainingMs / 1000));
+}
 
 export default function Form() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const email = searchParams.get("email");
   const [code, setCode] = useState("");
 
-    const [seconds, setSeconds] = useState(60);
+  const initialExpiresAt = searchParams.get("expiresAt");
+  const [seconds, setSeconds] = useState(
+    initialExpiresAt
+      ? secondsUntil(initialExpiresAt)
+      : DEFAULT_COUNTDOWN_SECONDS,
+  );
 
-    useEffect(() => {
-      if (seconds <= 0) return;
+  const { mutate: confirmEmailUser, isPending: isConfirming } =
+    useConfirmEmail();
+  const { mutate: resendCode, isPending: isResending } =
+    useResendRegistrationCode();
 
-      const timer = setInterval(() => {
-        setSeconds((prev) => prev - 1);
-      }, 1000);
+  useEffect(() => {
+    if (seconds <= 0) return;
 
-      return () => clearInterval(timer);
-    }, [seconds]);
+    const timer = setInterval(() => {
+      setSeconds((prev) => prev - 1);
+    }, 1000);
 
-    const handleResend = () => {
-      // Call API...
+    return () => clearInterval(timer);
+  }, [seconds]);
 
-      setSeconds(60);
-    };
+  useEffect(() => {
+    if (!email) {
+      toast.error("Invalid or missing verification link.");
+      router.replace("/register");
+    }
+  }, [email, router]);
 
-    const minutes = Math.floor(seconds / 60);
-    const remain = seconds % 60;
+  const handleResend = () => {
+    if (!email) return;
 
+    resendCode(
+      { email },
+      {
+        onSuccess: (data) => {
+          setCode("");
+          setSeconds(secondsUntil(data.expiresAt));
+          toast.success("Verification code resent.");
+        },
+        onError: handleApiError,
+      },
+    );
+  };
+
+  const handleSubmit = () => {
+    if (!email || code.length !== CODE_LENGTH) return;
+
+    confirmEmailUser(
+      { email, code },
+      {
+        onSuccess: () => {
+          toast.success("Email confirmed successfully.");
+          router.push("/");
+        },
+        onError: handleApiError,
+      },
+    );
+  };
+
+  const minutes = Math.floor(seconds / 60);
+  const remain = seconds % 60;
 
   return (
     <motion.div
@@ -63,7 +121,12 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <button className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md dark:bg-gray-950">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isConfirming || code.length !== CODE_LENGTH}
+            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-950"
+          >
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
           </button>
@@ -81,7 +144,8 @@ export default function Form() {
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-primary font-medium hover:underline"
+                disabled={isResending}
+                className="text-primary font-medium hover:underline disabled:pointer-events-none disabled:opacity-50"
               >
                 Resend code
               </button>

@@ -91,3 +91,12 @@ export type ResendLoginVerificationCodeResponse = {
   challengeId: string;
   expiresAt: string;
 };
+
+export type ResendRegistrationCodeRequest = {
+  email: string;
+};
+
+export type ResendRegistrationCodeResponse = {
+  success: boolean;
+  expiresAt: string;
+};
