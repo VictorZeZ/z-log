@@ -11,12 +11,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { loginSchema, type LoginFormValues } from "@/lib/validations/auth";
 import { useLogin } from "@/hooks/api/useLogin";
+import { useResendRegistrationCode } from "@/hooks/api/useResendRegistrationCode";
 import { ApiError } from "@/types/api/common";
-import { getErrorMessage } from "@/lib/api/errorMessages";
+import { handleApiError } from "@/lib/api/errorHandler";
 
 export default function Form() {
   const router = useRouter();
   const { mutate: loginUser, isPending } = useLogin();
+  const { mutate: resendRegistrationCode } = useResendRegistrationCode();
 
   const {
     register,
@@ -26,6 +28,24 @@ export default function Form() {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
+
+  const redirectToConfirmEmail = (email: string) => {
+    resendRegistrationCode(
+      { email },
+      {
+        onSuccess: (data) => {
+          toast.info("Please confirm your email address before continuing.");
+
+          const params = new URLSearchParams({
+            email,
+            expiresAt: data.expiresAt,
+          });
+          router.push(`/confirm-email?${params.toString()}`);
+        },
+        onError: handleApiError,
+      },
+    );
+  };
 
   const onSubmit = (values: LoginFormValues) => {
     loginUser(values, {
@@ -46,12 +66,15 @@ export default function Form() {
         router.push("/");
       },
       onError: (error) => {
-        const message =
-          error instanceof ApiError
-            ? getErrorMessage(error)
-            : "Something went wrong. Please try again.";
+        if (
+          error instanceof ApiError &&
+          error.errorCode === "EMAIL_NOT_CONFIRMED"
+        ) {
+          redirectToConfirmEmail(values.email);
+          return;
+        }
 
-        toast.error(message);
+        handleApiError(error);
       },
     });
   };

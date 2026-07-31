@@ -9,8 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useConfirmLogin } from "@/hooks/api/useConfirmLogin";
 import { useResendLoginVerificationCode } from "@/hooks/api/useResendLoginVerificationCode";
-import { ApiError } from "@/types/api/common";
-import { getErrorMessage } from "@/lib/api/errorMessages";
+import { handleApiError } from "@/lib/api/errorHandler";
 
 const CODE_LENGTH = 6;
 const DEFAULT_COUNTDOWN_SECONDS = 60;
@@ -58,15 +57,6 @@ export default function Form() {
     }
   }, [challengeId, router]);
 
-  const handleError = (error: unknown) => {
-    const message =
-      error instanceof ApiError
-        ? getErrorMessage(error)
-        : "Something went wrong. Please try again.";
-
-    toast.error(message);
-  };
-
   const handleResend = () => {
     if (!challengeId) return;
 
@@ -81,7 +71,7 @@ export default function Form() {
           router.replace(`/confirm-login?challengeId=${data.challengeId}`);
           toast.success("Verification code resent.");
         },
-        onError: handleError,
+        onError: handleApiError,
       },
     );
   };
@@ -96,7 +86,7 @@ export default function Form() {
           toast.success("Logged in successfully.");
           router.push("/");
         },
-        onError: handleError,
+        onError: handleApiError,
       },
     );
   };
