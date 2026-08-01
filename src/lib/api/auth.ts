@@ -5,6 +5,8 @@ import type {
   ConfirmEmailResponse,
   ConfirmLoginRequest,
   ConfirmLoginResponse,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
@@ -13,6 +15,10 @@ import type {
   ResendLoginVerificationCodeResponse,
   ResendRegistrationCodeRequest,
   ResendRegistrationCodeResponse,
+  ResendResetPasswordCodeRequest,
+  ResendResetPasswordCodeResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from "@/types/api/auth";
 
 function storeAuthTokens(accessToken: string, refreshToken: string) {
@@ -85,6 +91,36 @@ export async function resendRegistrationCode(
 ): Promise<ResendRegistrationCodeResponse> {
   return apiClient<ResendRegistrationCodeResponse>(
     "/auth/resend-registration-code",
+    {
+      method: "POST",
+      body: payload,
+    },
+  );
+}
+
+export async function forgotPassword(
+  payload: ForgotPasswordRequest,
+): Promise<ForgotPasswordResponse> {
+  return apiClient<ForgotPasswordResponse>("/auth/forgot-password", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export async function resetPassword(
+  payload: ResetPasswordRequest,
+): Promise<ResetPasswordResponse> {
+  return apiClient<ResetPasswordResponse>("/auth/reset-password", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export async function resendResetPasswordCode(
+  payload: ResendResetPasswordCodeRequest,
+): Promise<ResendResetPasswordCodeResponse> {
+  return apiClient<ResendResetPasswordCodeResponse>(
+    "/auth/resend-reset-password-code",
     {
       method: "POST",
       body: payload,

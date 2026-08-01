@@ -132,6 +132,15 @@ export default function Form() {
               Register
             </Link>
           </p>
+          <p className="text-muted-foreground text-sm">
+            <span className="select-none">Forgot your password? </span>
+            <Link
+              href="/forgot-password"
+              className="text-primary font-medium hover:underline"
+            >
+              Reset it
+            </Link>
+          </p>
         </div>
       </form>
     </motion.div>

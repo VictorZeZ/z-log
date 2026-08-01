@@ -100,3 +100,11 @@ export type ResendRegistrationCodeResponse = {
   success: boolean;
   expiresAt: string;
 };
+
+export type ResendResetPasswordCodeRequest = {
+  email: string;
+};
+
+export type ResendResetPasswordCodeResponse = {
+  success: boolean;
+};

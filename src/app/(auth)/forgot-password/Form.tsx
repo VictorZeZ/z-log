@@ -5,10 +5,45 @@ import Fields from "./Fields";
 import { LuArrowRight } from "react-icons/lu";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormValues,
+} from "@/lib/validations/auth";
+import { useForgotPassword } from "@/hooks/api/useForgotPassword";
+import { handleApiError } from "@/lib/api/errorHandler";
 
 export default function Form() {
-  const [email, setEmail] = useState("");
+  const router = useRouter();
+  const { mutate: forgotPasswordUser, isPending } = useForgotPassword();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: { email: "" },
+  });
+
+  const onSubmit = (values: ForgotPasswordFormValues) => {
+    forgotPasswordUser(values, {
+      // The backend always returns success, whether or not the email exists,
+      // to prevent user enumeration - so we always proceed the same way.
+      onSuccess: () => {
+        toast.info(
+          "If an account with that email exists, a reset code has been sent.",
+        );
+
+        const params = new URLSearchParams({ email: values.email });
+        router.push(`/reset-password?${params.toString()}`);
+      },
+      onError: handleApiError,
+    });
+  };
 
   return (
     <motion.div
@@ -28,7 +63,11 @@ export default function Form() {
         />
       </div>
 
-      <div className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-10 flex h-full w-full flex-col items-center justify-start gap-10 p-8"
+        noValidate
+      >
         <div className="flex w-full flex-col items-center justify-center gap-2 select-none">
           <h1 className="text-3xl tracking-widest">Forgot Password</h1>
           <p className="text-center text-sm opacity-70">
@@ -38,11 +77,15 @@ export default function Form() {
         </div>
 
         <div className="flex w-full flex-col items-center justify-start gap-4">
-          <Fields email={email} onEmailChange={setEmail} />
+          <Fields register={register} errors={errors} />
         </div>
 
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <button className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md dark:bg-gray-950">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="group flex items-center justify-center gap-2 rounded-md border bg-gray-200 px-10 py-2 shadow-md disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-950"
+          >
             Continue
             <LuArrowRight className="text-indigo-500 duration-200 group-hover:translate-x-2" />
           </button>
@@ -58,7 +101,7 @@ export default function Form() {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </motion.div>
   );
 }
