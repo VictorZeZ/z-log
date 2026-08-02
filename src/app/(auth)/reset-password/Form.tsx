@@ -8,18 +8,22 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useResendResetPasswordCode } from "@/hooks/api/useResendResetPasswordCode";
 import { handleApiError } from "@/lib/api/errorHandler";
+import { secondsUntil } from "@/lib/utils";
 
 const CODE_LENGTH = 6;
-const RESEND_COOLDOWN_SECONDS = 60;
+const DEFAULT_COUNTDOWN_SECONDS = 60;
 
 type Props = {
   email: string;
+  expiresAt: string | null;
   onContinue: (code: string) => void;
 };
 
-export default function Form({ email, onContinue }: Props) {
+export default function Form({ email, expiresAt, onContinue }: Props) {
   const [code, setCode] = useState("");
-  const [seconds, setSeconds] = useState(RESEND_COOLDOWN_SECONDS);
+  const [seconds, setSeconds] = useState(
+    expiresAt ? secondsUntil(expiresAt) : DEFAULT_COUNTDOWN_SECONDS,
+  );
 
   const { mutate: resendCode, isPending: isResending } =
     useResendResetPasswordCode();
@@ -38,8 +42,8 @@ export default function Form({ email, onContinue }: Props) {
     resendCode(
       { email },
       {
-        onSuccess: () => {
-          setSeconds(RESEND_COOLDOWN_SECONDS);
+        onSuccess: (data) => {
+          setSeconds(secondsUntil(data.expiresAt));
           toast.info(
             "If a valid reset request exists, a new code has been sent.",
           );

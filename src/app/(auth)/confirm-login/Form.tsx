@@ -10,14 +10,10 @@ import { toast } from "sonner";
 import { useConfirmLogin } from "@/hooks/api/useConfirmLogin";
 import { useResendLoginVerificationCode } from "@/hooks/api/useResendLoginVerificationCode";
 import { handleApiError } from "@/lib/api/errorHandler";
+import { secondsUntil } from "@/lib/utils";
 
 const CODE_LENGTH = 6;
 const DEFAULT_COUNTDOWN_SECONDS = 60;
-
-function secondsUntil(expiresAt: string): number {
-  const remainingMs = new Date(expiresAt).getTime() - Date.now();
-  return Math.max(0, Math.round(remainingMs / 1000));
-}
 
 export default function Form() {
   const router = useRouter();

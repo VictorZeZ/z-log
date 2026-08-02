@@ -26,6 +26,7 @@ export default function Steps() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const expiresAt = searchParams.get("expiresAt");
 
   const [[step, direction], setStep] = useState<[number, number]>([1, 0]);
   const [code, setCode] = useState("");
@@ -62,7 +63,11 @@ export default function Steps() {
           exit="exit"
           transition={{ duration: 0.25 }}
         >
-          <Form email={email} onContinue={handleContinue} />
+          <Form
+            email={email}
+            expiresAt={expiresAt}
+            onContinue={handleContinue}
+          />
         </motion.div>
       ) : (
         <motion.div

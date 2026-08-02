@@ -70,6 +70,7 @@ export type ForgotPasswordRequest = {
 
 export type ForgotPasswordResponse = {
   success: boolean;
+  expiresAt: string;
 };
 
 export type ResetPasswordRequest = {
@@ -107,4 +108,5 @@ export type ResendResetPasswordCodeRequest = {
 
 export type ResendResetPasswordCodeResponse = {
   success: boolean;
+  expiresAt: string;
 };

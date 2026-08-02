@@ -33,12 +33,15 @@ export default function Form() {
     forgotPasswordUser(values, {
       // The backend always returns success, whether or not the email exists,
       // to prevent user enumeration - so we always proceed the same way.
-      onSuccess: () => {
+      onSuccess: (data) => {
         toast.info(
           "If an account with that email exists, a reset code has been sent.",
         );
 
-        const params = new URLSearchParams({ email: values.email });
+        const params = new URLSearchParams({
+          email: values.email,
+          expiresAt: data.expiresAt,
+        });
         router.push(`/reset-password?${params.toString()}`);
       },
       onError: handleApiError,
