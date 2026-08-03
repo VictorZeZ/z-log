@@ -1,7 +1,10 @@
+import Greeting from "@/components/common/Greeting";
+import { useAppSelector } from "@/lib/store/hooks";
+
 export default function Home() {
   return (
     <>
-      <h1 className="text-5xl h-200">Home</h1>
+      <Greeting />
     </>
   );
 }

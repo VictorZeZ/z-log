@@ -11,12 +11,15 @@ import { useConfirmEmail } from "@/hooks/api/useConfirmEmail";
 import { useResendRegistrationCode } from "@/hooks/api/useResendRegistrationCode";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { secondsUntil } from "@/lib/utils";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { fetchCurrentUser } from "@/lib/store/userSlice";
 
 const CODE_LENGTH = 6;
 const DEFAULT_COUNTDOWN_SECONDS = 60;
 
 export default function Form() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
 
   const email = searchParams.get("email");
@@ -75,6 +78,7 @@ export default function Form() {
       {
         onSuccess: () => {
           toast.success("Email confirmed successfully.");
+          dispatch(fetchCurrentUser());
           router.push("/");
         },
         onError: handleApiError,

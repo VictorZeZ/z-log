@@ -14,9 +14,12 @@ import { useLogin } from "@/hooks/api/useLogin";
 import { useResendRegistrationCode } from "@/hooks/api/useResendRegistrationCode";
 import { ApiError } from "@/types/api/common";
 import { handleApiError } from "@/lib/api/errorHandler";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { fetchCurrentUser } from "@/lib/store/userSlice";
 
 export default function Form() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { mutate: loginUser, isPending } = useLogin();
   const { mutate: resendRegistrationCode } = useResendRegistrationCode();
 
@@ -42,7 +45,22 @@ export default function Form() {
           });
           router.push(`/confirm-email?${params.toString()}`);
         },
-        onError: handleApiError,
+        onError: (error) => {
+          handleApiError(error);
+
+          // Account turned out to already be confirmed - a confirm-email
+          // screen would be misleading here, so let the user just retry login.
+          if (
+            error instanceof ApiError &&
+            error.errorCode === "INVALID_STATE"
+          ) {
+            return;
+          }
+
+          router.push(
+            `/confirm-email?${new URLSearchParams({ email }).toString()}`,
+          );
+        },
       },
     );
   };
@@ -63,6 +81,7 @@ export default function Form() {
         }
 
         toast.success("Logged in successfully.");
+        dispatch(fetchCurrentUser());
         router.push("/");
       },
       onError: (error) => {
