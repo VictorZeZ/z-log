@@ -10,11 +10,13 @@ export const fetchCurrentUser = createAsyncThunk(
 type UserState = {
   data: GetUserByIdResponse | null;
   status: "idle" | "loading" | "succeeded" | "failed";
+  isLoading: boolean;
 };
 
 const initialState: UserState = {
   data: null,
   status: "idle",
+  isLoading: false,
 };
 
 const userSlice = createSlice({
@@ -24,19 +26,23 @@ const userSlice = createSlice({
     clearUser: (state) => {
       state.data = null;
       state.status = "idle";
+      state.isLoading = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCurrentUser.pending, (state) => {
         state.status = "loading";
+        state.isLoading = true;
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.status = "succeeded";
+        state.isLoading = false;
         state.data = action.payload;
       })
       .addCase(fetchCurrentUser.rejected, (state) => {
         state.status = "failed";
+        state.isLoading = false;
         state.data = null;
       });
   },
