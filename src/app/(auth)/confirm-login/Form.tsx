@@ -11,15 +11,15 @@ import { useConfirmLogin } from "@/hooks/api/useConfirmLogin";
 import { useResendLoginVerificationCode } from "@/hooks/api/useResendLoginVerificationCode";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { secondsUntil } from "@/lib/utils";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { fetchCurrentUser } from "@/lib/store/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
+import { currentUserQueryKey } from "@/hooks/api/useCurrentUser";
 
 const CODE_LENGTH = 6;
 const DEFAULT_COUNTDOWN_SECONDS = 60;
 
 export default function Form() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
   const [challengeId, setChallengeId] = useState(
@@ -83,7 +83,7 @@ export default function Form() {
       {
         onSuccess: () => {
           toast.success("Logged in successfully.");
-          dispatch(fetchCurrentUser());
+          queryClient.refetchQueries({ queryKey: currentUserQueryKey });
           router.push("/");
         },
         onError: handleApiError,

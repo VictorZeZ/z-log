@@ -4,12 +4,9 @@ import { inter, quicksand, roboto } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import ApplyTheme from "@/components/behaviors/ApplyTheme";
 import LoadSession from "@/components/behaviors/LoadSession";
-import { Figtree } from "next/font/google";
 import QueryProvider from "@/components/providers/QueryProvider";
 import ReduxProvider from "@/components/providers/ReduxProvider";
 import { Toaster } from "@/components/ui/sonner";
-
-const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = siteMetadata;
 
@@ -19,10 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn("h-dvh", "antialiased", "font-sans", figtree.variable)}
-    >
+    <html lang="en" className={cn("h-dvh", "antialiased", "font-sans")}>
       <ApplyTheme />
       <body
         className={`${quicksand.variable} ${roboto.variable} ${inter.variable}`}

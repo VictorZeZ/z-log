@@ -14,12 +14,12 @@ import { useLogin } from "@/hooks/api/useLogin";
 import { useResendRegistrationCode } from "@/hooks/api/useResendRegistrationCode";
 import { ApiError } from "@/types/api/common";
 import { handleApiError } from "@/lib/api/errorHandler";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { fetchCurrentUser } from "@/lib/store/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
+import { currentUserQueryKey } from "@/hooks/api/useCurrentUser";
 
 export default function Form() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const { mutate: loginUser, isPending } = useLogin();
   const { mutate: resendRegistrationCode } = useResendRegistrationCode();
 
@@ -81,7 +81,7 @@ export default function Form() {
         }
 
         toast.success("Logged in successfully.");
-        dispatch(fetchCurrentUser());
+        queryClient.refetchQueries({ queryKey: currentUserQueryKey });
         router.push("/");
       },
       onError: (error) => {
