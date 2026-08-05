@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { apiClient } from "@/lib/api/client";
+import { apiClient, clearAuthCookies } from "@/lib/api/client";
 import type {
   ConfirmEmailRequest,
   ConfirmEmailResponse,
@@ -9,6 +9,8 @@ import type {
   ForgotPasswordResponse,
   LoginRequest,
   LoginResponse,
+  LogoutRequest,
+  LogoutResponse,
   RegisterRequest,
   RegisterResponse,
   ResendLoginVerificationCodeRequest,
@@ -126,4 +128,15 @@ export async function resendResetPasswordCode(
       body: payload,
     },
   );
+}
+
+export async function logout(payload: LogoutRequest): Promise<LogoutResponse> {
+  const result = await apiClient<LogoutResponse>("/auth/logout", {
+    method: "POST",
+    body: payload,
+  });
+
+  clearAuthCookies();
+
+  return result;
 }

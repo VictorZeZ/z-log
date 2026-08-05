@@ -1,5 +1,7 @@
 import Cookies from "js-cookie";
 import { ApiError, type ApiErrorResponse } from "@/types/api/common";
+import { store } from "@/lib/store/store";
+import { clearUser } from "@/lib/store/userSlice";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const SESSION_EXPIRED_ERROR_CODE = "SESSION_EXPIRED";
@@ -34,9 +36,17 @@ async function refreshAccessToken(): Promise<string> {
   return result.accessToken;
 }
 
-function clearAuthCookies() {
+export function clearAuthCookies() {
   Cookies.remove("token");
   Cookies.remove("refreshToken");
+}
+
+// The refresh-token flow is the only place that can reliably detect an
+// unrecoverable session (refresh token invalid/expired/missing). When that
+// happens we clear both the auth cookies and the client-side user state.
+function handleSessionExpired() {
+  clearAuthCookies();
+  store.dispatch(clearUser());
 }
 
 async function performFetch<TResponse>(
@@ -103,11 +113,11 @@ export async function apiClient<TResponse>(
         return retried.parsed as TResponse;
       }
     } catch {
-      clearAuthCookies();
+      handleSessionExpired();
       throw new ApiError(401, SESSION_EXPIRED_ERROR_CODE, "Session expired");
     }
 
-    clearAuthCookies();
+    handleSessionExpired();
     throw new ApiError(401, SESSION_EXPIRED_ERROR_CODE, "Session expired");
   }
 
