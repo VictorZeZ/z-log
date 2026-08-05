@@ -17,7 +17,9 @@ import { useLogout } from "@/hooks/api/useLogout";
 import { currentUserQueryKey } from "@/hooks/api/useCurrentUser";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { TbChevronDown, TbLogout, TbSettings, TbUser } from "react-icons/tb";
+import { User } from "lucide-react";
 import { Shimmer } from "@shimmer-from-structure/react";
+import Link from "next/link";
 
 export function UserMenu() {
   const router = useRouter();
@@ -35,7 +37,7 @@ export function UserMenu() {
   const finishLogout = () => {
     dispatch(clearUser());
     queryClient.removeQueries({ queryKey: currentUserQueryKey });
-    router.push("/login");
+    router.refresh();
   };
 
   const handleLogout = () => {
@@ -54,6 +56,20 @@ export function UserMenu() {
       },
     );
   };
+
+  if (!user) {
+    return (
+      <Shimmer loading={isLoading}>
+        <Link
+          href="/login"
+          className="bg-slate-one flex h-8 w-24 items-center justify-center gap-1.5 rounded-md border text-sm outline-none"
+        >
+          <p>Login</p>
+          <User size={17} />
+        </Link>
+      </Shimmer>
+    );
+  }
 
   return (
     <DropdownMenu>
@@ -83,12 +99,12 @@ export function UserMenu() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className={buttonClass}
+          className={buttonClass + `text-red-500 hover:bg-red-500/20 dark:hover:bg-red-500/20`}
           disabled={isLoggingOut}
           onClick={handleLogout}
         >
           Logout
-          <TbLogout className="text-indigo-500" />
+          <TbLogout className="text-red-500" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
