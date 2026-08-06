@@ -3,32 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-
-const links = [
-  {
-    title: "Feed",
-    href: "/",
-  },
-  {
-    title: "Search",
-    href: "/search",
-  },
-  {
-    title: "Authors",
-    href: "/authors",
-  },
-  {
-    title: "Profile",
-    href: "/profile",
-  },
-];
+import { primaryNavLinks } from "@/lib/navigation";
 
 function Navigation() {
   const pathname = usePathname();
 
   return (
     <div className="flex h-full items-center gap-6 text-sm font-medium">
-      {links.map((link) => {
+      {primaryNavLinks.map((link) => {
         const active = pathname === link.href;
 
         return (

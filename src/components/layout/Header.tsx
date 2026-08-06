@@ -4,9 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
-import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import NavigationLinks from "./NavigationLinks";
-import { UserMenu } from "../shared/UserMenu";
+import { SiteNav } from "./SiteNav";
 
 function Header() {
   const [hidden, setHidden] = useState(false);
@@ -62,7 +61,7 @@ function Header() {
             <NavigationLinks />
           </div>
           <div className="flex h-full w-80 shrink-0 items-center justify-end">
-            <UserMenu />
+            <SiteNav />
           </div>
         </div>
       </motion.div>

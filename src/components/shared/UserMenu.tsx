@@ -100,7 +100,7 @@ export function UserMenu() {
 
         <DropdownMenuItem
           className={
-            buttonClass + `hover:bg-red-500/20! dark:hover:bg-red-500/20!``
+            buttonClass + `hover:bg-red-500/20! dark:hover:bg-red-500/20!`
           }
           disabled={isLoggingOut}
           onClick={handleLogout}
