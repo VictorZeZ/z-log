@@ -32,7 +32,7 @@ export function UserMenu() {
   const { mutate: logoutUser, isPending: isLoggingOut } = useLogout();
 
   const buttonClass =
-    "flex cursor-pointer items-center justify-between my-1 gap-2 text-indigo-950 dark:text-indigo-50 hover:bg-black/20! dark:hover:bg-white/20! duration-100";
+    "flex cursor-pointer items-center justify-between my-1 gap-2 text-indigo-950 dark:text-indigo-50 hover:bg-black/20 dark:hover:bg-white/20 duration-100";
 
   const finishLogout = () => {
     dispatch(clearUser());
@@ -65,7 +65,7 @@ export function UserMenu() {
           className="bg-slate-one flex h-8 w-24 items-center justify-center gap-1.5 rounded-md border text-sm outline-none"
         >
           <p>Login</p>
-          <User size={17} />
+          <User size={17} className="text-indigo-zero" />
         </Link>
       </Shimmer>
     );
@@ -77,7 +77,7 @@ export function UserMenu() {
         <DropdownMenuTrigger asChild>
           <button className="group flex items-center gap-2 rounded-md border px-3 py-1 text-sm outline-none">
             <TbUser className="text-indigo-500" />
-            {user?.fullName ?? "Guest"}
+            {user.fullName}
             <TbChevronDown className="text-indigo-500 transition-transform duration-200 group-data-[state=open]:rotate-180" />
           </button>
         </DropdownMenuTrigger>
@@ -99,11 +99,13 @@ export function UserMenu() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className={buttonClass + `text-red-500 hover:bg-red-500/20 dark:hover:bg-red-500/20`}
+          className={
+            buttonClass + `hover:bg-red-500/20! dark:hover:bg-red-500/20!``
+          }
           disabled={isLoggingOut}
           onClick={handleLogout}
         >
-          Logout
+          <p className="text-red-500">Logout</p>
           <TbLogout className="text-red-500" />
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -16,6 +16,7 @@ import { ApiError } from "@/types/api/common";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { useQueryClient } from "@tanstack/react-query";
 import { currentUserQueryKey } from "@/hooks/api/useCurrentUser";
+import { getCurrentUser } from "@/lib/api/account";
 
 export default function Form() {
   const router = useRouter();
@@ -81,7 +82,12 @@ export default function Form() {
         }
 
         toast.success("Logged in successfully.");
-        queryClient.refetchQueries({ queryKey: currentUserQueryKey });
+        queryClient
+          .fetchQuery({
+            queryKey: currentUserQueryKey,
+            queryFn: getCurrentUser,
+          })
+          .catch(() => undefined);
         router.push("/");
       },
       onError: (error) => {

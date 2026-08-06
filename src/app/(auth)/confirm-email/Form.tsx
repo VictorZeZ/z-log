@@ -13,6 +13,7 @@ import { handleApiError } from "@/lib/api/errorHandler";
 import { secondsUntil } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { currentUserQueryKey } from "@/hooks/api/useCurrentUser";
+import { getCurrentUser } from "@/lib/api/account";
 
 const CODE_LENGTH = 6;
 const DEFAULT_COUNTDOWN_SECONDS = 60;
@@ -78,7 +79,12 @@ export default function Form() {
       {
         onSuccess: () => {
           toast.success("Email confirmed successfully.");
-          queryClient.refetchQueries({ queryKey: currentUserQueryKey });
+          queryClient
+            .fetchQuery({
+              queryKey: currentUserQueryKey,
+              queryFn: getCurrentUser,
+            })
+            .catch(() => undefined);
           router.push("/");
         },
         onError: handleApiError,
