@@ -20,10 +20,10 @@ export function SheetNavLinks() {
               href={active ? "#" : link.href}
               aria-disabled={active}
               className={clsx(
-                "rounded-xl px-3 py-2 duration-200 outline-none",
+                "rounded-md px-3 py-2 duration-200 outline-none",
                 active
-                  ? "text-indigo-zero bg-accent pointer-events-none"
-                  : "text-foreground hover:bg-accent opacity-60 hover:opacity-100",
+                  ? "text-slate-zero bg-slate-one pointer-events-none"
+                  : "text-foreground hover:bg-slate-one opacity-60 hover:opacity-100",
               )}
             >
               {link.title}

@@ -1,0 +1,30 @@
+/*
+  Custom scrollbar for the whole site, built from the existing gray tokens
+  in variables.css. Those tokens already flip between light/dark values
+  under the .dark class, so this file needs no separate dark-mode branch.
+*/
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--slate-one) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--slate-one);
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--slate-zero);
+}

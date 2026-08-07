@@ -20,10 +20,10 @@ export function NavItem({
   variant = "default",
 }: NavItemProps) {
   const className = cn(
-    "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm outline-hidden select-none [&_svg]:size-4 [&_svg]:shrink-0",
+    "flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm outline-hidden select-none [&_svg]:size-4 [&_svg]:shrink-0",
     variant === "destructive"
-      ? "text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
-      : "hover:bg-accent hover:text-accent-foreground",
+      ? "text-red-500 hover:bg-red-500/10"
+      : "hover:bg-slate-one hover:text-slate-zero",
     disabled && "pointer-events-none opacity-50",
   );
 

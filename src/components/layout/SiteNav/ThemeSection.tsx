@@ -44,13 +44,13 @@ export function ThemeSection() {
                 disabled={mounted && theme === value}
                 onClick={() => setters[value]()}
                 className={cn(
-                  "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm duration-100",
+                  "flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm duration-100",
                   mounted && theme === value
-                    ? "border-indigo-800 bg-indigo-800/30"
-                    : "hover:bg-black/20! dark:hover:bg-white/20!",
+                    ? "bg-slate-one"
+                    : "hover:bg-slate-one",
                 )}
               >
-                <Icon className="size-4 text-indigo-500" />
+                <Icon className="size-4 text-slate-zero" />
                 {label}
               </button>
             ))}

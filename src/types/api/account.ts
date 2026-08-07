@@ -5,6 +5,13 @@ export enum UserLevel {
   Owner = 3,
 }
 
+export const userLevelLabels: Record<UserLevel, string> = {
+  [UserLevel.Normal]: "Normal",
+  [UserLevel.Author]: "Author",
+  [UserLevel.Admin]: "Admin",
+  [UserLevel.Owner]: "Owner",
+};
+
 export type GetUserByIdResponse = {
   id: string;
   email: string;

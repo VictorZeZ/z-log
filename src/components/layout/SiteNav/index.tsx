@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "lucide-react";
+import { Dot, User } from "lucide-react";
 import { TbMenu2 } from "react-icons/tb";
 import { Shimmer } from "@shimmer-from-structure/react";
 import { Accordion } from "@/components/ui/accordion";
@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useAppSelector } from "@/lib/store/hooks";
-import { UserLevel } from "@/types/api/account";
+import { UserLevel, userLevelLabels } from "@/types/api/account";
 import { SheetNavLinks } from "./SheetNavLinks";
 import { AccountSection } from "./AccountSection";
 import { DashboardSection } from "./DashboardSection";
@@ -58,7 +58,11 @@ export function SiteNav() {
             <SheetTitle>Z LOG</SheetTitle>
             <SheetDescription>
               {user ? (
-                `Welcome back, ${user.fullName}!`
+                <>
+                  {user.fullName}
+                  <Dot className="inline-block" />
+                  {userLevelLabels[user.level]}
+                </>
               ) : (
                 <>
                   <SheetClose asChild>
@@ -75,7 +79,7 @@ export function SiteNav() {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex flex-col gap-4 overflow-y-auto px-6 pb-6">
+          <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 pb-6">
             <SheetNavLinks />
 
             <div className="bg-border/50 -mx-1 h-px" />
