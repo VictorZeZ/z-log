@@ -17,7 +17,7 @@ export const primaryNavLinks: NavLink[] = [
     href: "/authors",
   },
   {
-    title: "Profile",
-    href: "/profile",
+    title: "Dashboard",
+    href: "/dashboard",
   },
 ];
