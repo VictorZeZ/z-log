@@ -9,7 +9,7 @@ function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full items-center gap-6 text-sm font-medium">
+    <div className="flex h-full items-center gap-6 text-sm">
       {primaryNavLinks.map((link) => {
         const active = pathname === link.href;
 
@@ -22,7 +22,7 @@ function Navigation() {
             className={clsx(
               "duration-200 outline-none",
               active && "text-indigo-zero pointer-events-none",
-              !active && "text-foreground opacity-60",
+              !active && "text-foreground opacity-60 hover:opacity-100",
             )}
           >
             {link.title}

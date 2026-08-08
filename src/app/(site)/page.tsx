@@ -1,9 +1,9 @@
-import Greeting from "@/components/common/Greeting";
+import Head from "@/components/pages/feed/Head";
 
 export default function Home() {
   return (
-    <div className="w-full h-200">
-      <Greeting />
+    <div className="flex items-center h-200 w-full flex-col">
+      <Head />
     </div>
   );
 }
