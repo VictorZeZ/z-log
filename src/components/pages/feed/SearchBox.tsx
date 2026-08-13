@@ -2,7 +2,7 @@ import { Eraser, Search } from "lucide-react";
 
 export default function SearchBox() {
   return (
-    <section className="bg-slate-two flex w-full flex-col gap-4 rounded-xl border p-4 xl:w-6xl">
+    <section className="bg-slate-two flex w-full flex-col gap-4 rounded-3xl border p-4 xl:w-6xl">
       <div className="flex items-stretch gap-1 rounded-md">
         <span className="flex size-10 shrink-0 items-center justify-center">
           <Search />
@@ -11,7 +11,7 @@ export default function SearchBox() {
           type="text"
           autoComplete="off"
           placeholder="Search posts, tags, or authors…"
-          className="bg-slate-one duration-150 focus:px-4 h-10 w-full rounded-s-xl border px-3 outline-none"
+          className="bg-slate-one duration-150 focus:px-4 h-10 w-full rounded-s-full border px-3 outline-none"
         />
         <button
           type="button"
@@ -21,7 +21,7 @@ export default function SearchBox() {
         </button>
         <button
           type="button"
-          className="bg-slate-one h-10 w-22 shrink-0 rounded-e-xl border"
+          className="bg-slate-one h-10 w-22 shrink-0 rounded-e-full border"
         >
           Search
         </button>

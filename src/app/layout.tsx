@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { siteMetadata } from "./metadata";
-import { inter, quicksand, roboto } from "@/lib/fonts";
+import { inter, quicksand, roboto, spaceGrotesk } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import ApplyTheme from "@/components/behaviors/ApplyTheme";
 import LoadSession from "@/components/behaviors/LoadSession";
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en" className={cn("h-dvh", "antialiased", "font-sans")}>
       <ApplyTheme />
       <body
-        className={`${quicksand.variable} ${roboto.variable} ${inter.variable}`}
+        className={`${quicksand.variable} ${roboto.variable} ${inter.variable} ${spaceGrotesk.variable}`}
       >
         <ReduxProvider>
           <QueryProvider>

@@ -35,3 +35,15 @@ export const roboto = localFont({
   variable: "--font-roboto",
   display: "swap",
 });
+
+export const spaceGrotesk = localFont({
+  src: [
+    {
+      path: "../../public/fonts/SpaceGrotesk/SpaceGrotesk-VariableFont_wght.ttf",
+      weight: "300 700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
