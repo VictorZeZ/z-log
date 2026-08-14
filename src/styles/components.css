@@ -1,0 +1,56 @@
+/* Project-specific component-layer utility classes (not part of shadcn). */
+
+@layer components {
+  .c-hover {
+    @apply relative z-0 bg-transparent!;
+  }
+
+  .c-hover::after {
+    @apply absolute top-0 right-0 bottom-0 left-0 z-[-1] origin-center scale-0 rounded-sm opacity-0 duration-100 content-[''];
+  }
+
+  .c-hover:hover::after {
+    @apply scale-100 opacity-100;
+  }
+
+  .type-one-hover-color::after {
+    @apply bg-neutral-50;
+  }
+
+  .dark .type-one-hover-color::after {
+    @apply bg-neutral-950;
+  }
+
+  .type-two-hover-color::after {
+    @apply bg-neutral-100;
+  }
+
+  .type-three-hover-color::after {
+    @apply bg-neutral-200;
+  }
+
+  .dark .type-two-hover-color::after,
+  .dark .type-three-hover-color::after {
+    @apply bg-neutral-900;
+  }
+
+  .type-red-hover-color::after {
+    @apply bg-red-400;
+  }
+
+  .type-emerald-hover-color::after {
+    @apply bg-emerald-400;
+  }
+
+  .dark .type-emerald-hover-color::after {
+    @apply bg-emerald-600;
+  }
+
+  .type-indigo-hover-color::after {
+    @apply bg-indigo-400;
+  }
+
+  .dark .type-indigo-hover-color::after {
+    @apply bg-indigo-500;
+  }
+}

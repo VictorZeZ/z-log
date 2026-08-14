@@ -1,7 +1,7 @@
 import { Dot } from "lucide-react";
 import Link from "next/link";
 
-function TopPosts() {
+export default function TopPosts() {
   const date = new Date().getUTCMinutes() + " minutes ago";
 
   return (
@@ -35,5 +35,3 @@ function TopPosts() {
     </section>
   );
 }
-
-export default TopPosts;

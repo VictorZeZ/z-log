@@ -1,0 +1,34 @@
+/* Global element resets and base typography/selection styling. */
+
+@media (prefers-color-scheme: dark) {
+  /* :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  } */
+}
+
+body {
+  font-family: var(--font-inter);
+}
+
+::selection {
+  background-color: var(--color-blue-three);
+  color: var(--color-blue-zero);
+}
+
+@layer base {
+  * {
+    @apply border-black/5 dark:border-white/5;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  button,
+  input[type="button"],
+  input[type="submit"] {
+    @apply cursor-pointer;
+  }
+}

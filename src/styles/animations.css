@@ -1,0 +1,90 @@
+/* Theme-switch view-transition circular reveal, and the decorative animated page background. */
+
+@property --vt-reveal {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+html {
+  view-transition-name: root;
+  --vt-x: 0px;
+  --vt-y: 0px;
+  --vt-radius: 0px;
+  --vt-reveal: 0px;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 500ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+::view-transition-new(root) {
+  clip-path: circle(var(--vt-reveal) at var(--vt-x) var(--vt-y));
+  animation-name: theme-reveal;
+}
+
+::view-transition-old(root) {
+  -webkit-mask-image: radial-gradient(
+    circle at var(--vt-x) var(--vt-y),
+    transparent 0,
+    transparent var(--vt-reveal),
+    black calc(var(--vt-reveal) + 1px)
+  );
+  mask-image: radial-gradient(
+    circle at var(--vt-x) var(--vt-y),
+    transparent 0,
+    transparent var(--vt-reveal),
+    black calc(var(--vt-reveal) + 1px)
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation-name: theme-cut;
+}
+
+@keyframes theme-reveal {
+  to {
+    --vt-reveal: var(--vt-radius);
+  }
+}
+
+@keyframes theme-cut {
+  to {
+    --vt-reveal: var(--vt-radius);
+  }
+}
+
+body {
+  @apply bg-slate-200 dark:bg-slate-950;
+  animation: backgroundMove 10s linear infinite;
+  will-change: background-position;
+  background-image:
+    radial-gradient(
+      ellipse at center,
+      rgba(37, 99, 235, 0.12),
+      transparent 70%
+    ),
+    linear-gradient(rgba(96, 165, 250, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.04) 1px, transparent 1px);
+  background-size:
+    120% 120%,
+    50px 50px,
+    50px 50px;
+  background-attachment: fixed;
+}
+@keyframes backgroundMove {
+  from {
+    background-position:
+      center,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      center,
+      -50px 50px,
+      -50px 50px;
+  }
+}

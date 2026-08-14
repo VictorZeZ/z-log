@@ -231,3 +231,137 @@
   --stone-two: var(--color-stone-900);
   --stone-three: var(--color-stone-950);
 }
+
+/*
+  Registers every custom color's zero/one/two/three variants as real
+  Tailwind color utilities (bg-slate-two, text-indigo-zero, etc).
+*/
+@theme inline {
+  --color-gray-zero: var(--gray-zero);
+  --color-gray-one: var(--gray-one);
+  --color-gray-two: var(--gray-two);
+  --color-gray-three: var(--gray-three);
+
+  --color-slate-zero: var(--slate-zero);
+  --color-slate-one: var(--slate-one);
+  --color-slate-two: var(--slate-two);
+  --color-slate-three: var(--slate-three);
+
+  --color-indigo-zero: var(--indigo-zero);
+  --color-indigo-one: var(--indigo-one);
+  --color-indigo-two: var(--indigo-two);
+  --color-indigo-three: var(--indigo-three);
+
+  --color-blue-zero: var(--blue-zero);
+  --color-blue-one: var(--blue-one);
+  --color-blue-two: var(--blue-two);
+  --color-blue-three: var(--blue-three);
+
+  /* red */
+  --color-red-zero: var(--red-zero);
+  --color-red-one: var(--red-one);
+  --color-red-two: var(--red-two);
+  --color-red-three: var(--red-three);
+
+  /* orange */
+  --color-orange-zero: var(--orange-zero);
+  --color-orange-one: var(--orange-one);
+  --color-orange-two: var(--orange-two);
+  --color-orange-three: var(--orange-three);
+
+  /* amber */
+  --color-amber-zero: var(--amber-zero);
+  --color-amber-one: var(--amber-one);
+  --color-amber-two: var(--amber-two);
+  --color-amber-three: var(--amber-three);
+
+  /* yellow */
+  --color-yellow-zero: var(--yellow-zero);
+  --color-yellow-one: var(--yellow-one);
+  --color-yellow-two: var(--yellow-two);
+  --color-yellow-three: var(--yellow-three);
+
+  /* lime */
+  --color-lime-zero: var(--lime-zero);
+  --color-lime-one: var(--lime-one);
+  --color-lime-two: var(--lime-two);
+  --color-lime-three: var(--lime-three);
+
+  /* green */
+  --color-green-zero: var(--green-zero);
+  --color-green-one: var(--green-one);
+  --color-green-two: var(--green-two);
+  --color-green-three: var(--green-three);
+
+  /* emerald */
+  --color-emerald-zero: var(--emerald-zero);
+  --color-emerald-one: var(--emerald-one);
+  --color-emerald-two: var(--emerald-two);
+  --color-emerald-three: var(--emerald-three);
+
+  /* teal */
+  --color-teal-zero: var(--teal-zero);
+  --color-teal-one: var(--teal-one);
+  --color-teal-two: var(--teal-two);
+  --color-teal-three: var(--teal-three);
+
+  /* cyan */
+  --color-cyan-zero: var(--cyan-zero);
+  --color-cyan-one: var(--cyan-one);
+  --color-cyan-two: var(--cyan-two);
+  --color-cyan-three: var(--cyan-three);
+
+  /* sky */
+  --color-sky-zero: var(--sky-zero);
+  --color-sky-one: var(--sky-one);
+  --color-sky-two: var(--sky-two);
+  --color-sky-three: var(--sky-three);
+
+  /* violet */
+  --color-violet-zero: var(--violet-zero);
+  --color-violet-one: var(--violet-one);
+  --color-violet-two: var(--violet-two);
+  --color-violet-three: var(--violet-three);
+
+  /* purple */
+  --color-purple-zero: var(--purple-zero);
+  --color-purple-one: var(--purple-one);
+  --color-purple-two: var(--purple-two);
+  --color-purple-three: var(--purple-three);
+
+  /* fuchsia */
+  --color-fuchsia-zero: var(--fuchsia-zero);
+  --color-fuchsia-one: var(--fuchsia-one);
+  --color-fuchsia-two: var(--fuchsia-two);
+  --color-fuchsia-three: var(--fuchsia-three);
+
+  /* pink */
+  --color-pink-zero: var(--pink-zero);
+  --color-pink-one: var(--pink-one);
+  --color-pink-two: var(--pink-two);
+  --color-pink-three: var(--pink-three);
+
+  /* rose */
+  --color-rose-zero: var(--rose-zero);
+  --color-rose-one: var(--rose-one);
+  --color-rose-two: var(--rose-two);
+  --color-rose-three: var(--rose-three);
+
+  /* zinc */
+  --color-zinc-zero: var(--zinc-zero);
+  --color-zinc-one: var(--zinc-one);
+  --color-zinc-two: var(--zinc-two);
+  --color-zinc-three: var(--zinc-three);
+
+  /* neutral */
+  --color-neutral-zero: var(--neutral-zero);
+  --color-neutral-one: var(--neutral-one);
+  --color-neutral-two: var(--neutral-two);
+  --color-neutral-three: var(--neutral-three);
+
+  /* stone */
+  --color-stone-zero: var(--stone-zero);
+  --color-stone-one: var(--stone-one);
+  --color-stone-two: var(--stone-two);
+  --color-stone-three: var(--stone-three);
+}
