@@ -5,6 +5,7 @@
 */
 @import "tailwindcss";
 @import "./variables.css";
+@import "./navy.css";
 @import "./theme.css";
 @import "./utilities.css";
 @import "./scrollbar.css";
