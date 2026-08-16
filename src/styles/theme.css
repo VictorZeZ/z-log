@@ -52,6 +52,7 @@
   --font-quicksand: var(--font-quicksand);
   --font-inter: var(--font-inter);
   --font-roboto: var(--font-roboto);
+  --font-space-grotesk: var(--font-space-grotesk);
 
   --breakpoint-xs: 480px;
   --breakpoint-2xl: 1536px;

@@ -2,7 +2,7 @@ import { Eraser, Search } from "lucide-react";
 
 export default function SearchBox() {
   return (
-    <section className="bg-slate-two flex w-full flex-col gap-4 rounded-3xl border p-4 xl:w-6xl">
+    <section className="bg-slate-two flex w-full flex-col gap-4 rounded-3xl border p-4 xl:w-6xl shadow-md">
       <div className="flex items-stretch gap-1 rounded-md">
         <span className="flex size-10 shrink-0 items-center justify-center">
           <Search />

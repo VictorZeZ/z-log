@@ -5,7 +5,7 @@ export default function TopPosts() {
   const date = new Date().getUTCMinutes() + " minutes ago";
 
   return (
-    <section className="bg-slate-two relative flex w-full flex-col items-start gap-4 overflow-hidden rounded-3xl border p-4 pl-10 duration-200 hover:-translate-y-1 hover:shadow-2xl xl:w-6xl">
+    <section className="bg-slate-two relative flex w-full flex-col items-start gap-4 rounded-3xl border p-4 pl-12 shadow-md duration-200 xl:w-6xl">
       <p className="text-indigo-zero text-xs font-bold tracking-wider">
         FEATURED
       </p>
@@ -31,7 +31,7 @@ export default function TopPosts() {
           <span className="text-slate-zero text-sm">{date}</span>
         </div>
       </div>
-      <div className="absolute top-0 bottom-0 left-0 w-2 bg-blue-500"></div>
+      <div className="absolute top-5 bottom-5 left-5 w-1 rounded-full bg-blue-500"></div>
     </section>
   );
 }
