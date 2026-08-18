@@ -37,7 +37,7 @@ function Header() {
           duration: 0.25,
           ease: "easeInOut",
         }}
-        className="bg-slate-two fixed top-0 z-20 w-full border-b-2 backdrop-blur"
+        className="bg-slate-two fixed top-0 z-20 w-full border-b backdrop-blur"
       >
         <div className="max-w-8xl mx-auto flex h-14 w-full items-center justify-between gap-2 px-4 sm:px-8">
           <div className="flex h-full w-50 shrink-0 items-center justify-start font-bold">

@@ -18,7 +18,7 @@ body {
 
 @layer base {
   * {
-    @apply border-black/5 dark:border-white/5;
+    @apply border-black/10 dark:border-white/10;
   }
   body {
     @apply bg-background text-foreground;
