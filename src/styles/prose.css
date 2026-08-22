@@ -83,11 +83,24 @@
 /* Code Block */
 
 .post-content pre {
-  @apply my-6 overflow-x-auto rounded-xl border border-border bg-card p-5;
+  @apply relative my-6 overflow-x-auto rounded-xl border border-border bg-card p-5;
 }
 
 .post-content pre code {
   @apply block bg-transparent p-0 font-mono text-sm leading-7 text-card-foreground;
+}
+
+.post-content pre .post-copy-button {
+  @apply absolute top-3 right-3 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-muted-foreground opacity-0 shadow-sm transition-all duration-150 hover:bg-muted hover:text-foreground;
+}
+
+.post-content pre:hover .post-copy-button,
+.post-content pre .post-copy-button:focus-visible {
+  @apply opacity-100;
+}
+
+.post-content pre .post-copy-button[data-copied="true"] {
+  @apply border-primary/40 bg-primary/10 text-primary;
 }
 
 
