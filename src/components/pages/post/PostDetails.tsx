@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { ArrowLeft, Eye } from "lucide-react";
 import { Shimmer } from "@shimmer-from-structure/react";
+import DOMPurify from "isomorphic-dompurify";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { usePostBySlug } from "@/hooks/api/usePostBySlug";
@@ -60,6 +61,7 @@ export function PostDetails({ slug }: PostDetailsProps) {
   if (!post) {
     return null;
   }
+  const cleanContent = DOMPurify.sanitize(post.content);
 
   const canManage =
     Boolean(currentUser) &&
@@ -165,8 +167,10 @@ export function PostDetails({ slug }: PostDetailsProps) {
       )}
 
       <article
-        className="text-slate-zero text-base leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        className="text-slate-zero post-content max-w-none leading-relaxed"
+        dangerouslySetInnerHTML={{
+          __html: cleanContent,
+        }}
       ></article>
 
       {post.tags.length > 0 && (

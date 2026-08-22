@@ -1,0 +1,175 @@
+.post-content {
+  @apply max-w-none leading-8 text-foreground;
+}
+
+/* Headings */
+
+.post-content h1 {
+  @apply mt-10 mb-5 scroll-m-20 font-heading text-4xl font-bold tracking-tight text-foreground;
+}
+
+.post-content h2 {
+  @apply mt-10 mb-4 scroll-m-20 border-b border-border pb-2 font-heading text-3xl font-semibold tracking-tight text-foreground;
+}
+
+.post-content h3 {
+  @apply mt-8 mb-3 scroll-m-20 font-heading text-2xl font-semibold tracking-tight text-foreground;
+}
+
+.post-content h4 {
+  @apply mt-6 mb-2 font-heading text-xl font-semibold text-foreground;
+}
+
+.post-content h5 {
+  @apply mt-5 mb-2 font-heading text-lg font-semibold text-foreground;
+}
+
+.post-content h6 {
+  @apply mt-5 mb-2 font-heading text-base font-semibold text-muted-foreground;
+}
+
+
+/* Paragraph */
+
+.post-content p {
+  @apply my-5 leading-8 text-muted-foreground;
+}
+
+
+/* Links */
+
+.post-content a {
+  @apply font-medium text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:text-accent-foreground hover:decoration-primary;
+}
+
+
+/* Strong / Emphasis */
+
+.post-content strong {
+  @apply font-semibold text-foreground;
+}
+
+.post-content em {
+  @apply italic text-muted-foreground;
+}
+
+
+/* Lists */
+
+.post-content ul {
+  @apply my-6 list-disc space-y-2 pl-6 text-muted-foreground;
+}
+
+.post-content ol {
+  @apply my-6 list-decimal space-y-2 pl-6 text-muted-foreground;
+}
+
+.post-content li {
+  @apply pl-1 leading-7;
+}
+
+.post-content li::marker {
+  @apply text-primary;
+}
+
+
+/* Inline Code */
+
+.post-content :not(pre) > code {
+  @apply rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-sm font-medium text-accent-foreground;
+}
+
+
+/* Code Block */
+
+.post-content pre {
+  @apply my-6 overflow-x-auto rounded-xl border border-border bg-card p-5;
+}
+
+.post-content pre code {
+  @apply block bg-transparent p-0 font-mono text-sm leading-7 text-card-foreground;
+}
+
+
+/* Blockquote */
+
+.post-content blockquote {
+  @apply my-6 border-l-4 border-primary bg-muted/50 px-5 py-3 text-muted-foreground;
+}
+
+.post-content blockquote p {
+  @apply my-0;
+}
+
+
+/* Horizontal Rule */
+
+.post-content hr {
+  @apply my-10 border-0 border-t border-border;
+}
+
+
+/* Images */
+
+.post-content img {
+  @apply my-8 h-auto max-w-full rounded-xl border border-border;
+}
+
+
+/* Figure */
+
+.post-content figure {
+  @apply my-8;
+}
+
+.post-content figcaption {
+  @apply mt-3 text-center text-sm text-muted-foreground;
+}
+
+
+/* Tables */
+
+.post-content table {
+  @apply my-8 w-full border-collapse overflow-hidden rounded-xl border border-border;
+}
+
+.post-content thead {
+  @apply bg-muted;
+}
+
+.post-content th {
+  @apply border border-border px-4 py-3 text-left font-semibold text-foreground;
+}
+
+.post-content td {
+  @apply border border-border px-4 py-3 text-muted-foreground;
+}
+
+.post-content tbody tr {
+  @apply transition-colors hover:bg-muted/50;
+}
+
+
+/* Keyboard */
+
+.post-content kbd {
+  @apply rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground;
+}
+
+
+/* Details / Summary */
+
+.post-content details {
+  @apply my-6 rounded-xl border border-border bg-card p-4;
+}
+
+.post-content summary {
+  @apply cursor-pointer font-semibold text-foreground;
+}
+
+
+/* Selection */
+
+.post-content ::selection {
+  @apply bg-primary/20 text-foreground;
+}
