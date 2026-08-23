@@ -23,3 +23,15 @@ export class ApiError extends Error {
     this.details = details;
   }
 }
+
+export type PagedRequest = {
+  page: number;
+  pageSize: number;
+};
+
+export type PagedResult<T> = {
+  items: T[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};

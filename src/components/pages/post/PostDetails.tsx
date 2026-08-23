@@ -19,6 +19,8 @@ import { PostMeta } from "./PostMeta";
 import { PostAuthorBar } from "./PostAuthorBar";
 import { PostContent } from "./PostContent";
 import { PostTags } from "./PostTags";
+import { SimilarPostsSection } from "./SimilarPostsSection";
+import { AuthorPostsSection } from "./AuthorPostsSection";
 
 type PostDetailsProps = {
   slug: string;
@@ -134,6 +136,14 @@ export function PostDetails({ slug }: PostDetailsProps) {
       <PostContent html={cleanContent} />
 
       <PostTags tags={post.tags} />
+
+      <SimilarPostsSection tags={post.tags} excludeSlug={post.slug} />
+
+      <AuthorPostsSection
+        authorId={post.authorId}
+        authorFullName={post.authorFullName}
+        excludeSlug={post.slug}
+      />
     </article>
   );
 }

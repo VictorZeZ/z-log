@@ -35,3 +35,18 @@ export type GetPostBySlugResponse = {
 export type DeletePostResponse = {
   success: boolean;
 };
+
+// NOTE: shape inferred from how it's consumed (p.ToSummaryResponse()) in the
+// provided backend source - the actual PostSummaryResponse DTO definition
+// wasn't included, so verify these fields against the real backend response.
+export type PostSummaryResponse = {
+  id: string;
+  title: string;
+  summary: string;
+  slug: string;
+  titleImageUrl: string | null;
+  categoryName: string;
+  authorId: string;
+  authorFullName: string;
+  createdAt: string;
+};
