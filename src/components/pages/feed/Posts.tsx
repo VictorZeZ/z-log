@@ -1,10 +1,18 @@
 "use client";
 
-import { Dot, Search } from "lucide-react";
 import Link from "next/link";
-import { Shimmer } from "@shimmer-from-structure/react";
+import { ArrowRight, Search } from "lucide-react";
+import { usePublishedPosts } from "@/hooks/api/usePublishedPosts";
+import { PostCard, PostCardSkeleton } from "@/components/shared/PostCard";
+
+const HERO_COUNT = 1;
+const GRID_COUNT = 9;
+const FEED_SIZE = HERO_COUNT + GRID_COUNT;
 
 export default function Posts() {
+  const { data, isLoading } = usePublishedPosts(FEED_SIZE);
+  const posts = (data?.items ?? []).slice(HERO_COUNT, FEED_SIZE);
+
   return (
     <section className="flex w-full flex-col gap-4 xl:w-6xl">
       <div className="flex items-center justify-between">
@@ -25,76 +33,29 @@ export default function Posts() {
           <Search />
         </Link>
       </div>
-      <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(360px,1fr))] items-center gap-4">
-        <Shimmer loading={false}>
-          <div className="bg-slate-two flex h-auto flex-col items-start justify-between gap-2 rounded-3xl border p-4 shadow-md">
-            <div className="mb-2 flex items-center justify-start gap-2 select-none">
-              <p className="bg-indigo-zero/15 text-indigo-zero rounded-full px-2 py-1 text-xs font-semibold tracking-wide uppercase">
-                DESIGN SYSTEMS
-              </p>
-              <span className="text-slate-zero text-xs">5 minutes ago</span>
-            </div>
-            <div className="flex flex-col items-start gap-4">
-              <h1 className="font-space-grotesk text-4xl font-semibold text-slate-900 dark:text-slate-200">
-                Designing with tokens first
-              </h1>
-              <p className="text-slate-zero">
-                A practical note on using colors, spacing, and type as the
-                source of truth before the layout gets complicated.
-              </p>
-            </div>
-            <div className="mt-4 flex w-full items-center justify-between border-t pt-3">
-              <p className="text-sm">Meraj Esmaeili</p>
-              <span className="text-gray-zero text-sm">Jun 14, 2026</span>
-            </div>
-          </div>
-        </Shimmer>
-        <Shimmer loading={false}>
-          <div className="bg-slate-two flex h-auto flex-col items-start justify-between gap-2 rounded-3xl border p-4 shadow-md">
-            <div className="mb-2 flex items-center justify-start gap-2 select-none">
-              <p className="bg-indigo-zero/15 text-indigo-zero rounded-full px-2 py-1 text-xs font-semibold tracking-wide uppercase">
-                Interface
-              </p>
-              <span className="text-slate-zero text-xs">18 minutes ago</span>
-            </div>
-            <div className="flex flex-col items-start gap-4">
-              <h1 className="font-space-grotesk text-4xl font-semibold text-slate-900 dark:text-slate-200">
-                The calm side of dark mode
-              </h1>
-              <p className="text-slate-zero">
-                Dark interfaces work best when contrast is intentional, borders
-                are quiet, and accent color is used like punctuation.
-              </p>
-            </div>
-            <div className="mt-4 flex w-full items-center justify-between border-t pt-3">
-              <p className="text-sm">Lina Moradi</p>
-              <span className="text-gray-zero text-sm">Jun 14, 2026</span>
-            </div>
-          </div>
-        </Shimmer>
-        <Shimmer loading={true}>
-          <div className="bg-slate-two flex h-auto flex-col items-start justify-between gap-2 rounded-3xl border p-4 shadow-md">
-            <div className="mb-2 flex items-center justify-start gap-2 select-none">
-              <p className="bg-indigo-zero/15 text-indigo-zero rounded-full px-2 py-1 text-xs font-semibold tracking-wide uppercase">
-                Interface
-              </p>
-              <span className="text-slate-zero text-xs">5 minutes ago</span>
-            </div>
-            <div className="flex flex-col items-start gap-4">
-              <h1 className="font-space-grotesk text-4xl font-semibold text-slate-900 dark:text-slate-200">
-                The calm side of dark mode
-              </h1>
-              <p className="text-slate-zero">
-                A practical note on using colors, spacing, and type as the
-                source of truth before the layout gets complicated.
-              </p>
-            </div>
-            <div className="mt-4 flex w-full items-center justify-between border-t pt-3">
-              <p className="text-sm">Meraj Esmaeili</p>
-              <span className="text-gray-zero text-sm">Jun 14, 2026</span>
-            </div>
-          </div>
-        </Shimmer>
+
+      <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(360px,1fr))] items-stretch gap-4">
+        {isLoading
+          ? Array.from({ length: GRID_COUNT }).map((_, index) => (
+              <PostCardSkeleton key={index} />
+            ))
+          : posts.map((post) => <PostCard key={post.id} post={post} />)}
+
+        <Link
+          href="/search"
+          className="bg-slate-two group flex min-h-64 flex-col items-center justify-center gap-2 rounded-3xl border p-4 text-center shadow-md duration-200 hover:shadow-lg"
+        >
+          <span className="font-space-grotesk text-2xl font-semibold text-slate-900 dark:text-slate-200">
+            More from the Feed
+          </span>
+          <span className="text-slate-zero flex items-center gap-1 text-sm">
+            Browse every post
+            <ArrowRight
+              size={16}
+              className="duration-200 group-hover:translate-x-1"
+            />
+          </span>
+        </Link>
       </div>
     </section>
   );

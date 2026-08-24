@@ -53,3 +53,19 @@ export async function getPostsByAuthor(
     { method: "GET" },
   );
 }
+
+export async function getAllPublishedPosts(
+  pageSize: number,
+  page = 1,
+): Promise<PagedResult<PostSummaryResponse>> {
+  const params = new URLSearchParams();
+  params.set("paging.page", String(page));
+  params.set("paging.pageSize", String(pageSize));
+
+  return apiClient<PagedResult<PostSummaryResponse>>(
+    `/posts?${params.toString()}`,
+    {
+      method: "GET",
+    },
+  );
+}
