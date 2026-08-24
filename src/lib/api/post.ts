@@ -33,7 +33,7 @@ export async function getPostsByTag(
   params.set("paging.pageSize", String(pageSize));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
-    `/posts/tag?${params.toString()}`,
+    `/posts/related?${params.toString()}`,
     {
       method: "GET",
     },
