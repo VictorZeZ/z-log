@@ -26,10 +26,11 @@ export async function deletePost(postId: string): Promise<DeletePostResponse> {
 export async function getPostsByTag(
   tags: string[],
   pageSize: number,
+  page = 1,
 ): Promise<PagedResult<PostSummaryResponse>> {
   const params = new URLSearchParams();
   tags.forEach((tag) => params.append("tags", tag));
-  params.set("paging.page", "1");
+  params.set("paging.page", String(page));
   params.set("paging.pageSize", String(pageSize));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
@@ -43,9 +44,10 @@ export async function getPostsByTag(
 export async function getPostsByAuthor(
   authorId: string,
   pageSize: number,
+  page = 1,
 ): Promise<PagedResult<PostSummaryResponse>> {
   const params = new URLSearchParams();
-  params.set("paging.page", "1");
+  params.set("paging.page", String(page));
   params.set("paging.pageSize", String(pageSize));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
@@ -67,5 +69,38 @@ export async function getAllPublishedPosts(
     {
       method: "GET",
     },
+  );
+}
+
+export async function searchPosts(
+  term: string,
+  pageSize: number,
+  page = 1,
+): Promise<PagedResult<PostSummaryResponse>> {
+  const params = new URLSearchParams();
+  params.set("term", term);
+  params.set("paging.page", String(page));
+  params.set("paging.pageSize", String(pageSize));
+
+  return apiClient<PagedResult<PostSummaryResponse>>(
+    `/posts/search?${params.toString()}`,
+    {
+      method: "GET",
+    },
+  );
+}
+
+export async function getPostsByCategory(
+  categorySlug: string,
+  pageSize: number,
+  page = 1,
+): Promise<PagedResult<PostSummaryResponse>> {
+  const params = new URLSearchParams();
+  params.set("paging.page", String(page));
+  params.set("paging.pageSize", String(pageSize));
+
+  return apiClient<PagedResult<PostSummaryResponse>>(
+    `/posts/category/${encodeURIComponent(categorySlug)}?${params.toString()}`,
+    { method: "GET" },
   );
 }

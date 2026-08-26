@@ -15,7 +15,7 @@ export default function Posts() {
 
   return (
     <section className="flex w-full flex-col gap-4 xl:w-6xl">
-      <div className="flex items-center justify-between">
+      <div className="flex-col flex items-start md:items-center md:justify-between gap-4 md:gap-2 md:flex-row">
         <div>
           <h3 className="font-quicksand text-3xl font-bold">
             Latest published posts

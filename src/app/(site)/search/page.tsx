@@ -1,7 +1,10 @@
-import React from "react";
+import { Suspense } from "react";
+import { SearchPage } from "@/components/pages/search/SearchPage";
 
-function page() {
-  return <div>Search</div>;
+export default function Search() {
+  return (
+    <Suspense>
+      <SearchPage />
+    </Suspense>
+  );
 }
-
-export default page;

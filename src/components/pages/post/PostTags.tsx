@@ -12,7 +12,7 @@ export function PostTags({ tags }: PostTagsProps) {
       {tags.map((tag) => (
         <span
           key={tag}
-          className="bg-slate-one text-slate-zero rounded-full px-3 py-1 text-xs"
+          className="bg-slate-one text-slate-zero rounded-full px-3 py-1 text-xs border"
         >
           #{tag}
         </span>

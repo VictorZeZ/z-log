@@ -20,7 +20,7 @@ export function PostCard({ post }: PostCardProps) {
           {formatRelativeTime(post.createdAt)}
         </span>
       </div>
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start justify-between gap-4">
         <h2 className="font-space-grotesk text-4xl font-semibold text-slate-900 dark:text-slate-200">
           {post.title}
         </h2>
