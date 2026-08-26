@@ -34,7 +34,7 @@ export default function Posts() {
         </Link>
       </div>
 
-      <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(360px,1fr))] items-stretch gap-4">
+      <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-stretch gap-4">
         {isLoading
           ? Array.from({ length: GRID_COUNT }).map((_, index) => (
               <PostCardSkeleton key={index} />

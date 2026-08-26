@@ -46,7 +46,7 @@ export function SiteNav() {
       <Sheet>
         <SheetTrigger asChild>
           <button
-            className="flex size-9 items-center justify-center rounded-md border outline-none"
+            className="flex size-9 items-center bg-slate-one justify-center rounded-md border outline-none"
             aria-label="Open navigation menu"
           >
             <TbMenu2 size={20} />

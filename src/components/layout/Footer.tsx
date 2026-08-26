@@ -5,7 +5,7 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-two w-full border-t">
+    <footer className="bg-slate-two mt-12 w-full border-t">
       <div className="max-w-8xl mx-auto flex w-full flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-8">
         <Link href="/" className="flex items-center" tabIndex={-1}>
           <Image
