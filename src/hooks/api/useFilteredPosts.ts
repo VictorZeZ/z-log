@@ -5,6 +5,7 @@ import {
   getPostsByTag,
   searchPosts,
 } from "@/lib/api/post";
+import type { PostSortBy } from "@/types/api/post";
 
 // The backend has separate, mutually-exclusive endpoints per filter type -
 // there is no single query that combines a search term, a category, and
@@ -16,6 +17,7 @@ type UseFilteredPostsParams = {
   term: string;
   categorySlug: string;
   tags: string[];
+  sortBy: PostSortBy;
   page: number;
   pageSize: number;
 };
@@ -25,6 +27,7 @@ export function useFilteredPosts({
   term,
   categorySlug,
   tags,
+  sortBy,
   page,
   pageSize,
 }: UseFilteredPostsParams) {
@@ -36,19 +39,20 @@ export function useFilteredPosts({
       term,
       categorySlug,
       tags,
+      sortBy,
       page,
       pageSize,
     ],
     queryFn: () => {
       switch (mode) {
         case "search":
-          return searchPosts(term, pageSize, page);
+          return searchPosts(term, pageSize, page, sortBy);
         case "category":
-          return getPostsByCategory(categorySlug, pageSize, page);
+          return getPostsByCategory(categorySlug, pageSize, page, sortBy);
         case "tags":
-          return getPostsByTag(tags, pageSize, page);
+          return getPostsByTag(tags, pageSize, page, sortBy);
         default:
-          return getAllPublishedPosts(pageSize, page);
+          return getAllPublishedPosts(pageSize, page, sortBy);
       }
     },
     enabled:

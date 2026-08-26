@@ -2,11 +2,18 @@ import Link from "next/link";
 import { formatDate, formatRelativeTime } from "@/lib/utils";
 import type { PostSummaryResponse } from "@/types/api/post";
 
+const MAX_VISIBLE_TAGS = 3;
+const tagPillClassName =
+  "bg-indigo-zero/15 text-indigo-zero rounded-full px-3 py-1 text-xs";
+
 type PostCardProps = {
   post: PostSummaryResponse;
 };
 
 export function PostCard({ post }: PostCardProps) {
+  const visibleTags = post.tags.slice(0, MAX_VISIBLE_TAGS);
+  const hasMoreTags = post.tags.length > MAX_VISIBLE_TAGS;
+
   return (
     <Link
       href={`/post/${post.slug}`}
@@ -20,11 +27,22 @@ export function PostCard({ post }: PostCardProps) {
           {formatRelativeTime(post.createdAt)}
         </span>
       </div>
-      <div className="flex flex-col items-start justify-between gap-4">
+      <div className="flex h-full flex-col items-start justify-around gap-4">
         <h2 className="font-space-grotesk text-4xl font-semibold text-slate-900 dark:text-slate-200">
           {post.title}
         </h2>
         <p className="text-slate-zero">{post.summary}</p>
+
+        {visibleTags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {visibleTags.map((tag) => (
+              <span key={tag} className={tagPillClassName}>
+                #{tag}
+              </span>
+            ))}
+            {hasMoreTags && <span className={tagPillClassName}>...</span>}
+          </div>
+        )}
       </div>
       <div className="mt-4 flex w-full items-center justify-between border-t pt-3">
         <p className="text-sm">{post.authorFullName}</p>

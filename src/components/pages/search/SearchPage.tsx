@@ -6,6 +6,7 @@ import {
   useFilteredPosts,
   type PostFilterMode,
 } from "@/hooks/api/useFilteredPosts";
+import { PostSortBy } from "@/types/api/post";
 import { SearchFilters } from "./SearchFilters";
 import { SearchResults } from "./SearchResults";
 import { SearchPagination } from "./SearchPagination";
@@ -18,6 +19,14 @@ function parseMode(value: string | null): PostFilterMode {
     : "all";
 }
 
+function parseSortBy(value: string | null): PostSortBy {
+  const parsed = Number(value);
+  if (parsed === PostSortBy.Oldest || parsed === PostSortBy.MostViewed) {
+    return parsed;
+  }
+  return PostSortBy.Newest;
+}
+
 export function SearchPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -27,6 +36,7 @@ export function SearchPage() {
   const term = searchParams.get("term") ?? "";
   const categorySlug = searchParams.get("category") ?? "";
   const tagsParam = searchParams.get("tags") ?? "";
+  const sortBy = parseSortBy(searchParams.get("sort"));
   const tags = useMemo(
     () =>
       tagsParam
@@ -86,6 +96,11 @@ export function SearchPage() {
     updateParams({ category: value || null, page: null });
   const handleTagsChange = (value: string) =>
     updateParams({ tags: value || null, page: null });
+  const handleSortByChange = (value: PostSortBy) =>
+    updateParams({
+      sort: value === PostSortBy.Newest ? null : String(value),
+      page: null,
+    });
   const handlePageChange = (nextPage: number) => {
     router.replace(buildPageHref(nextPage), { scroll: false });
   };
@@ -95,6 +110,7 @@ export function SearchPage() {
     term,
     categorySlug,
     tags,
+    sortBy,
     page,
     pageSize: PAGE_SIZE,
   });
@@ -109,7 +125,7 @@ export function SearchPage() {
     : 1;
 
   return (
-    <div className="mt-6 flex w-full flex-col gap-6 sm:px-4 sm:mt-10 xl:w-6xl xl:px-0">
+    <div className="mt-6 flex w-full flex-col gap-6 px-4 sm:mt-10 xl:w-6xl xl:px-0">
       <div>
         <h1 className="font-space-grotesk text-4xl font-bold text-slate-900 dark:text-slate-200">
           Browse posts
@@ -125,10 +141,12 @@ export function SearchPage() {
         term={term}
         categorySlug={categorySlug}
         tagsInput={tagsParam}
+        sortBy={sortBy}
         onModeChange={handleModeChange}
         onTermChange={handleTermChange}
         onCategoryChange={handleCategoryChange}
         onTagsChange={handleTagsChange}
+        onSortByChange={handleSortByChange}
       />
 
       <SearchResults

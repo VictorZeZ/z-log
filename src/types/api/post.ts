@@ -16,6 +16,19 @@ export const postStatusLabels: Record<PostStatus, string> = {
   [PostStatus.Rejected]: "Rejected",
 };
 
+// Confirmed against blog.Domain/Posts/Enums/PostSortBy.cs.
+export enum PostSortBy {
+  Newest = 0,
+  Oldest = 1,
+  MostViewed = 2,
+}
+
+export const postSortByLabels: Record<PostSortBy, string> = {
+  [PostSortBy.Newest]: "Newest",
+  [PostSortBy.Oldest]: "Oldest",
+  [PostSortBy.MostViewed]: "Most viewed",
+};
+
 export type GetPostBySlugResponse = {
   id: string;
   title: string;
@@ -48,5 +61,6 @@ export type PostSummaryResponse = {
   categoryName: string;
   authorId: string;
   authorFullName: string;
+  tags: string[];
   createdAt: string;
 };

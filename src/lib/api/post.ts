@@ -1,9 +1,10 @@
 import { apiClient } from "@/lib/api/client";
 import type { PagedResult } from "@/types/api/common";
-import type {
-  DeletePostResponse,
-  GetPostBySlugResponse,
-  PostSummaryResponse,
+import {
+  PostSortBy,
+  type DeletePostResponse,
+  type GetPostBySlugResponse,
+  type PostSummaryResponse,
 } from "@/types/api/post";
 
 export async function getPostBySlug(
@@ -27,11 +28,13 @@ export async function getPostsByTag(
   tags: string[],
   pageSize: number,
   page = 1,
+  sortBy: PostSortBy = PostSortBy.Newest,
 ): Promise<PagedResult<PostSummaryResponse>> {
   const params = new URLSearchParams();
   tags.forEach((tag) => params.append("tags", tag));
   params.set("paging.page", String(page));
   params.set("paging.pageSize", String(pageSize));
+  params.set("sortBy", String(sortBy));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
     `/posts/related?${params.toString()}`,
@@ -59,10 +62,12 @@ export async function getPostsByAuthor(
 export async function getAllPublishedPosts(
   pageSize: number,
   page = 1,
+  sortBy: PostSortBy = PostSortBy.Newest,
 ): Promise<PagedResult<PostSummaryResponse>> {
   const params = new URLSearchParams();
   params.set("paging.page", String(page));
   params.set("paging.pageSize", String(pageSize));
+  params.set("sortBy", String(sortBy));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
     `/posts?${params.toString()}`,
@@ -76,11 +81,13 @@ export async function searchPosts(
   term: string,
   pageSize: number,
   page = 1,
+  sortBy: PostSortBy = PostSortBy.Newest,
 ): Promise<PagedResult<PostSummaryResponse>> {
   const params = new URLSearchParams();
   params.set("term", term);
   params.set("paging.page", String(page));
   params.set("paging.pageSize", String(pageSize));
+  params.set("sortBy", String(sortBy));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
     `/posts/search?${params.toString()}`,
@@ -94,10 +101,12 @@ export async function getPostsByCategory(
   categorySlug: string,
   pageSize: number,
   page = 1,
+  sortBy: PostSortBy = PostSortBy.Newest,
 ): Promise<PagedResult<PostSummaryResponse>> {
   const params = new URLSearchParams();
   params.set("paging.page", String(page));
   params.set("paging.pageSize", String(pageSize));
+  params.set("sortBy", String(sortBy));
 
   return apiClient<PagedResult<PostSummaryResponse>>(
     `/posts/category/${encodeURIComponent(categorySlug)}?${params.toString()}`,
