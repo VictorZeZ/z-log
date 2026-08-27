@@ -37,10 +37,10 @@ function Header() {
           duration: 0.25,
           ease: "easeInOut",
         }}
-        className="bg-slate-two fixed top-0 z-20 w-full border-b backdrop-blur"
+        className="bg-slate-two fixed inset-x-0 top-0 z-20 border-b"
       >
         <div className="max-w-8xl mx-auto flex h-14 w-full items-center justify-between gap-2 px-4 sm:px-8">
-          <div className="flex h-full md:w-50 shrink-0 items-center justify-start font-bold">
+          <div className="flex h-full shrink-0 items-center justify-start font-bold md:w-50">
             <Link
               href="/"
               className="flex items-center gap-2 text-[1.4rem]"
@@ -60,7 +60,7 @@ function Header() {
           <div className="hidden h-full w-full items-center justify-center md:flex">
             <NavigationLinks />
           </div>
-          <div className="flex h-full md:w-50 shrink-0 items-center justify-end">
+          <div className="flex h-full shrink-0 items-center justify-end md:w-50">
             <SiteNav />
           </div>
         </div>

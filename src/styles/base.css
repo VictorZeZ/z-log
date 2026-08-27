@@ -23,9 +23,6 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
-  }
   button,
   input[type="button"],
   input[type="submit"] {
