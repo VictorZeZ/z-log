@@ -1,5 +1,5 @@
-function page() {
-  return <div>User Dashboard</div>;
-}
+import Dashboard from "@/components/pages/dashboard/Dashboard";
 
-export default page;
+export default function DashboardPage() {
+  return <Dashboard />;
+}
