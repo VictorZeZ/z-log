@@ -49,18 +49,18 @@ export type DeletePostResponse = {
   success: boolean;
 };
 
-// NOTE: shape inferred from how it's consumed (p.ToSummaryResponse()) in the
-// provided backend source - the actual PostSummaryResponse DTO definition
-// wasn't included, so verify these fields against the real backend response.
+// Confirmed against the real PostSummaryResponse DTO.
 export type PostSummaryResponse = {
   id: string;
   title: string;
   summary: string;
-  slug: string;
   titleImageUrl: string | null;
-  categoryName: string;
+  slug: string;
+  tags: string[];
+  status: PostStatus;
+  viewCount: number;
   authorId: string;
   authorFullName: string;
-  tags: string[];
+  categoryName: string;
   createdAt: string;
 };
