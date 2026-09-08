@@ -1,67 +1,63 @@
 .post-content {
-  @apply max-w-none leading-8 text-foreground;
+  @apply text-foreground max-w-none leading-8;
 }
 
 /* Headings */
 
 .post-content h1 {
-  @apply mt-10 mb-5 scroll-m-20 font-heading text-4xl font-bold tracking-tight text-foreground;
+  @apply font-heading text-foreground mt-10 mb-5 scroll-m-20 text-4xl font-bold tracking-tight;
 }
 
 .post-content h2 {
-  @apply mt-10 mb-4 scroll-m-20 border-b border-border pb-2 font-heading text-3xl font-semibold tracking-tight text-foreground;
+  @apply border-border font-heading text-foreground mt-10 mb-4 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight;
 }
 
 .post-content h3 {
-  @apply mt-8 mb-3 scroll-m-20 font-heading text-2xl font-semibold tracking-tight text-foreground;
+  @apply font-heading text-foreground mt-8 mb-3 scroll-m-20 text-2xl font-semibold tracking-tight;
 }
 
 .post-content h4 {
-  @apply mt-6 mb-2 font-heading text-xl font-semibold text-foreground;
+  @apply font-heading text-foreground mt-6 mb-2 text-xl font-semibold;
 }
 
 .post-content h5 {
-  @apply mt-5 mb-2 font-heading text-lg font-semibold text-foreground;
+  @apply font-heading text-foreground mt-5 mb-2 text-lg font-semibold;
 }
 
 .post-content h6 {
-  @apply mt-5 mb-2 font-heading text-base font-semibold text-muted-foreground;
+  @apply font-heading text-muted-foreground mt-5 mb-2 text-base font-semibold;
 }
-
 
 /* Paragraph */
 
 .post-content p {
-  @apply my-5 leading-8 text-muted-foreground;
+  @apply text-muted-foreground my-5 leading-8;
 }
-
 
 /* Links */
 
 .post-content a {
-  @apply font-medium text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:text-accent-foreground hover:decoration-primary;
+  @apply text-primary decoration-primary/40 hover:text-accent-foreground hover:decoration-primary font-medium underline underline-offset-4 transition-colors;
 }
-
 
 /* Strong / Emphasis */
 
 .post-content strong {
-  @apply font-semibold text-foreground;
+  @apply text-foreground font-semibold;
 }
 
 .post-content em {
-  @apply italic text-muted-foreground;
+  @apply text-muted-foreground italic;
 }
-
 
 /* Lists */
 
 .post-content ul {
-  @apply my-6 list-disc space-y-2 pl-6 text-muted-foreground;
+  @apply text-muted-foreground my-6 list-disc space-y-2 pl-6;
 }
 
 .post-content ol {
-  @apply my-6 list-decimal space-y-2 pl-6 text-muted-foreground;
+  @apply text-muted-foreground my-6 list-decimal space-y-2 pl-6;
 }
 
 .post-content li {
@@ -72,26 +68,24 @@
   @apply text-primary;
 }
 
-
 /* Inline Code */
 
 .post-content :not(pre) > code {
-  @apply rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-sm font-medium text-accent-foreground;
+  @apply border-border bg-muted text-accent-foreground rounded-md border px-1.5 py-0.5 font-mono text-sm font-medium;
 }
-
 
 /* Code Block */
 
 .post-content pre {
-  @apply relative my-6 overflow-x-auto rounded-xl border border-border bg-card p-5;
+  @apply border-border bg-card relative my-6 overflow-x-auto rounded-xl border p-5;
 }
 
 .post-content pre code {
-  @apply block bg-transparent p-0 font-mono text-sm leading-7 text-card-foreground;
+  @apply text-card-foreground block bg-transparent p-0 font-mono text-sm leading-7;
 }
 
 .post-content pre .post-copy-button {
-  @apply absolute top-3 right-3 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-muted-foreground opacity-0 shadow-sm transition-all duration-150 hover:bg-muted hover:text-foreground;
+  @apply border-border bg-popover text-muted-foreground hover:bg-muted hover:text-foreground absolute top-3 right-3 rounded-md border px-2.5 py-1 text-xs font-medium opacity-0 shadow-sm transition-all duration-150;
 }
 
 .post-content pre:hover .post-copy-button,
@@ -103,31 +97,27 @@
   @apply border-primary/40 bg-primary/10 text-primary;
 }
 
-
 /* Blockquote */
 
 .post-content blockquote {
-  @apply my-6 border-l-4 border-primary bg-muted/50 px-5 py-3 text-muted-foreground;
+  @apply border-primary bg-muted/50 text-muted-foreground my-6 border-l-4 px-5 py-3;
 }
 
 .post-content blockquote p {
   @apply my-0;
 }
 
-
 /* Horizontal Rule */
 
 .post-content hr {
-  @apply my-10 border-0 border-t border-border;
+  @apply border-border my-10 border-0 border-t;
 }
-
 
 /* Images */
 
 .post-content img {
-  @apply my-8 h-auto max-w-full rounded-xl border border-border;
+  @apply border-border my-8 h-auto max-w-full rounded-xl border;
 }
-
 
 /* Figure */
 
@@ -136,14 +126,13 @@
 }
 
 .post-content figcaption {
-  @apply mt-3 text-center text-sm text-muted-foreground;
+  @apply text-muted-foreground mt-3 text-center text-sm;
 }
-
 
 /* Tables */
 
 .post-content table {
-  @apply my-8 w-full border-collapse overflow-hidden rounded-xl border border-border;
+  @apply border-border my-8 w-full border-collapse overflow-hidden rounded-xl border;
 }
 
 .post-content thead {
@@ -151,35 +140,32 @@
 }
 
 .post-content th {
-  @apply border border-border px-4 py-3 text-left font-semibold text-foreground;
+  @apply border-border text-foreground border px-4 py-3 text-left font-semibold;
 }
 
 .post-content td {
-  @apply border border-border px-4 py-3 text-muted-foreground;
+  @apply border-border text-muted-foreground border px-4 py-3;
 }
 
 .post-content tbody tr {
-  @apply transition-colors hover:bg-muted/50;
+  @apply hover:bg-muted/50 transition-colors;
 }
-
 
 /* Keyboard */
 
 .post-content kbd {
-  @apply rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground;
+  @apply border-border bg-muted text-foreground rounded-md border px-1.5 py-0.5 font-mono text-xs;
 }
-
 
 /* Details / Summary */
 
 .post-content details {
-  @apply my-6 rounded-xl border border-border bg-card p-4;
+  @apply border-border bg-card my-6 rounded-xl border p-4;
 }
 
 .post-content summary {
-  @apply cursor-pointer font-semibold text-foreground;
+  @apply text-foreground cursor-pointer font-semibold;
 }
-
 
 /* Selection */
 

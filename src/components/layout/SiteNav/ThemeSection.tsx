@@ -50,7 +50,7 @@ export function ThemeSection() {
                     : "hover:bg-slate-one",
                 )}
               >
-                <Icon className="size-4 text-slate-zero" />
+                <Icon className="text-slate-zero size-4" />
                 {label}
               </button>
             ))}

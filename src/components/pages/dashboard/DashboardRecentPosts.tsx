@@ -5,10 +5,7 @@ import { ArrowUpRight, ChevronRight, PenLine } from "lucide-react";
 import { Shimmer } from "@shimmer-from-structure/react";
 import { useAuthorPosts } from "@/hooks/api/useAuthorPosts";
 import { formatDate, cn } from "@/lib/utils";
-import {
-  PostStatus,
-  postStatusLabels,
-} from "@/types/api/post";
+import { PostStatus, postStatusLabels } from "@/types/api/post";
 
 const MAX_RESULTS = 4;
 
@@ -17,19 +14,15 @@ const STATUS_STYLES: Record<PostStatus, string> = {
     "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
   [PostStatus.PendingApproval]:
     "bg-amber-500/10 text-amber-700 dark:text-amber-400",
-  [PostStatus.Draft]:
-    "bg-slate-500/10 text-slate-600 dark:text-slate-300",
-  [PostStatus.Rejected]:
-    "bg-red-500/10 text-red-700 dark:text-red-400",
+  [PostStatus.Draft]: "bg-slate-500/10 text-slate-600 dark:text-slate-300",
+  [PostStatus.Rejected]: "bg-red-500/10 text-red-700 dark:text-red-400",
 };
 
 type DashboardRecentPostsProps = {
   authorId: string;
 };
 
-export function DashboardRecentPosts({
-  authorId,
-}: DashboardRecentPostsProps) {
+export function DashboardRecentPosts({ authorId }: DashboardRecentPostsProps) {
   const { data, isLoading } = useAuthorPosts(authorId);
   const posts = (data?.items ?? []).slice(0, MAX_RESULTS);
 
@@ -37,9 +30,7 @@ export function DashboardRecentPosts({
     <div className="bg-slate-two overflow-hidden rounded-3xl border shadow-md">
       <div className="flex items-center justify-between gap-4 border-b p-5 sm:p-6">
         <div>
-          <h2 className="font-space-grotesk text-xl font-bold">
-            Recent posts
-          </h2>
+          <h2 className="font-space-grotesk text-xl font-bold">Recent posts</h2>
 
           <p className="text-slate-zero mt-1 text-sm">
             Your latest content at a glance.
@@ -59,10 +50,7 @@ export function DashboardRecentPosts({
         {isLoading ? (
           <div className="divide-y">
             {Array.from({ length: MAX_RESULTS }).map((_, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-4 p-5 sm:px-6"
-              >
+              <div key={index} className="flex items-center gap-4 p-5 sm:px-6">
                 <div className="bg-muted size-10 shrink-0 rounded-2xl" />
 
                 <div className="flex flex-1 flex-col gap-2">
@@ -85,16 +73,11 @@ export function DashboardRecentPosts({
                 className="hover:bg-slate-one/50 flex items-center gap-4 p-5 transition sm:px-6"
               >
                 <div className="bg-slate-one hidden size-10 shrink-0 items-center justify-center rounded-2xl sm:flex">
-                  <PenLine
-                    size={17}
-                    className="text-slate-zero"
-                  />
+                  <PenLine size={17} className="text-slate-zero" />
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold">
-                    {post.title}
-                  </p>
+                  <p className="truncate text-sm font-semibold">{post.title}</p>
 
                   <p className="text-slate-zero mt-1 text-xs">
                     {formatDate(post.createdAt)}

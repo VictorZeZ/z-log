@@ -87,7 +87,7 @@ export function SearchFilters({
               onClick={() => onModeChange(value)}
               tabIndex={-1}
               className={cn(
-                "flex items-center gap-1.5 outline-none rounded-full border px-3 py-1.5 text-sm duration-150",
+                "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm duration-150 outline-none",
                 mode === value
                   ? "bg-indigo-zero/15 text-indigo-zero border-indigo-zero/30"
                   : "text-slate-zero hover:bg-slate-one",

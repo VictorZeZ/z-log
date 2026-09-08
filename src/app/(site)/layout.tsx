@@ -5,9 +5,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="min-h-dvh flex flex-col justify-between">
+    <div className="flex min-h-dvh flex-col justify-between">
       <Header />
-      <main className="flex-1 w-full flex flex-col justify-start items-center py-4 px-2 sm:p-4">{children}</main>
+      <main className="flex w-full flex-1 flex-col items-center justify-start px-2 py-4 sm:p-4">
+        {children}
+      </main>
       <Footer />
     </div>
   );

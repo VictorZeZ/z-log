@@ -42,7 +42,7 @@ export default function SearchBox() {
             placeholder="Search posts by title, summary, or content…"
             value={term}
             onChange={(event) => setTerm(event.target.value)}
-            className="bg-slate-one h-10 w-full rounded-full border px-3 ps-10 pe-10 duration-150 outline-none md:focus:px-4 sm:rounded-none sm:rounded-s-full sm:ps-3 sm:pe-3"
+            className="bg-slate-one h-10 w-full rounded-full border px-3 ps-10 pe-10 duration-150 outline-none sm:rounded-none sm:rounded-s-full sm:ps-3 sm:pe-3 md:focus:px-4"
           />
 
           {/* Mobile clear button */}
