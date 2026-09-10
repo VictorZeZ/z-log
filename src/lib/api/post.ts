@@ -7,6 +7,14 @@ import {
   type PostSummaryResponse,
 } from "@/types/api/post";
 
+import type {
+  CreateDraftRequest,
+  CreateDraftResponse,
+  CreatePostRequest,
+  CreatePostResponse,
+  // ...keep the existing imports from this block too
+} from "@/types/api/post";
+
 export async function getPostBySlug(
   slug: string,
 ): Promise<GetPostBySlugResponse> {
@@ -112,4 +120,35 @@ export async function getPostsByCategory(
     `/posts/category/${encodeURIComponent(categorySlug)}?${params.toString()}`,
     { method: "GET" },
   );
+}
+
+function buildPostFormData(payload: CreatePostRequest): FormData {
+  const formData = new FormData();
+  formData.set("categoryId", payload.categoryId);
+  formData.set("title", payload.title);
+  formData.set("summary", payload.summary);
+  formData.set("content", payload.content);
+  payload.tags.forEach((tag) => formData.append("tags", tag));
+  if (payload.titleImage) {
+    formData.set("titleImage", payload.titleImage);
+  }
+  return formData;
+}
+
+export async function createPost(
+  payload: CreatePostRequest,
+): Promise<CreatePostResponse> {
+  return apiClient<CreatePostResponse>("/posts", {
+    method: "POST",
+    body: buildPostFormData(payload),
+  });
+}
+
+export async function createDraft(
+  payload: CreateDraftRequest,
+): Promise<CreateDraftResponse> {
+  return apiClient<CreateDraftResponse>("/posts/drafts", {
+    method: "POST",
+    body: buildPostFormData(payload),
+  });
 }

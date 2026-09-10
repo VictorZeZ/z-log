@@ -64,3 +64,25 @@ export type PostSummaryResponse = {
   categoryName: string;
   createdAt: string;
 };
+
+// Client-side shape used to build the multipart request - not a 1:1 mirror
+// of CreatePostCommand, since AuthorId comes from the auth token server-side.
+export type CreatePostRequest = {
+  categoryId: string;
+  title: string;
+  summary: string;
+  content: string;
+  tags: string[];
+  titleImage: File | null;
+};
+
+export type CreatePostResponse = {
+  id: string;
+  title: string;
+  summary: string;
+  slug: string;
+  status: PostStatus;
+};
+
+export type CreateDraftRequest = CreatePostRequest;
+export type CreateDraftResponse = CreatePostResponse;

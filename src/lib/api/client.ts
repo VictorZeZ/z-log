@@ -56,14 +56,20 @@ async function performFetch<TResponse>(
 ): Promise<{ response: Response; parsed: TResponse | undefined }> {
   const { body, headers, skipAuthRetry, ...rest } = options;
 
+  const isFormData = body instanceof FormData;
+
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...rest,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: isFormData
+      ? (body as FormData)
+      : body !== undefined
+        ? JSON.stringify(body)
+        : undefined,
   });
 
   if (response.ok) {
