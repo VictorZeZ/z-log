@@ -7,7 +7,7 @@ const ACTIONS = [
     label: "Create a post",
     description: "Start writing something new",
     icon: Plus,
-    href: null,
+    href: "/posts/create",
   },
   {
     key: "drafts",

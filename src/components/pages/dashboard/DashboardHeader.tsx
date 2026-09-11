@@ -1,6 +1,7 @@
 import { LayoutDashboard, Plus } from "lucide-react";
 import { userLevelLabels } from "@/types/api/account";
 import type { DashboardProfileResponse } from "@/types/api/dashboard";
+import Link from "next/link";
 
 type DashboardHeaderProps = {
   profile: DashboardProfileResponse;
@@ -27,15 +28,15 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
         </div>
       </div>
 
-      <button
+      <Link
+        href="/posts/create"
         type="button"
-        disabled
         title="Coming soon"
         className="bg-indigo-zero flex w-fit items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-md transition disabled:pointer-events-none disabled:opacity-50"
       >
         <Plus size={18} />
         New post
-      </button>
+      </Link>
     </section>
   );
 }

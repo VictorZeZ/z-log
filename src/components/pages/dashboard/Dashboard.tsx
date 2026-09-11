@@ -1,5 +1,6 @@
 "use client";
 
+import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
@@ -20,7 +21,10 @@ export function Dashboard() {
   const { data, isLoading, isError } = useDashboard(Boolean(currentUser));
 
   useEffect(() => {
-    if (!isUserLoading && !currentUser) {
+    // Guard against the hydration-race window where Redux's isUserLoading
+    // hasn't flipped true yet (LoadSession's effect hasn't dispatched),
+    // even though a session cookie exists and is about to be restored.
+    if (!isUserLoading && !currentUser && !Cookies.get("token")) {
       router.replace("/login");
     }
   }, [isUserLoading, currentUser, router]);
