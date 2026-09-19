@@ -51,6 +51,27 @@ export type GetDashboardResponse = {
   myContent: MyContentResponse;
   authorInsights: AuthorInsightsResponse | null;
   moderationQueue: ModerationQueueResponse | null;
+  siteContent: SiteContentResponse | null;
   platformStats: PlatformStatsResponse | null;
   ownerOverview: OwnerOverviewResponse | null;
+};
+
+export type GetMyPostStatusReportResponse = {
+  from: string;
+  to: string;
+  draftCount: number;
+  pendingApprovalCount: number;
+  publishedCount: number;
+  rejectedCount: number;
+  totalCount: number;
+};
+
+export type DashboardScope = "mine" | "site";
+
+export type SiteContentResponse = {
+  draftCount: number;
+  pendingApprovalCount: number;
+  publishedCount: number;
+  rejectedCount: number;
+  totalViewCount: number;
 };

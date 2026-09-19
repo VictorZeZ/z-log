@@ -1,22 +1,18 @@
 import { CircleAlert, Eye, FilePenLine, FileText } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { MyContentResponse } from "@/types/api/dashboard";
 
-type DashboardStatsProps = {
-  content: MyContentResponse;
+export type DashboardStat = {
+  label: string;
+  value: number;
+  icon: LucideIcon;
 };
 
-export function DashboardStats({ content }: DashboardStatsProps) {
-  const stats = [
-    { label: "Published posts", value: content.publishedCount, icon: FileText },
-    { label: "Drafts", value: content.draftCount, icon: FilePenLine },
-    { label: "Total views", value: content.totalViewCount, icon: Eye },
-    {
-      label: "Pending review",
-      value: content.pendingApprovalCount,
-      icon: CircleAlert,
-    },
-  ];
+type DashboardStatGridProps = {
+  stats: DashboardStat[];
+};
 
+export function DashboardStatGrid({ stats }: DashboardStatGridProps) {
   return (
     <section className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => {
@@ -42,5 +38,30 @@ export function DashboardStats({ content }: DashboardStatsProps) {
         );
       })}
     </section>
+  );
+}
+
+type DashboardStatsProps = {
+  content: MyContentResponse;
+};
+
+export function DashboardStats({ content }: DashboardStatsProps) {
+  return (
+    <DashboardStatGrid
+      stats={[
+        {
+          label: "Published posts",
+          value: content.publishedCount,
+          icon: FileText,
+        },
+        { label: "Drafts", value: content.draftCount, icon: FilePenLine },
+        { label: "Total views", value: content.totalViewCount, icon: Eye },
+        {
+          label: "Pending review",
+          value: content.pendingApprovalCount,
+          icon: CircleAlert,
+        },
+      ]}
+    />
   );
 }

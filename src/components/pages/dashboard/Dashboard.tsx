@@ -1,12 +1,16 @@
 "use client";
 
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useDashboard } from "@/hooks/api/useDashboard";
+import { UserLevel } from "@/types/api/account";
+import type { DashboardScope } from "@/types/api/dashboard";
 import { DashboardHeader } from "./DashboardHeader";
+import { DashboardScopeSwitch } from "./DashboardScopeSwitch";
 import { DashboardStats } from "./DashboardStats";
+import { DashboardPlatformStats } from "./DashboardPlatformStats";
 import { DashboardActivityChart } from "./DashboardActivityChart";
 import { DashboardAccountOverview } from "./DashboardAccountOverview";
 import { DashboardRecentPosts } from "./DashboardRecentPosts";
@@ -17,6 +21,7 @@ export function Dashboard() {
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.data);
   const isUserLoading = useAppSelector((state) => state.user.isLoading);
+  const [scope, setScope] = useState<DashboardScope>("mine");
 
   const { data, isLoading, isError } = useDashboard(Boolean(currentUser));
 
@@ -50,29 +55,51 @@ export function Dashboard() {
     );
   }
 
+  const { platformStats, siteContent } = data;
+  const canSwitchScope = currentUser.level >= UserLevel.Admin;
+  const showSiteView =
+    scope === "site" && canSwitchScope && platformStats && siteContent;
+
   return (
     <div className="flex w-full flex-col items-center gap-8 pb-8">
       <div className="mt-6 flex w-full flex-col gap-8 px-4 sm:mt-10 xl:w-6xl xl:px-0">
-        <DashboardHeader profile={data.profile} />
+        <DashboardHeader
+          profile={data.profile}
+          scope={showSiteView ? "site" : "mine"}
+        >
+          {canSwitchScope && (
+            <DashboardScopeSwitch scope={scope} onScopeChange={setScope} />
+          )}
+        </DashboardHeader>
 
-        <DashboardStats content={data.myContent} />
+        {showSiteView ? (
+          <>
+            <DashboardPlatformStats platformStats={platformStats} />
 
-        {data.authorInsights ? (
-          <section className="grid w-full gap-4 xl:grid-cols-[1.7fr_1fr]">
-            <DashboardActivityChart authorInsights={data.authorInsights} />
-            <DashboardAccountOverview profile={data.profile} />
-          </section>
+            <DashboardActivityChart scope="site" counts={siteContent} />
+          </>
         ) : (
-          <section className="grid w-full xl:grid-cols-[1.7fr_1fr]">
-            <div className="hidden xl:block" />
-            <DashboardAccountOverview profile={data.profile} />
-          </section>
-        )}
+          <>
+            <DashboardStats content={data.myContent} />
 
-        <section className="grid w-full gap-4 xl:grid-cols-[1.7fr_1fr]">
-          <DashboardRecentPosts authorId={data.profile.id} />
-          <DashboardQuickActions />
-        </section>
+            {data.authorInsights ? (
+              <section className="grid w-full gap-4 xl:grid-cols-[1.7fr_1fr]">
+                <DashboardActivityChart scope="mine" counts={data.myContent} />
+                <DashboardAccountOverview profile={data.profile} />
+              </section>
+            ) : (
+              <section className="grid w-full xl:grid-cols-[1.7fr_1fr]">
+                <div className="hidden xl:block" />
+                <DashboardAccountOverview profile={data.profile} />
+              </section>
+            )}
+
+            <section className="grid w-full gap-4 xl:grid-cols-[1.7fr_1fr]">
+              <DashboardRecentPosts authorId={data.profile.id} />
+              <DashboardQuickActions />
+            </section>
+          </>
+        )}
       </div>
     </div>
   );

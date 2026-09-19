@@ -1,13 +1,27 @@
 import { LayoutDashboard, Plus } from "lucide-react";
-import { userLevelLabels } from "@/types/api/account";
-import type { DashboardProfileResponse } from "@/types/api/dashboard";
 import Link from "next/link";
+import { userLevelLabels } from "@/types/api/account";
+import type {
+  DashboardProfileResponse,
+  DashboardScope,
+} from "@/types/api/dashboard";
 
 type DashboardHeaderProps = {
   profile: DashboardProfileResponse;
+  scope: DashboardScope;
+  children?: React.ReactNode;
 };
 
-export function DashboardHeader({ profile }: DashboardHeaderProps) {
+const DESCRIPTIONS: Record<DashboardScope, string> = {
+  mine: "A clear overview of your publishing activity, content, and account.",
+  site: "A clear overview of activity, content, and moderation across the entire site.",
+};
+
+export function DashboardHeader({
+  profile,
+  scope,
+  children,
+}: DashboardHeaderProps) {
   return (
     <section className="flex w-full flex-col gap-5 md:flex-row md:items-end md:justify-between">
       <div className="flex flex-col gap-3">
@@ -23,20 +37,22 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
             Dashboard
           </h1>
           <p className="text-slate-zero mt-2 max-w-2xl text-sm sm:text-base">
-            A clear overview of your publishing activity, content, and account.
+            {DESCRIPTIONS[scope]}
           </p>
         </div>
       </div>
 
-      <Link
-        href="/posts/create"
-        type="button"
-        title="Coming soon"
-        className="bg-indigo-zero flex w-fit items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-md transition disabled:pointer-events-none disabled:opacity-50"
-      >
-        <Plus size={18} />
-        New post
-      </Link>
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:w-auto">
+        {children}
+
+        <Link
+          href="/posts/create"
+          className="bg-indigo-zero flex w-fit items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-md transition"
+        >
+          <Plus size={18} />
+          New post
+        </Link>
+      </div>
     </section>
   );
 }
