@@ -16,14 +16,19 @@ import { DashboardAccountOverview } from "./DashboardAccountOverview";
 import { DashboardRecentPosts } from "./DashboardRecentPosts";
 import { DashboardQuickActions } from "./DashboardQuickActions";
 import { DashboardSkeleton } from "./DashboardSkeleton";
+import { DEFAULT_RANGE_DAYS, type RangeDays } from "./activityChartConfig";
 
 export function Dashboard() {
   const router = useRouter();
   const currentUser = useAppSelector((state) => state.user.data);
   const isUserLoading = useAppSelector((state) => state.user.isLoading);
   const [scope, setScope] = useState<DashboardScope>("mine");
+  const [rangeDays, setRangeDays] = useState<RangeDays>(DEFAULT_RANGE_DAYS);
 
-  const { data, isLoading, isError } = useDashboard(Boolean(currentUser));
+  const { data, isLoading, isFetching, isError } = useDashboard(
+    Boolean(currentUser),
+    rangeDays,
+  );
 
   useEffect(() => {
     // Guard against the hydration-race window where Redux's isUserLoading
@@ -76,7 +81,15 @@ export function Dashboard() {
           <>
             <DashboardPlatformStats platformStats={platformStats} />
 
-            <DashboardActivityChart scope="site" counts={siteContent} />
+            <DashboardActivityChart
+              scope="site"
+              from={data.from}
+              to={data.to}
+              dailyBreakdown={siteContent.dailyBreakdown}
+              rangeDays={rangeDays}
+              onRangeChange={setRangeDays}
+              isFetching={isFetching}
+            />
           </>
         ) : (
           <>
@@ -84,7 +97,15 @@ export function Dashboard() {
 
             {data.authorInsights ? (
               <section className="grid w-full gap-4 xl:grid-cols-[1.7fr_1fr]">
-                <DashboardActivityChart scope="mine" counts={data.myContent} />
+                <DashboardActivityChart
+                  scope="mine"
+                  from={data.from}
+                  to={data.to}
+                  dailyBreakdown={data.myContent.dailyBreakdown}
+                  rangeDays={rangeDays}
+                  onRangeChange={setRangeDays}
+                  isFetching={isFetching}
+                />
                 <DashboardAccountOverview profile={data.profile} />
               </section>
             ) : (

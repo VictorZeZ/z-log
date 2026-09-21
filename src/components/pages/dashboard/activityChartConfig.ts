@@ -1,5 +1,10 @@
 import type { ChartConfig } from "@/components/ui/chart";
 
+// The backend rejects report ranges longer than 30 days (ReportDateRangeRules.MaxRangeDays).
+export const RANGE_OPTIONS = [7, 14, 30] as const;
+export type RangeDays = (typeof RANGE_OPTIONS)[number];
+export const DEFAULT_RANGE_DAYS: RangeDays = 30;
+
 export const chartConfig = {
   published: { label: "Published", color: "var(--emerald-zero)" },
   pending: { label: "Pending", color: "var(--amber-zero)" },
@@ -10,28 +15,9 @@ export const chartConfig = {
 export type StatusKey = keyof typeof chartConfig;
 export type StatusFilter = "all" | StatusKey;
 
-export type StatusCounts = {
-  publishedCount: number;
-  pendingApprovalCount: number;
-  rejectedCount: number;
-  draftCount: number;
-};
-
-export const STATUS_DEFINITIONS: {
-  key: StatusKey;
-  countKey: keyof StatusCounts;
-  emptyLabel: string;
-}[] = [
-  {
-    key: "published",
-    countKey: "publishedCount",
-    emptyLabel: "published posts",
-  },
-  {
-    key: "pending",
-    countKey: "pendingApprovalCount",
-    emptyLabel: "pending posts",
-  },
-  { key: "rejected", countKey: "rejectedCount", emptyLabel: "rejected posts" },
-  { key: "draft", countKey: "draftCount", emptyLabel: "draft posts" },
+export const STATUS_DEFINITIONS: { key: StatusKey; emptyLabel: string }[] = [
+  { key: "published", emptyLabel: "published posts" },
+  { key: "pending", emptyLabel: "pending posts" },
+  { key: "rejected", emptyLabel: "rejected posts" },
+  { key: "draft", emptyLabel: "draft posts" },
 ];
