@@ -1,5 +1,8 @@
 import { apiClient } from "@/lib/api/client";
-import type { GetDashboardResponse } from "@/types/api/dashboard";
+import type {
+  DashboardApiScope,
+  GetDashboardResponse,
+} from "@/types/api/dashboard";
 
 const MS_PER_DAY = 86_400_000;
 
@@ -9,11 +12,13 @@ function toDateOnly(date: Date): string {
 
 export async function getDashboard(
   days: number,
+  scope: DashboardApiScope = "All",
 ): Promise<GetDashboardResponse> {
   const to = new Date();
   const from = new Date(to.getTime() - (days - 1) * MS_PER_DAY);
 
   const params = new URLSearchParams({
+    scope,
     from: toDateOnly(from),
     to: toDateOnly(to),
   });

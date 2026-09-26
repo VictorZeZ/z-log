@@ -1,12 +1,10 @@
-// NOTE: ordering assumed to mirror the post lifecycle (draft -> pending ->
-// published/rejected). This wasn't available in the provided backend source
-// (blog.Domain/Posts/Enums/PostStatus.cs) - verify these numeric values
-// against the actual C# enum and correct if they differ.
+// The backend now serializes this by name (e.g. "Published"), confirmed by
+// the dashboard's topPosts sample response - no more numeric-order guessing.
 export enum PostStatus {
-  Draft = 0,
-  PendingApproval = 1,
-  Published = 2,
-  Rejected = 3,
+  Draft = "Draft",
+  PendingApproval = "PendingApproval",
+  Published = "Published",
+  Rejected = "Rejected",
 }
 
 export const postStatusLabels: Record<PostStatus, string> = {

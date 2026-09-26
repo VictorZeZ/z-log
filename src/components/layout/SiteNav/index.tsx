@@ -15,7 +15,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useAppSelector } from "@/lib/store/hooks";
-import { UserLevel, userLevelLabels } from "@/types/api/account";
+import {
+  UserLevel,
+  isUserLevelAtLeast,
+  userLevelLabels,
+} from "@/types/api/account";
 import { SheetNavLinks } from "./SheetNavLinks";
 import { AccountSection } from "./AccountSection";
 import { DashboardSection } from "./DashboardSection";
@@ -26,8 +30,12 @@ export function SiteNav() {
   const user = useAppSelector((state) => state.user.data);
   const isLoading = useAppSelector((state) => state.user.isLoading);
 
-  const canAccessDashboard = (user?.level ?? -1) >= UserLevel.Admin;
-  const canAccessPosts = (user?.level ?? -1) >= UserLevel.Author;
+  const canAccessDashboard = Boolean(
+    user && isUserLevelAtLeast(user.level, UserLevel.Admin),
+  );
+  const canAccessPosts = Boolean(
+    user && isUserLevelAtLeast(user.level, UserLevel.Author),
+  );
 
   return (
     <div className="flex items-center gap-2">

@@ -12,7 +12,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { estimateReadingTime } from "@/lib/utils";
 import { ApiError } from "@/types/api/common";
-import { UserLevel } from "@/types/api/account";
+import { UserLevel, isUserLevelAtLeast } from "@/types/api/account";
 import { PostDetailsSkeleton } from "./PostDetailsSkeleton";
 import { PostDetailsError } from "./PostDetailsError";
 import { PostMeta } from "./PostMeta";
@@ -61,7 +61,7 @@ export function PostDetails({ slug }: PostDetailsProps) {
   const canManage =
     Boolean(currentUser) &&
     (currentUser!.id === post.authorId ||
-      currentUser!.level >= UserLevel.Admin);
+      isUserLevelAtLeast(currentUser!.level, UserLevel.Admin));
 
   const handleDelete = () => {
     const confirmed = window.confirm("Delete this post? This can't be undone.");

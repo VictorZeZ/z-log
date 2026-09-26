@@ -47,7 +47,7 @@ export function DashboardActivityChart({
     ({ key }) => statusFilter === "all" || key === statusFilter,
   );
 
-  const points = buildDailySeries(from, to, dailyBreakdown);
+  const points = buildDailySeries(dailyBreakdown);
   const hasData = points.some((point) =>
     visibleStatuses.some(({ key }) => point[key] > 0),
   );

@@ -1,8 +1,24 @@
 export enum UserLevel {
-  Normal = 0,
-  Author = 1,
-  Admin = 2,
-  Owner = 3,
+  Normal = "Normal",
+  Author = "Author",
+  Admin = "Admin",
+  Owner = "Owner",
+}
+
+const USER_LEVEL_RANK: Record<UserLevel, number> = {
+  [UserLevel.Normal]: 0,
+  [UserLevel.Author]: 1,
+  [UserLevel.Admin]: 2,
+  [UserLevel.Owner]: 3,
+};
+
+// UserLevel is no longer numeric (the backend now serializes enums by name),
+// so ordinal comparisons must go through this rank map instead of `>=`.
+export function isUserLevelAtLeast(
+  level: UserLevel,
+  minimum: UserLevel,
+): boolean {
+  return USER_LEVEL_RANK[level] >= USER_LEVEL_RANK[minimum];
 }
 
 export const userLevelLabels: Record<UserLevel, string> = {

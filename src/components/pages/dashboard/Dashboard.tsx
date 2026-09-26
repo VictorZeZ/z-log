@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useDashboard } from "@/hooks/api/useDashboard";
-import { UserLevel } from "@/types/api/account";
+import { UserLevel, isUserLevelAtLeast } from "@/types/api/account";
 import type { DashboardScope } from "@/types/api/dashboard";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardScopeSwitch } from "./DashboardScopeSwitch";
@@ -60,8 +60,8 @@ export function Dashboard() {
     );
   }
 
-  const { platformStats, siteContent } = data;
-  const canSwitchScope = currentUser.level >= UserLevel.Admin;
+  const { platformStats, siteContent, myContent } = data;
+  const canSwitchScope = isUserLevelAtLeast(currentUser.level, UserLevel.Admin);
   const showSiteView =
     scope === "site" && canSwitchScope && platformStats && siteContent;
 
@@ -91,9 +91,9 @@ export function Dashboard() {
               isFetching={isFetching}
             />
           </>
-        ) : (
+        ) : myContent ? (
           <>
-            <DashboardStats content={data.myContent} />
+            <DashboardStats content={myContent} />
 
             {data.authorInsights ? (
               <section className="grid w-full gap-4 xl:grid-cols-[1.7fr_1fr]">
@@ -101,7 +101,7 @@ export function Dashboard() {
                   scope="mine"
                   from={data.from}
                   to={data.to}
-                  dailyBreakdown={data.myContent.dailyBreakdown}
+                  dailyBreakdown={myContent.dailyBreakdown}
                   rangeDays={rangeDays}
                   onRangeChange={setRangeDays}
                   isFetching={isFetching}
@@ -120,6 +120,15 @@ export function Dashboard() {
               <DashboardQuickActions />
             </section>
           </>
+        ) : (
+          <section className="mt-6 flex w-full max-w-2xl flex-col items-center gap-3 px-4 py-20 text-center sm:mt-22">
+            <h1 className="font-space-grotesk text-2xl font-bold">
+              Couldn&apos;t load your dashboard
+            </h1>
+            <p className="text-slate-zero">
+              Something went wrong. Please try refreshing the page.
+            </p>
+          </section>
         )}
       </div>
     </div>

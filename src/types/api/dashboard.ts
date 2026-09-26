@@ -4,6 +4,11 @@ import type { PostSummaryResponse } from "@/types/api/post";
 
 export type DashboardScope = "mine" | "site";
 
+// Mirrors blog.Domain.Dashboard.Enums.DashboardScope on the backend - the
+// `scope` query param accepted by GET /dashboard, distinct from the UI-only
+// DashboardScope above (which just toggles which already-fetched section is shown).
+export type DashboardApiScope = "Personal" | "Platform" | "All";
+
 export type PostStatusDailyCount = {
   date: string;
   draftCount: number;
@@ -62,7 +67,7 @@ export type PlatformStatsResponse = {
   topAuthors: {
     authorId: string;
     fullName: string;
-    postCount: number;
+    publishedCount: number;
     totalViewCount: number;
   }[];
 };
@@ -79,7 +84,8 @@ export type GetDashboardResponse = {
   from: string;
   to: string;
   profile: DashboardProfileResponse;
-  myContent: MyContentResponse;
+  // Present when the requested scope includes personal data (Personal or All).
+  myContent: MyContentResponse | null;
   authorInsights: AuthorInsightsResponse | null;
   moderationQueue: ModerationQueueResponse | null;
   siteContent: SiteContentResponse | null;
