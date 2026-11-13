@@ -10,7 +10,10 @@ const errorMessageResolvers: Record<
 > = {
   NOT_FOUND: (d) => `${d?.resource ?? "Item"} not found.`,
   ALREADY_EXISTS: (d) => `${d?.resource ?? "This item"} already exists.`,
-  VALIDATION_ERROR: () => "Some of the provided information is invalid.",
+  VALIDATION_ERROR: (d) =>
+    typeof d?.reason === "string"
+      ? d.reason
+      : "Some of the provided information is invalid.",
   FORBIDDEN: () => "You don't have permission to perform this action.",
   UNAUTHORIZED: () => "Please log in to continue.",
   EXPIRED: (d) => `${d?.resource ?? "This"} has expired.`,

@@ -3,6 +3,7 @@
 import { Shimmer } from "@shimmer-from-structure/react";
 import { useAuthorPosts } from "@/hooks/api/useAuthorPosts";
 import { PostCard, PostCardSkeleton } from "@/components/shared/PostCard";
+import { PostStatus } from "@/types/api/post";
 
 const MAX_RESULTS = 4;
 
@@ -20,7 +21,10 @@ export function AuthorPostsSection({
   const { data, isLoading } = useAuthorPosts(authorId);
 
   const posts = (data?.items ?? [])
-    .filter((post) => post.slug !== excludeSlug)
+    .filter(
+      (post) =>
+        post.status === PostStatus.Published && post.slug !== excludeSlug,
+    )
     .slice(0, MAX_RESULTS);
 
   if (!isLoading && posts.length === 0) {

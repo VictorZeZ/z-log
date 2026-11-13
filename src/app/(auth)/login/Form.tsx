@@ -93,6 +93,21 @@ export default function Form() {
       onError: (error) => {
         if (
           error instanceof ApiError &&
+          error.errorCode === "ALREADY_EXISTS" &&
+          error.details?.resource === "EmailVerification" &&
+          typeof error.details.id === "string"
+        ) {
+          toast.info(
+            "A verification code was already sent. Enter it to continue.",
+          );
+          router.push(
+            `/confirm-login?${new URLSearchParams({ challengeId: error.details.id }).toString()}`,
+          );
+          return;
+        }
+
+        if (
+          error instanceof ApiError &&
           error.errorCode === "EMAIL_NOT_CONFIRMED"
         ) {
           redirectToConfirmEmail(values.email);
