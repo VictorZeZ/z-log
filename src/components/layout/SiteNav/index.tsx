@@ -22,7 +22,6 @@ import {
 } from "@/types/api/account";
 import { SheetNavLinks } from "./SheetNavLinks";
 import { AccountSection } from "./AccountSection";
-import { DashboardSection } from "./DashboardSection";
 import { PostsSection } from "./PostsSection";
 import { ThemeSection } from "./ThemeSection";
 
@@ -30,9 +29,6 @@ export function SiteNav() {
   const user = useAppSelector((state) => state.user.data);
   const isLoading = useAppSelector((state) => state.user.isLoading);
 
-  const canAccessDashboard = Boolean(
-    user && isUserLevelAtLeast(user.level, UserLevel.Admin),
-  );
   const canAccessPosts = Boolean(
     user && isUserLevelAtLeast(user.level, UserLevel.Author),
   );
@@ -94,7 +90,6 @@ export function SiteNav() {
 
             <Accordion type="multiple">
               {user && <AccountSection />}
-              {canAccessDashboard && <DashboardSection />}
               {canAccessPosts && <PostsSection />}
               <ThemeSection />
             </Accordion>

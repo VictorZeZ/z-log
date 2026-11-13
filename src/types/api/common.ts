@@ -35,8 +35,3 @@ export type PagedResult<T> = {
   page: number;
   pageSize: number;
 };
-
-export type DailyCount = {
-  date: string;
-  count: number;
-};

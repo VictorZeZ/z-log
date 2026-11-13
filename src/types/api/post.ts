@@ -1,5 +1,4 @@
-// The backend now serializes this by name (e.g. "Published"), confirmed by
-// the dashboard's topPosts sample response - no more numeric-order guessing.
+// Serialized by name (e.g. "Published").
 export enum PostStatus {
   Draft = "Draft",
   PendingApproval = "PendingApproval",

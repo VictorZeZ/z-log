@@ -28,13 +28,6 @@ export function estimateReadingTime(html: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-export function formatShortDate(value: string): string {
-  return new Date(value).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
-}
-
 export function formatRelativeTime(value: string): string {
   const diffMs = Date.now() - new Date(value).getTime();
   const diffMinutes = Math.round(diffMs / 60_000);

@@ -112,7 +112,7 @@ export function CreatePostForm() {
     createDraft(formValues, {
       onSuccess: () => {
         toast.success("Draft saved.");
-        router.push("/dashboard");
+        router.push("/");
       },
       onError: applyServerFieldErrors,
     });
@@ -188,7 +188,7 @@ export function CreatePostForm() {
       <CancelConfirmDialog
         open={isCancelDialogOpen}
         onOpenChange={setIsCancelDialogOpen}
-        onConfirm={() => router.push("/dashboard")}
+        onConfirm={() => router.push("/")}
       />
     </div>
   );
