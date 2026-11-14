@@ -22,6 +22,7 @@ import { PostActionsBar } from "./PostActionsBar";
 import { PostViewMode } from "./PostViewMode";
 import { PostPreviewModal } from "./PostPreviewModal";
 import { CancelConfirmDialog } from "./CancelConfirmDialog";
+import { PostStatus } from "@/types/api/post";
 
 const emptyValues: CreatePostFormValues = {
   title: "",
@@ -101,7 +102,11 @@ export function CreatePostForm() {
   const onPublish = handleSubmit((formValues) => {
     createPost(formValues, {
       onSuccess: (data) => {
-        toast.success("Post published.");
+        toast.success(
+          data.status === PostStatus.Published
+            ? "Post published."
+            : "Post submitted for review.",
+        );
         router.push(`/post/${data.slug}`);
       },
       onError: applyServerFieldErrors,
