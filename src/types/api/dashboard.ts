@@ -115,6 +115,7 @@ export type CategoriesDailyReportResponse = {
 export type GetMySessionsResponse = {
   id: string;
   deviceInfo: string;
+  isCurrent: boolean;
   createdAt: string;
   expiresAt: string;
 };
