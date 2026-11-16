@@ -152,3 +152,17 @@ export async function createDraft(
     body: buildPostFormData(payload),
   });
 }
+
+export async function getPendingApprovalPosts(
+  pageSize: number,
+  page = 1,
+): Promise<PagedResult<PostSummaryResponse>> {
+  const params = new URLSearchParams();
+  params.set("paging.page", String(page));
+  params.set("paging.pageSize", String(pageSize));
+
+  return apiClient<PagedResult<PostSummaryResponse>>(
+    `/admin/posts/pending?${params.toString()}`,
+    { method: "GET" },
+  );
+}

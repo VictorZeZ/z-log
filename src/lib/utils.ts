@@ -18,6 +18,15 @@ export function formatDate(value: string): string {
   });
 }
 
+// Report dates are date-only strings in UTC, so they must not shift into local time.
+export function formatShortDate(value: string): string {
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export function estimateReadingTime(html: string): number {
   const words = html
     .replace(/<[^>]+>/g, " ")

@@ -27,6 +27,10 @@ export const primaryNavLinks: NavLink[] = [
     title: "Authors",
     href: "/authors",
   },
+  {
+    title: "Dashboard",
+    href: "/dashboard",
+  },
 ];
 
 export type DashboardNavItem = NavLink & {

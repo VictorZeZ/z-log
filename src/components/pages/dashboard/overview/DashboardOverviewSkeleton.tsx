@@ -1,5 +1,8 @@
 import { Shimmer } from "@shimmer-from-structure/react";
 
+const PANEL_GRID_CLASS_NAME =
+  "grid gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(270px,1fr)]";
+
 export function DashboardOverviewSkeleton() {
   return (
     <Shimmer loading>
@@ -14,6 +17,16 @@ export function DashboardOverviewSkeleton() {
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="bg-muted h-36 rounded-3xl" />
           ))}
+        </div>
+
+        <div className={PANEL_GRID_CLASS_NAME}>
+          <div className="bg-muted h-96 rounded-3xl" />
+          <div className="bg-muted h-96 rounded-3xl" />
+        </div>
+
+        <div className={PANEL_GRID_CLASS_NAME}>
+          <div className="bg-muted h-80 rounded-3xl" />
+          <div className="bg-muted h-80 rounded-3xl" />
         </div>
       </div>
     </Shimmer>

@@ -12,6 +12,14 @@ import {
 } from "@/components/pages/dashboard/DashboardScopeSwitch";
 import { DashboardOverviewSkeleton } from "./DashboardOverviewSkeleton";
 import { DashboardOverviewStats } from "./DashboardOverviewStats";
+import { DashboardActivityChart } from "./DashboardActivityChart";
+import { DashboardStatusDistribution } from "./DashboardStatusDistribution";
+import { DashboardRecentPosts } from "./DashboardRecentPosts";
+import { DashboardAccountPanel } from "./DashboardAccountPanel";
+import { DashboardPendingPanel } from "./DashboardPendingPanel";
+
+const PANEL_GRID_CLASS_NAME =
+  "grid w-full gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(270px,1fr)]";
 
 const DESCRIPTIONS: Record<DashboardScope, string> = {
   mine: "A clear overview of your publishing activity and content.",
@@ -43,13 +51,14 @@ export function DashboardOverview() {
 
   const { profile, myPosts, site } = data;
   const siteView = scope === "site" ? site : null;
+  const activeScope: DashboardScope = siteView ? "site" : "mine";
 
   return (
     <>
       <DashboardPageHeading
         eyebrow={getTodayLabel()}
         title="Overview"
-        description={DESCRIPTIONS[siteView ? "site" : "mine"]}
+        description={DESCRIPTIONS[activeScope]}
       >
         {site && (
           <DashboardScopeSwitch scope={scope} onScopeChange={setScope} />
@@ -69,6 +78,20 @@ export function DashboardOverview() {
         myPosts={myPosts}
         site={siteView}
       />
+
+      <div className={PANEL_GRID_CLASS_NAME}>
+        <DashboardActivityChart authorId={siteView ? undefined : profile.id} />
+        <DashboardStatusDistribution counts={siteView?.posts ?? myPosts} />
+      </div>
+
+      <div className={PANEL_GRID_CLASS_NAME}>
+        <DashboardRecentPosts scope={activeScope} profileId={profile.id} />
+        {siteView ? (
+          <DashboardPendingPanel />
+        ) : (
+          <DashboardAccountPanel profile={profile} />
+        )}
+      </div>
     </>
   );
 }
