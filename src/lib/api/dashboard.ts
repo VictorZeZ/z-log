@@ -4,6 +4,7 @@ import type {
   GetDashboardOverviewResponse,
   GetMySessionsResponse,
   PostsDailyReportResponse,
+  PostsReportFilters,
   RevokeSessionResponse,
   UsersDailyReportResponse,
 } from "@/types/api/dashboard";
@@ -36,11 +37,14 @@ export async function getDashboardOverview(): Promise<GetDashboardOverviewRespon
 
 export async function getPostsReport(
   days: number,
-  categoryId?: string,
+  { categoryId, authorId }: PostsReportFilters = {},
 ): Promise<PostsDailyReportResponse> {
   const params = buildReportParams(days);
   if (categoryId) {
     params.set("categoryId", categoryId);
+  }
+  if (authorId) {
+    params.set("authorId", authorId);
   }
 
   return apiClient<PostsDailyReportResponse>(

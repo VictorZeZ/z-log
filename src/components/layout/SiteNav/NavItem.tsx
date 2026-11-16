@@ -8,6 +8,7 @@ type NavItemProps = {
   href?: string;
   onClick?: () => void;
   disabled?: boolean;
+  active?: boolean;
   variant?: "default" | "destructive";
 };
 
@@ -17,13 +18,16 @@ export function NavItem({
   href,
   onClick,
   disabled,
+  active,
   variant = "default",
 }: NavItemProps) {
   const className = cn(
     "flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm outline-hidden select-none [&_svg]:size-4 [&_svg]:shrink-0",
     variant === "destructive"
       ? "text-red-500 hover:bg-red-500/10"
-      : "hover:bg-slate-one hover:text-slate-zero",
+      : active
+        ? "bg-indigo-zero/15 text-indigo-zero font-medium"
+        : "hover:bg-slate-one hover:text-slate-zero",
     disabled && "pointer-events-none opacity-50",
   );
 
@@ -31,6 +35,8 @@ export function NavItem({
     return (
       <Link
         href={href}
+        onClick={onClick}
+        aria-current={active ? "page" : undefined}
         aria-disabled={disabled}
         tabIndex={disabled ? -1 : undefined}
         className={className}

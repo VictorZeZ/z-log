@@ -123,3 +123,8 @@ export type GetMySessionsResponse = {
 export type RevokeSessionResponse = {
   success: boolean;
 };
+
+export type PostsReportFilters = {
+  categoryId?: string;
+  authorId?: string;
+};

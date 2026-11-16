@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button";
 
 type DashboardErrorProps = {
+  title?: string;
   onRetry: () => void;
 };
 
-export function DashboardError({ onRetry }: DashboardErrorProps) {
+export function DashboardError({
+  title = "Couldn't load your dashboard",
+  onRetry,
+}: DashboardErrorProps) {
   return (
-    <section className="mt-6 flex w-full max-w-2xl flex-col items-center gap-3 px-4 py-20 text-center sm:mt-22">
-      <h1 className="font-space-grotesk text-2xl font-bold">
-        Couldn&apos;t load your dashboard
-      </h1>
+    <section className="mx-auto flex w-full max-w-2xl flex-col items-center gap-3 py-20 text-center">
+      <h1 className="font-space-grotesk text-2xl font-bold">{title}</h1>
       <p className="text-slate-zero">
         Something went wrong while fetching it. Please try again.
       </p>
