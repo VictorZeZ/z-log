@@ -84,12 +84,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     label: "Account",
     items: [
-      {
-        title: "Sessions",
-        href: "/dashboard/sessions",
-        icon: TbDevices,
-        comingSoon: true,
-      },
+      { title: "Sessions", href: "/dashboard/sessions", icon: TbDevices },
       {
         title: "Settings",
         href: "/dashboard/settings",
