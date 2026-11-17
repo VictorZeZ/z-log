@@ -6,7 +6,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Shimmer } from "@shimmer-from-structure/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { CategoriesActivityChart } from "@/components/pages/dashboard/shared/CategoriesActivityChart";
 import { DashboardPageHeading } from "@/components/pages/dashboard/shared/DashboardPageHeading";
+import {
+  DashboardPillTabs,
+  type DashboardPillOption,
+} from "@/components/pages/dashboard/shared/DashboardPillTabs";
 import { DashboardStatCard } from "@/components/pages/dashboard/shared/DashboardStatCard";
 import { categoriesQueryKey, useCategories } from "@/hooks/api/useCategories";
 import { dashboardQueryKey } from "@/hooks/api/useDashboardOverview";
@@ -14,7 +19,7 @@ import { useDeleteCategory } from "@/hooks/api/useDeleteCategory";
 import { useDeletedCategories } from "@/hooks/api/useDeletedCategories";
 import { useRestoreCategory } from "@/hooks/api/useRestoreCategory";
 import { handleApiError } from "@/lib/api/errorHandler";
-import { cn } from "@/lib/utils";
+import { MAX_REPORT_RANGE_DAYS } from "@/lib/api/dashboard";
 import type { GetAllCategoriesResponse } from "@/types/api/category";
 import { ArchiveCategoryDialog } from "./ArchiveCategoryDialog";
 import { CategoryCard } from "./CategoryCard";
@@ -37,6 +42,7 @@ export function DashboardCategories() {
   } = useRestoreCategory();
 
   const [view, setView] = useState<CategoryView>("active");
+  const [days, setDays] = useState(MAX_REPORT_RANGE_DAYS);
   const [formTarget, setFormTarget] = useState<CategoryFormTarget | null>(null);
   const [categoryToArchive, setCategoryToArchive] =
     useState<GetAllCategoriesResponse | null>(null);
@@ -46,7 +52,7 @@ export function DashboardCategories() {
   const isLoading = active.isLoading || archived.isLoading;
   const isError = active.isError || archived.isError;
 
-  const viewOptions: { value: CategoryView; label: string; count: number }[] = [
+  const viewOptions: DashboardPillOption<CategoryView>[] = [
     { value: "active", label: "Active", count: activeCategories.length },
     { value: "archived", label: "Archived", count: archivedCategories.length },
   ];
@@ -84,6 +90,7 @@ export function DashboardCategories() {
                 <div key={index} className="bg-muted h-36 rounded-3xl" />
               ))}
             </div>
+            <div className="bg-muted h-96 rounded-3xl" />
             <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="bg-muted h-56 rounded-3xl" />
@@ -142,25 +149,14 @@ export function DashboardCategories() {
           />
         </section>
 
-        <div className="flex flex-wrap gap-2">
-          {viewOptions.map(({ value, label, count }) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => setView(value)}
-              aria-pressed={view === value}
-              className={cn(
-                "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm duration-150 outline-none",
-                view === value
-                  ? "bg-indigo-zero/15 text-indigo-zero border-indigo-zero/30"
-                  : "text-slate-zero hover:bg-slate-one",
-              )}
-            >
-              {label}
-              <span className="text-xs opacity-70">{count}</span>
-            </button>
-          ))}
-        </div>
+        <CategoriesActivityChart days={days} onDaysChange={setDays} />
+
+        <DashboardPillTabs
+          options={viewOptions}
+          value={view}
+          onChange={setView}
+          ariaLabel="Category status"
+        />
 
         {visibleCount === 0 ? (
           <p className="text-slate-zero py-16 text-center text-sm">
