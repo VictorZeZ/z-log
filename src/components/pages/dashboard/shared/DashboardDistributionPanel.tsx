@@ -5,41 +5,46 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@/components/ui/chart";
-import { DashboardPanel } from "@/components/pages/dashboard/shared/DashboardPanel";
-import {
-  POST_STATUS_SERIES,
-  postStatusChartConfig,
-} from "@/components/pages/dashboard/shared/postStatus";
-import { postStatusLabels } from "@/types/api/post";
-import type { PostOverviewResponse } from "@/types/api/dashboard";
+import { DashboardPanel } from "./DashboardPanel";
 
-type DashboardStatusDistributionProps = {
-  counts: PostOverviewResponse;
+export type DistributionSlice = {
+  key: string;
+  label: string;
+  value: number;
+  color: string;
 };
 
-export function DashboardStatusDistribution({
-  counts,
-}: DashboardStatusDistributionProps) {
-  const total = counts.totalCount;
+type DashboardDistributionPanelProps = {
+  title: string;
+  description: string;
+  totalLabel: string;
+  slices: readonly DistributionSlice[];
+};
 
-  const slices =
+export function DashboardDistributionPanel({
+  title,
+  description,
+  totalLabel,
+  slices,
+}: DashboardDistributionPanelProps) {
+  const total = slices.reduce((sum, slice) => sum + slice.value, 0);
+
+  const chartConfig: ChartConfig = Object.fromEntries(
+    slices.map(({ key, label, color }) => [key, { label, color }]),
+  );
+
+  const pieData =
     total > 0
-      ? POST_STATUS_SERIES.map(({ key, color }) => ({
-          key,
-          value: counts[key],
-          fill: color,
-        }))
+      ? slices.map(({ key, value, color }) => ({ key, value, fill: color }))
       : [{ key: "empty", value: 1, fill: "var(--slate-one)" }];
 
   return (
-    <DashboardPanel
-      title="Post distribution"
-      description="Content by current status."
-    >
+    <DashboardPanel title={title} description={description}>
       <div className="relative mx-auto size-44">
         <ChartContainer
-          config={postStatusChartConfig}
+          config={chartConfig}
           className="aspect-square size-full"
         >
           <PieChart>
@@ -49,7 +54,7 @@ export function DashboardStatusDistribution({
               />
             )}
             <Pie
-              data={slices}
+              data={pieData}
               dataKey="value"
               nameKey="key"
               innerRadius="68%"
@@ -64,15 +69,14 @@ export function DashboardStatusDistribution({
           <span className="font-space-grotesk text-3xl font-bold">
             {total.toLocaleString()}
           </span>
-          <span className="text-slate-zero text-xs">Total posts</span>
+          <span className="text-slate-zero text-xs">{totalLabel}</span>
         </div>
       </div>
 
       <ul className="flex flex-col gap-3">
-        {POST_STATUS_SERIES.map(({ key, status, color }) => {
-          const count = counts[key];
+        {slices.map(({ key, label, value, color }) => {
           const percent =
-            total > 0 ? ((count / total) * 100).toFixed(1) : "0.0";
+            total > 0 ? ((value / total) * 100).toFixed(1) : "0.0";
 
           return (
             <li key={key} className="flex items-center justify-between text-sm">
@@ -82,10 +86,10 @@ export function DashboardStatusDistribution({
                   className="size-2 rounded-full"
                   style={{ backgroundColor: color }}
                 />
-                {postStatusLabels[status]}
+                {label}
               </span>
               <span className="font-medium">
-                {count.toLocaleString()}{" "}
+                {value.toLocaleString()}{" "}
                 <span className="text-slate-zero text-xs font-normal">
                   {percent}%
                 </span>

@@ -6,6 +6,8 @@ import { Plus } from "lucide-react";
 import { useDashboardOverview } from "@/hooks/api/useDashboardOverview";
 import { DashboardPageHeading } from "@/components/pages/dashboard/shared/DashboardPageHeading";
 import { DashboardError } from "@/components/pages/dashboard/shared/DashboardError";
+import { DASHBOARD_PANEL_GRID_CLASS_NAME } from "@/components/pages/dashboard/shared/layout";
+import type { ActivityMetric } from "@/components/pages/dashboard/shared/activityMetric";
 import {
   DashboardScopeSwitch,
   type DashboardScope,
@@ -13,13 +15,10 @@ import {
 import { DashboardOverviewSkeleton } from "./DashboardOverviewSkeleton";
 import { DashboardOverviewStats } from "./DashboardOverviewStats";
 import { DashboardActivityChart } from "./DashboardActivityChart";
-import { DashboardStatusDistribution } from "./DashboardStatusDistribution";
+import { DashboardDistribution } from "./DashboardDistribution";
 import { DashboardRecentPosts } from "./DashboardRecentPosts";
 import { DashboardAccountPanel } from "./DashboardAccountPanel";
 import { DashboardPendingPanel } from "./DashboardPendingPanel";
-
-const PANEL_GRID_CLASS_NAME =
-  "grid w-full gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(270px,1fr)]";
 
 const DESCRIPTIONS: Record<DashboardScope, string> = {
   mine: "A clear overview of your publishing activity and content.",
@@ -39,6 +38,7 @@ function getTodayLabel(): string {
 
 export function DashboardOverview() {
   const [scope, setScope] = useState<DashboardScope>("mine");
+  const [metric, setMetric] = useState<ActivityMetric>("posts");
   const { data, isLoading, isError, refetch } = useDashboardOverview(true);
 
   if (isLoading) {
@@ -52,6 +52,8 @@ export function DashboardOverview() {
   const { profile, myPosts, site } = data;
   const siteView = scope === "site" ? site : null;
   const activeScope: DashboardScope = siteView ? "site" : "mine";
+  // Users and categories data only exists in the site view.
+  const activeMetric: ActivityMetric = siteView ? metric : "posts";
 
   return (
     <>
@@ -79,12 +81,20 @@ export function DashboardOverview() {
         site={siteView}
       />
 
-      <div className={PANEL_GRID_CLASS_NAME}>
-        <DashboardActivityChart authorId={siteView ? undefined : profile.id} />
-        <DashboardStatusDistribution counts={siteView?.posts ?? myPosts} />
+      <div className={DASHBOARD_PANEL_GRID_CLASS_NAME}>
+        <DashboardActivityChart
+          metric={activeMetric}
+          onMetricChange={siteView ? setMetric : undefined}
+          authorId={siteView ? undefined : profile.id}
+        />
+        <DashboardDistribution
+          metric={activeMetric}
+          myPosts={myPosts}
+          site={siteView}
+        />
       </div>
 
-      <div className={PANEL_GRID_CLASS_NAME}>
+      <div className={DASHBOARD_PANEL_GRID_CLASS_NAME}>
         <DashboardRecentPosts scope={activeScope} profileId={profile.id} />
         {siteView ? (
           <DashboardPendingPanel />

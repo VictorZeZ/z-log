@@ -1,7 +1,5 @@
 import { Shimmer } from "@shimmer-from-structure/react";
-
-const PANEL_GRID_CLASS_NAME =
-  "grid gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(270px,1fr)]";
+import { DASHBOARD_PANEL_GRID_CLASS_NAME } from "@/components/pages/dashboard/shared/layout";
 
 export function DashboardOverviewSkeleton() {
   return (
@@ -19,12 +17,12 @@ export function DashboardOverviewSkeleton() {
           ))}
         </div>
 
-        <div className={PANEL_GRID_CLASS_NAME}>
+        <div className={DASHBOARD_PANEL_GRID_CLASS_NAME}>
           <div className="bg-muted h-96 rounded-3xl" />
           <div className="bg-muted h-96 rounded-3xl" />
         </div>
 
-        <div className={PANEL_GRID_CLASS_NAME}>
+        <div className={DASHBOARD_PANEL_GRID_CLASS_NAME}>
           <div className="bg-muted h-80 rounded-3xl" />
           <div className="bg-muted h-80 rounded-3xl" />
         </div>

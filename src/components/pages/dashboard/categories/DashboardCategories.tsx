@@ -7,12 +7,14 @@ import { Shimmer } from "@shimmer-from-structure/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { CategoriesActivityChart } from "@/components/pages/dashboard/shared/CategoriesActivityChart";
+import { CategoriesDistribution } from "@/components/pages/dashboard/shared/CategoriesDistribution";
 import { DashboardPageHeading } from "@/components/pages/dashboard/shared/DashboardPageHeading";
 import {
   DashboardPillTabs,
   type DashboardPillOption,
 } from "@/components/pages/dashboard/shared/DashboardPillTabs";
 import { DashboardStatCard } from "@/components/pages/dashboard/shared/DashboardStatCard";
+import { DASHBOARD_PANEL_GRID_CLASS_NAME } from "@/components/pages/dashboard/shared/layout";
 import { categoriesQueryKey, useCategories } from "@/hooks/api/useCategories";
 import { dashboardQueryKey } from "@/hooks/api/useDashboardOverview";
 import { useDeleteCategory } from "@/hooks/api/useDeleteCategory";
@@ -90,7 +92,10 @@ export function DashboardCategories() {
                 <div key={index} className="bg-muted h-36 rounded-3xl" />
               ))}
             </div>
-            <div className="bg-muted h-96 rounded-3xl" />
+            <div className={DASHBOARD_PANEL_GRID_CLASS_NAME}>
+              <div className="bg-muted h-96 rounded-3xl" />
+              <div className="bg-muted h-96 rounded-3xl" />
+            </div>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="bg-muted h-56 rounded-3xl" />
@@ -149,7 +154,13 @@ export function DashboardCategories() {
           />
         </section>
 
-        <CategoriesActivityChart days={days} onDaysChange={setDays} />
+        <div className={DASHBOARD_PANEL_GRID_CLASS_NAME}>
+          <CategoriesActivityChart days={days} onDaysChange={setDays} />
+          <CategoriesDistribution
+            activeCount={activeCategories.length}
+            deletedCount={archivedCategories.length}
+          />
+        </div>
 
         <DashboardPillTabs
           options={viewOptions}
