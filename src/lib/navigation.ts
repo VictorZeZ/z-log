@@ -67,12 +67,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         icon: TbUsers,
         comingSoon: true,
       },
-      {
-        title: "Categories",
-        href: "/dashboard/categories",
-        icon: TbCategory,
-        comingSoon: true,
-      },
+      { title: "Categories", href: "/dashboard/categories", icon: TbCategory },
       {
         title: "Analytics",
         href: "/dashboard/analytics",
