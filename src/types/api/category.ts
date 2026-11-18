@@ -1,14 +1,53 @@
+import type { PagedResult } from "@/types/api/common";
+import type { TriStateFilter } from "@/types/api/dashboard";
+import type { PostStatus } from "@/types/api/post";
+
 export type GetAllCategoriesResponse = {
   id: string;
   name: string;
   slug: string;
 };
 
-export type GetDeletedCategoriesResponse = {
+export enum CategorySortBy {
+  Newest = "Newest",
+  Oldest = "Oldest",
+  NameAscending = "NameAscending",
+  NameDescending = "NameDescending",
+  MostPosts = "MostPosts",
+  FewestPosts = "FewestPosts",
+}
+
+export const categorySortByLabels: Record<CategorySortBy, string> = {
+  [CategorySortBy.Newest]: "Newest",
+  [CategorySortBy.Oldest]: "Oldest",
+  [CategorySortBy.NameAscending]: "Name A–Z",
+  [CategorySortBy.NameDescending]: "Name Z–A",
+  [CategorySortBy.MostPosts]: "Most posts",
+  [CategorySortBy.FewestPosts]: "Fewest posts",
+};
+
+export type AdminCategoryResponse = {
   id: string;
   name: string;
   slug: string;
+  isDeleted: boolean;
   deletedAt: string | null;
+  createdAt: string;
+  postsCount: number;
+};
+
+export type AdminCategoriesResult = PagedResult<AdminCategoryResponse> & {
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+};
+
+export type AdminCategoriesParams = {
+  page: number;
+  pageSize: number;
+  sortBy: CategorySortBy;
+  deleted: TriStateFilter;
+  postStatuses: PostStatus[];
 };
 
 export type CreateCategoryRequest = {

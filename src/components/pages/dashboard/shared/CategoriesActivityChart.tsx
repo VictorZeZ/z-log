@@ -9,7 +9,7 @@ import {
 
 const SERIES: ChartSeries[] = [
   { key: "createdCount", label: "Created", color: "var(--indigo-zero)" },
-  { key: "deletedCount", label: "Archived", color: "var(--slate-zero)" },
+  { key: "deletedCount", label: "Deleted", color: "var(--slate-zero)" },
 ];
 
 export function CategoriesActivityChart(controls: ActivityChartControls) {
@@ -22,7 +22,7 @@ export function CategoriesActivityChart(controls: ActivityChartControls) {
     <DashboardReportChart
       {...controls}
       title="Categories activity"
-      description="Daily categories created and archived."
+      description="Daily categories created and deleted."
       emptyMessage="No category activity in this period."
       series={SERIES}
       data={data?.days}

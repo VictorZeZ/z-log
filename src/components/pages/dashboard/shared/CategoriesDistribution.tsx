@@ -21,7 +21,7 @@ export function CategoriesDistribution({
     },
     {
       key: "deletedCount",
-      label: "Archived",
+      label: "Deleted",
       value: deletedCount,
       color: "var(--slate-zero)",
     },

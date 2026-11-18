@@ -1,10 +1,11 @@
 import { apiClient } from "@/lib/api/client";
 import type {
+  AdminCategoriesParams,
+  AdminCategoriesResult,
   CreateCategoryRequest,
   CreateCategoryResponse,
   DeleteCategoryResponse,
   GetAllCategoriesResponse,
-  GetDeletedCategoriesResponse,
   RestoreCategoryResponse,
   UpdateCategoryRequest,
   UpdateCategoryResponse,
@@ -16,12 +17,25 @@ export async function getAllCategories(): Promise<GetAllCategoriesResponse[]> {
   });
 }
 
-export async function getDeletedCategories(): Promise<
-  GetDeletedCategoriesResponse[]
-> {
-  return apiClient<GetDeletedCategoriesResponse[]>("/categories/deleted", {
-    method: "GET",
+export async function getAdminCategories({
+  page,
+  pageSize,
+  sortBy,
+  deleted,
+  postStatuses,
+}: AdminCategoriesParams): Promise<AdminCategoriesResult> {
+  const params = new URLSearchParams({
+    page: String(page),
+    pageSize: String(pageSize),
+    sortBy,
+    deleted,
   });
+  postStatuses.forEach((status) => params.append("postStatuses", status));
+
+  return apiClient<AdminCategoriesResult>(
+    `/admin/categories?${params.toString()}`,
+    { method: "GET" },
+  );
 }
 
 export async function createCategory(

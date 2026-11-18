@@ -7,27 +7,28 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn, formatDate } from "@/lib/utils";
-import type { GetAllCategoriesResponse } from "@/types/api/category";
+import type { AdminCategoryResponse } from "@/types/api/category";
 
-type CategoryCardProps =
-  | {
-      variant: "active";
-      category: GetAllCategoriesResponse;
-      onRename: () => void;
-      onDelete: () => void;
-    }
-  | {
-      variant: "archived";
-      category: GetAllCategoriesResponse;
-      archivedAt: string | null;
-      isRestoring: boolean;
-      onRestore: () => void;
-    };
+type CategoryCardProps = {
+  category: AdminCategoryResponse;
+  isRestoring: boolean;
+  onRename: (category: AdminCategoryResponse) => void;
+  onDelete: (category: AdminCategoryResponse) => void;
+  onRestore: (category: AdminCategoryResponse) => void;
+};
 
-const pillClassName = "rounded-full px-2.5 py-1 text-xs font-semibold";
-
-export function CategoryCard(props: CategoryCardProps) {
-  const { category } = props;
+export function CategoryCard({
+  category,
+  isRestoring,
+  onRename,
+  onDelete,
+  onRestore,
+}: CategoryCardProps) {
+  const { isDeleted, deletedAt, postsCount } = category;
+  const dateLabel =
+    isDeleted && deletedAt
+      ? `Deleted ${formatDate(deletedAt)}`
+      : `Created ${formatDate(category.createdAt)}`;
 
   return (
     <article className="bg-slate-two flex flex-col gap-3 rounded-3xl border p-3 shadow-md">
@@ -44,6 +45,7 @@ export function CategoryCard(props: CategoryCardProps) {
             {category.name}
           </h3>
           <p className="text-slate-zero truncate text-xs">/{category.slug}</p>
+          <p className="text-slate-zero mt-1 text-xs">{dateLabel}</p>
         </div>
 
         <DropdownMenu>
@@ -57,50 +59,48 @@ export function CategoryCard(props: CategoryCardProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {props.variant === "active" ? (
+            {isDeleted ? (
+              <DropdownMenuItem
+                onClick={() => onRestore(category)}
+                disabled={isRestoring}
+              >
+                <RotateCcw />
+                Restore
+              </DropdownMenuItem>
+            ) : (
               <>
-                <DropdownMenuItem onClick={props.onRename}>
+                <DropdownMenuItem onClick={() => onRename(category)}>
                   <Pencil />
                   Rename
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   variant="destructive"
-                  onClick={props.onDelete}
+                  onClick={() => onDelete(category)}
                 >
                   <Trash2 />
-                  Archive
+                  Delete
                 </DropdownMenuItem>
               </>
-            ) : (
-              <DropdownMenuItem
-                onClick={props.onRestore}
-                disabled={props.isRestoring}
-              >
-                <RotateCcw />
-                Restore
-              </DropdownMenuItem>
             )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
       <div className="flex items-center justify-between border-t px-1 pt-3">
-        <span
-          className={cn(
-            pillClassName,
-            props.variant === "active"
-              ? "bg-emerald-zero/15 text-emerald-zero"
-              : "bg-slate-one text-slate-zero",
-          )}
-        >
-          {props.variant === "active" ? "Active" : "Archived"}
+        <span className="text-slate-zero text-sm">
+          {postsCount.toLocaleString()} post{postsCount === 1 ? "" : "s"}
         </span>
 
-        {props.variant === "archived" && props.archivedAt && (
-          <span className="text-slate-zero text-xs">
-            {formatDate(props.archivedAt)}
-          </span>
-        )}
+        <span
+          className={cn(
+            "rounded-full px-2.5 py-1 text-xs font-semibold",
+            isDeleted
+              ? "bg-red-zero/15 text-red-zero"
+              : "bg-emerald-zero/15 text-emerald-zero",
+          )}
+        >
+          {isDeleted ? "Deleted" : "Active"}
+        </span>
       </div>
     </article>
   );

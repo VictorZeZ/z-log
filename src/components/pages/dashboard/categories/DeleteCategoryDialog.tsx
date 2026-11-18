@@ -12,31 +12,31 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { GetAllCategoriesResponse } from "@/types/api/category";
 
-type ArchiveCategoryDialogProps = {
+type DeleteCategoryDialogProps = {
   category: GetAllCategoriesResponse | null;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
 };
 
-export function ArchiveCategoryDialog({
+export function DeleteCategoryDialog({
   category,
   onOpenChange,
   onConfirm,
-}: ArchiveCategoryDialogProps) {
+}: DeleteCategoryDialogProps) {
   return (
     <AlertDialog open={category !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Archive this category?</AlertDialogTitle>
+          <AlertDialogTitle>Delete this category?</AlertDialogTitle>
           <AlertDialogDescription>
             {category?.name} will be removed from the category list. You can
-            restore it later from the Archived view.
+            restore it later from the Deleted tab.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Keep category</AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={onConfirm}>
-            Archive
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

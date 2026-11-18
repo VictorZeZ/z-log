@@ -13,6 +13,8 @@ import {
 type SearchPaginationProps = {
   page: number;
   totalPages: number;
+  hasPreviousPage?: boolean;
+  hasNextPage?: boolean;
   buildHref: (page: number) => string;
   onPageChange: (page: number) => void;
 };
@@ -34,6 +36,8 @@ function getPageRange(current: number, total: number): (number | "ellipsis")[] {
 export function SearchPagination({
   page,
   totalPages,
+  hasPreviousPage = page > 1,
+  hasNextPage = page < totalPages,
   buildHref,
   onPageChange,
 }: SearchPaginationProps) {
@@ -53,7 +57,7 @@ export function SearchPagination({
             href={buildHref(page - 1)}
             onClick={handleClick(page - 1)}
             className={
-              page === 1 ? "pointer-events-none opacity-50" : undefined
+              !hasPreviousPage ? "pointer-events-none opacity-50" : undefined
             }
           />
         </PaginationItem>
@@ -81,7 +85,7 @@ export function SearchPagination({
             href={buildHref(page + 1)}
             onClick={handleClick(page + 1)}
             className={
-              page === totalPages ? "pointer-events-none opacity-50" : undefined
+              !hasNextPage ? "pointer-events-none opacity-50" : undefined
             }
           />
         </PaginationItem>
