@@ -20,9 +20,11 @@ body {
   * {
     @apply border-black/10 outline-none dark:border-white/10;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   button,
   input[type="button"],
   input[type="submit"] {
