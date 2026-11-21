@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import {
   DashboardPillTabs,
   type DashboardPillOption,
@@ -12,26 +13,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CategorySortBy, categorySortByLabels } from "@/types/api/category";
+import {
+  CategorySortBy,
+  categorySortByLabels,
+  type AdminCategoriesFilters,
+} from "@/types/api/category";
 import type {
   CategoryOverviewResponse,
   TriStateFilter,
 } from "@/types/api/dashboard";
 import { PostStatus, postStatusLabels } from "@/types/api/post";
-
-export type CategoriesFilters = {
-  deleted: TriStateFilter;
-  sortBy: CategorySortBy;
-  postStatuses: PostStatus[];
-};
+import { CategoriesSearchInput } from "./CategoriesSearchInput";
 
 const SORT_OPTIONS = Object.values(CategorySortBy);
 const POST_STATUSES = POST_STATUS_SERIES.map(({ status }) => status);
 
 type CategoriesToolbarProps = {
-  filters: CategoriesFilters;
+  filters: AdminCategoriesFilters;
   counts?: CategoryOverviewResponse;
-  onChange: (changes: Partial<CategoriesFilters>) => void;
+  onChange: (changes: Partial<AdminCategoriesFilters>) => void;
 };
 
 export function CategoriesToolbar({
@@ -39,6 +39,11 @@ export function CategoriesToolbar({
   counts,
   onChange,
 }: CategoriesToolbarProps) {
+  const handleTermChange = useCallback(
+    (term: string) => onChange({ term }),
+    [onChange],
+  );
+
   const deletedOptions: DashboardPillOption<TriStateFilter>[] = [
     { value: "All", label: "All", count: counts?.totalCount },
     { value: "No", label: "Active", count: counts?.activeCount },
@@ -55,12 +60,10 @@ export function CategoriesToolbar({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <DashboardPillTabs
-          options={deletedOptions}
-          value={filters.deleted}
-          onChange={(deleted) => onChange({ deleted })}
-          ariaLabel="Category status"
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <CategoriesSearchInput
+          term={filters.term}
+          onTermChange={handleTermChange}
         />
 
         <Select
@@ -70,8 +73,7 @@ export function CategoriesToolbar({
           }
         >
           <SelectTrigger
-            className="w-full max-w-44"
-            size="sm"
+            className="w-full sm:w-44"
             aria-label="Sort categories"
           >
             <SelectValue />
@@ -85,6 +87,13 @@ export function CategoriesToolbar({
           </SelectContent>
         </Select>
       </div>
+
+      <DashboardPillTabs
+        options={deletedOptions}
+        value={filters.deleted}
+        onChange={(deleted) => onChange({ deleted })}
+        ariaLabel="Category status"
+      />
 
       <div
         role="group"

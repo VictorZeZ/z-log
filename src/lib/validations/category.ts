@@ -4,6 +4,9 @@ import { z } from "zod";
 // rules are enforced server-side and surface through the name field error.
 const MAX_NAME_LENGTH = 100;
 
+// Mirrors the term limit of the admin categories endpoint.
+export const MAX_CATEGORY_TERM_LENGTH = 256;
+
 export const categoryFormSchema = z.object({
   name: z
     .string()

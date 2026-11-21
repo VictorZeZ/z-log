@@ -18,6 +18,7 @@ export async function getAllCategories(): Promise<GetAllCategoriesResponse[]> {
 }
 
 export async function getAdminCategories({
+  term,
   page,
   pageSize,
   sortBy,
@@ -30,6 +31,9 @@ export async function getAdminCategories({
     sortBy,
     deleted,
   });
+  if (term) {
+    params.set("term", term);
+  }
   postStatuses.forEach((status) => params.append("postStatuses", status));
 
   return apiClient<AdminCategoriesResult>(

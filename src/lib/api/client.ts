@@ -5,6 +5,7 @@ import { clearUser } from "@/lib/store/userSlice";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const SESSION_EXPIRED_ERROR_CODE = "SESSION_EXPIRED";
+const RATE_LIMIT_STATUS_CODE = 429;
 
 type ApiClientOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
@@ -47,6 +48,30 @@ export function clearAuthCookies() {
 function handleSessionExpired() {
   clearAuthCookies();
   store.dispatch(clearUser());
+}
+
+// Retry-After can also be an HTTP date; only the delay-seconds form is used.
+function getRetryAfterSeconds(response: Response): number | undefined {
+  const seconds = Number(response.headers.get("Retry-After"));
+  return Number.isFinite(seconds) && seconds > 0
+    ? Math.ceil(seconds)
+    : undefined;
+}
+
+function withRetryAfter(
+  response: Response,
+  details: Record<string, unknown> | undefined,
+): Record<string, unknown> | undefined {
+  if (response.status !== RATE_LIMIT_STATUS_CODE) {
+    return details;
+  }
+
+  const retryAfterSeconds = getRetryAfterSeconds(response);
+  if (retryAfterSeconds === undefined || details?.retryAfterSeconds) {
+    return details;
+  }
+
+  return { ...details, retryAfterSeconds };
 }
 
 async function performFetch<TResponse>(
@@ -131,10 +156,15 @@ export async function apiClient<TResponse>(
     .json()
     .catch(() => ({}));
 
+  const fallbackErrorCode =
+    response.status === RATE_LIMIT_STATUS_CODE
+      ? "RATE_LIMIT_EXCEEDED"
+      : "UNKNOWN_ERROR";
+
   throw new ApiError(
     errorBody.statusCode ?? response.status,
-    errorBody.errorCode ?? "UNKNOWN_ERROR",
+    errorBody.errorCode ?? fallbackErrorCode,
     errorBody.title ?? "Request failed",
-    errorBody.details,
+    withRetryAfter(response, errorBody.details),
   );
 }

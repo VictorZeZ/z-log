@@ -42,12 +42,16 @@ export type AdminCategoriesResult = PagedResult<AdminCategoryResponse> & {
   hasPreviousPage: boolean;
 };
 
-export type AdminCategoriesParams = {
-  page: number;
-  pageSize: number;
+export type AdminCategoriesFilters = {
+  term: string;
   sortBy: CategorySortBy;
   deleted: TriStateFilter;
   postStatuses: PostStatus[];
+};
+
+export type AdminCategoriesParams = AdminCategoriesFilters & {
+  page: number;
+  pageSize: number;
 };
 
 export type CreateCategoryRequest = {

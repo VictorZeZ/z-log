@@ -1,31 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Shimmer } from "@shimmer-from-structure/react";
 import { SearchPagination } from "@/components/pages/search/SearchPagination";
 import { Button } from "@/components/ui/button";
 import { useAdminCategories } from "@/hooks/api/useAdminCategories";
 import { getErrorMessage } from "@/lib/api/errorMessages";
 import { cn } from "@/lib/utils";
-import {
-  CategorySortBy,
-  type AdminCategoryResponse,
-} from "@/types/api/category";
+import type { AdminCategoryResponse } from "@/types/api/category";
 import { ApiError } from "@/types/api/common";
 import type { CategoryOverviewResponse } from "@/types/api/dashboard";
 import { CategoryCard } from "./CategoryCard";
-import { CategoriesToolbar, type CategoriesFilters } from "./CategoriesToolbar";
+import { CategoriesToolbar } from "./CategoriesToolbar";
+import { useCategoriesListParams } from "@/hooks/api/useCategoriesListParams";
 
 const PAGE_SIZE = 12;
 const SKELETON_COUNT = 6;
 const GRID_CLASS_NAME =
   "grid w-full grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4";
-
-const DEFAULT_FILTERS: CategoriesFilters = {
-  deleted: "All",
-  sortBy: CategorySortBy.Newest,
-  postStatuses: [],
-};
 
 const buildHref = () => "#";
 
@@ -44,25 +36,19 @@ export function CategoriesList({
   onDelete,
   onRestore,
 }: CategoriesListProps) {
-  const [filters, setFilters] = useState(DEFAULT_FILTERS);
-  const [page, setPage] = useState(1);
+  const { state, setFilters, setPage } = useCategoriesListParams();
+  const { term, page } = state;
 
-  const { data, isLoading, isFetching, error, refetch } = useAdminCategories({
-    page,
-    pageSize: PAGE_SIZE,
-    ...filters,
-  });
+  const { data, isLoading, isFetching, isPlaceholderData, error, refetch } =
+    useAdminCategories({ ...state, pageSize: PAGE_SIZE });
 
   useEffect(() => {
-    if (data && data.totalPages > 0 && page > data.totalPages) {
+    if (!data || isPlaceholderData) return;
+
+    if (data.totalPages > 0 && page > data.totalPages) {
       setPage(data.totalPages);
     }
-  }, [data, page]);
-
-  const handleFiltersChange = (changes: Partial<CategoriesFilters>) => {
-    setFilters((previous) => ({ ...previous, ...changes }));
-    setPage(1);
-  };
+  }, [data, isPlaceholderData, page, setPage]);
 
   const renderContent = () => {
     if (isLoading) {
@@ -94,8 +80,10 @@ export function CategoriesList({
 
     if (data.items.length === 0) {
       return (
-        <p className="text-slate-zero py-16 text-center text-sm">
-          No categories match these filters.
+        <p className="text-slate-zero py-16 text-center text-sm wrap-break-word">
+          {term
+            ? `No categories match "${term}".`
+            : "No categories match these filters."}
         </p>
       );
     }
@@ -105,7 +93,18 @@ export function CategoriesList({
 
     return (
       <>
+        {term && !isPlaceholderData && (
+          <p
+            className="text-slate-zero text-sm wrap-break-word"
+            aria-live="polite"
+          >
+            {data.totalCount.toLocaleString()} result
+            {data.totalCount === 1 ? "" : "s"} for &quot;{term}&quot;
+          </p>
+        )}
+
         <div
+          aria-busy={isFetching}
           className={cn(
             GRID_CLASS_NAME,
             "duration-200",
@@ -148,9 +147,9 @@ export function CategoriesList({
   return (
     <section className="flex w-full flex-col gap-4">
       <CategoriesToolbar
-        filters={filters}
+        filters={state}
         counts={counts}
-        onChange={handleFiltersChange}
+        onChange={setFilters}
       />
       {renderContent()}
     </section>
