@@ -6,6 +6,7 @@ import {
   type DashboardPillOption,
 } from "@/components/pages/dashboard/shared/DashboardPillTabs";
 import { POST_STATUS_SERIES } from "@/components/pages/dashboard/shared/postStatus";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -13,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import {
   CategorySortBy,
   categorySortByLabels,
@@ -98,27 +100,44 @@ export function CategoriesToolbar({
       <div
         role="group"
         aria-labelledby="category-post-statuses-label"
-        className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm"
+        className="flex flex-wrap items-center gap-2"
       >
-        <span id="category-post-statuses-label" className="text-slate-zero">
+        <span
+          id="category-post-statuses-label"
+          className="text-slate-zero text-sm"
+        >
           Count posts with status
         </span>
-        {POST_STATUSES.map((status) => (
-          <label
-            key={status}
-            className="flex cursor-pointer items-center gap-1.5"
-          >
-            <input
-              type="checkbox"
-              checked={filters.postStatuses.includes(status)}
-              onChange={(event) =>
-                handleStatusToggle(status, event.target.checked)
-              }
-              className="accent-indigo-zero size-4"
-            />
-            {postStatusLabels[status]}
-          </label>
-        ))}
+
+        {POST_STATUS_SERIES.map(({ status, color }) => {
+          const checked = filters.postStatuses.includes(status);
+
+          return (
+            <label
+              key={status}
+              className={cn(
+                "flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-sm duration-150 select-none",
+                checked
+                  ? "bg-indigo-zero/15 text-indigo-zero border-indigo-zero/30"
+                  : "text-slate-zero hover:bg-slate-one",
+              )}
+            >
+              <Checkbox
+                checked={checked}
+                onCheckedChange={(value) =>
+                  handleStatusToggle(status, value === true)
+                }
+              />
+              <span
+                aria-hidden="true"
+                className="size-2 rounded-full"
+                style={{ backgroundColor: color }}
+              />
+              {postStatusLabels[status]}
+            </label>
+          );
+        })}
+
         {filters.postStatuses.length === 0 && (
           <span className="text-slate-zero text-xs">
             None selected: every status is counted.
