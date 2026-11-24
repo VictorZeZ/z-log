@@ -1,3 +1,5 @@
+import type { PagedResult } from "@/types/api/common";
+
 // Serialized by name (e.g. "Published").
 export enum PostStatus {
   Draft = "Draft",
@@ -25,6 +27,12 @@ export const postSortByLabels: Record<PostSortBy, string> = {
   [PostSortBy.Oldest]: "Oldest",
   [PostSortBy.MostViewed]: "Most viewed",
 };
+
+export const postSortByOptions: readonly PostSortBy[] = [
+  PostSortBy.Newest,
+  PostSortBy.Oldest,
+  PostSortBy.MostViewed,
+];
 
 export type GetPostBySlugResponse = {
   id: string;
@@ -83,3 +91,45 @@ export type CreatePostResponse = {
 
 export type CreateDraftRequest = CreatePostRequest;
 export type CreateDraftResponse = CreatePostResponse;
+
+// Mirrors the PostFilter enum of the dashboard posts endpoint.
+export type PostFilter = "All" | PostStatus;
+
+export type DashboardPostsFilters = {
+  term: string;
+  filter: PostFilter;
+  sortBy: PostSortBy;
+  // Empty string means every category.
+  categoryId: string;
+};
+
+export type DashboardPostsParams = DashboardPostsFilters & {
+  page: number;
+  pageSize: number;
+};
+
+export type DashboardPostsResult = PagedResult<PostSummaryResponse> & {
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+};
+
+export type ChangePostStatusAction = "Approve" | "Reject";
+
+export type ChangePostStatusRequest = {
+  postId: string;
+  action: ChangePostStatusAction;
+};
+
+export type ChangePostStatusResponse = {
+  id: string;
+  title: string;
+  status: PostStatus;
+};
+
+export type PublishDraftResponse = {
+  id: string;
+  title: string;
+  slug: string;
+  status: PostStatus;
+};

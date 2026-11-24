@@ -2,20 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
-import { MAX_CATEGORY_TERM_LENGTH } from "@/lib/validations/category";
 
 const DEBOUNCE_MS = 400;
 
-type CategoriesSearchInputProps = {
+type DashboardSearchInputProps = {
   // The committed (trimmed) term, owned by the URL.
   term: string;
   onTermChange: (term: string) => void;
+  maxLength: number;
+  placeholder: string;
+  ariaLabel: string;
 };
 
-export function CategoriesSearchInput({
+export function DashboardSearchInput({
   term,
   onTermChange,
-}: CategoriesSearchInputProps) {
+  maxLength,
+  placeholder,
+  ariaLabel,
+}: DashboardSearchInputProps) {
   const [draft, setDraft] = useState(term);
 
   // Follows external changes (back navigation) without overwriting what the
@@ -47,10 +52,10 @@ export function CategoriesSearchInput({
         type="text"
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
-        maxLength={MAX_CATEGORY_TERM_LENGTH}
+        maxLength={maxLength}
         autoComplete="off"
-        placeholder="Search categories by name…"
-        aria-label="Search categories"
+        placeholder={placeholder}
+        aria-label={ariaLabel}
         className="bg-slate-one h-9 w-full rounded-md border ps-9 pe-9 text-sm outline-none"
       />
 

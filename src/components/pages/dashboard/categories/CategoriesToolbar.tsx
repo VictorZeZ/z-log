@@ -5,6 +5,7 @@ import {
   DashboardPillTabs,
   type DashboardPillOption,
 } from "@/components/pages/dashboard/shared/DashboardPillTabs";
+import { DashboardSearchInput } from "@/components/pages/dashboard/shared/DashboardSearchInput";
 import { POST_STATUS_SERIES } from "@/components/pages/dashboard/shared/postStatus";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { MAX_CATEGORY_TERM_LENGTH } from "@/lib/validations/category";
 import { cn } from "@/lib/utils";
 import {
   CategorySortBy,
@@ -25,7 +27,6 @@ import type {
   TriStateFilter,
 } from "@/types/api/dashboard";
 import { PostStatus, postStatusLabels } from "@/types/api/post";
-import { CategoriesSearchInput } from "./CategoriesSearchInput";
 
 const SORT_OPTIONS = Object.values(CategorySortBy);
 const POST_STATUSES = POST_STATUS_SERIES.map(({ status }) => status);
@@ -63,9 +64,12 @@ export function CategoriesToolbar({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <CategoriesSearchInput
+        <DashboardSearchInput
           term={filters.term}
           onTermChange={handleTermChange}
+          maxLength={MAX_CATEGORY_TERM_LENGTH}
+          placeholder="Search categories by name…"
+          ariaLabel="Search categories"
         />
 
         <Select

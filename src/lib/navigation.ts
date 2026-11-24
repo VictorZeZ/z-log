@@ -49,12 +49,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     label: "Workspace",
     items: [
       { title: "Overview", href: "/dashboard", icon: TbLayoutDashboard },
-      {
-        title: "Posts",
-        href: "/dashboard/posts",
-        icon: TbNotes,
-        comingSoon: true,
-      },
+      { title: "Posts", href: "/dashboard/posts", icon: TbNotes },
     ],
   },
   {

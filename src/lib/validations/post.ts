@@ -4,6 +4,9 @@ const MAX_TITLE_LENGTH = 256;
 const MAX_SUMMARY_LENGTH = 256;
 const MAX_TAG_LENGTH = 50;
 
+// Mirrors the term limit of the dashboard posts endpoint.
+export const MAX_POST_TERM_LENGTH = 256;
+
 // Mirrors PostImageValidationRules on the backend.
 const MAX_TITLE_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TITLE_IMAGE_TYPES = [

@@ -2,17 +2,18 @@ import { apiClient } from "@/lib/api/client";
 import type { PagedResult } from "@/types/api/common";
 import {
   PostSortBy,
+  type ChangePostStatusRequest,
+  type ChangePostStatusResponse,
+  type CreateDraftRequest,
+  type CreateDraftResponse,
+  type CreatePostRequest,
+  type CreatePostResponse,
+  type DashboardPostsParams,
+  type DashboardPostsResult,
   type DeletePostResponse,
   type GetPostBySlugResponse,
   type PostSummaryResponse,
-} from "@/types/api/post";
-
-import type {
-  CreateDraftRequest,
-  CreateDraftResponse,
-  CreatePostRequest,
-  CreatePostResponse,
-  // ...keep the existing imports from this block too
+  type PublishDraftResponse,
 } from "@/types/api/post";
 
 export async function getPostBySlug(
@@ -164,5 +165,54 @@ export async function getPendingApprovalPosts(
   return apiClient<PagedResult<PostSummaryResponse>>(
     `/admin/posts/pending?${params.toString()}`,
     { method: "GET" },
+  );
+}
+
+export async function getDashboardPosts({
+  term,
+  filter,
+  sortBy,
+  categoryId,
+  page,
+  pageSize,
+}: DashboardPostsParams): Promise<DashboardPostsResult> {
+  const params = new URLSearchParams({
+    page: String(page),
+    pageSize: String(pageSize),
+    filter,
+    sortBy: String(sortBy),
+  });
+  if (term) {
+    params.set("term", term);
+  }
+  if (categoryId) {
+    params.set("categoryId", categoryId);
+  }
+
+  return apiClient<DashboardPostsResult>(
+    `/dashboard/posts/list?${params.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export async function changePostStatus({
+  postId,
+  action,
+}: ChangePostStatusRequest): Promise<ChangePostStatusResponse> {
+  return apiClient<ChangePostStatusResponse>(
+    `/admin/posts/${encodeURIComponent(postId)}/status`,
+    {
+      method: "PUT",
+      body: { action },
+    },
+  );
+}
+
+export async function publishDraft(
+  postId: string,
+): Promise<PublishDraftResponse> {
+  return apiClient<PublishDraftResponse>(
+    `/posts/drafts/${encodeURIComponent(postId)}/publish`,
+    { method: "POST" },
   );
 }
