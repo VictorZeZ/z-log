@@ -24,6 +24,7 @@ import {
   type DashboardPostsFilters,
   type PostFilter,
 } from "@/types/api/post";
+import { PostsAuthorFilter } from "./PostsAuthorFilter";
 
 const ALL_CATEGORIES = "all";
 
@@ -37,10 +38,17 @@ const FILTER_OPTIONS: DashboardPillOption<PostFilter>[] = [
 
 type PostsToolbarProps = {
   filters: DashboardPostsFilters;
+  viewerId: string;
+  canFilterByAuthor: boolean;
   onChange: (changes: Partial<DashboardPostsFilters>) => void;
 };
 
-export function PostsToolbar({ filters, onChange }: PostsToolbarProps) {
+export function PostsToolbar({
+  filters,
+  viewerId,
+  canFilterByAuthor,
+  onChange,
+}: PostsToolbarProps) {
   const { data: categories } = useCategories();
 
   const handleTermChange = useCallback(
@@ -50,7 +58,7 @@ export function PostsToolbar({ filters, onChange }: PostsToolbarProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
         <DashboardSearchInput
           term={filters.term}
           onTermChange={handleTermChange}
@@ -59,7 +67,15 @@ export function PostsToolbar({ filters, onChange }: PostsToolbarProps) {
           ariaLabel="Search posts"
         />
 
-        <div className="flex flex-col gap-2 sm:flex-row">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+          {canFilterByAuthor && (
+            <PostsAuthorFilter
+              authorId={filters.authorId}
+              viewerId={viewerId}
+              onChange={(authorId) => onChange({ authorId })}
+            />
+          )}
+
           <Select
             value={filters.categoryId || ALL_CATEGORIES}
             onValueChange={(value) =>

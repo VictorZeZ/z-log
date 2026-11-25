@@ -101,6 +101,8 @@ export type DashboardPostsFilters = {
   sortBy: PostSortBy;
   // Empty string means every category.
   categoryId: string;
+  // Empty string means every author. Only Admin and Owner can narrow by author.
+  authorId: string;
 };
 
 export type DashboardPostsParams = DashboardPostsFilters & {

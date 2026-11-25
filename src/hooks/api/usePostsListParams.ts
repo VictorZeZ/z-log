@@ -27,7 +27,7 @@ function parseSortBy(value: string | null): PostSortBy {
   );
 }
 
-function parseCategoryId(value: string | null): string {
+function parseId(value: string | null): string {
   return value !== null && z.uuid().safeParse(value).success ? value : "";
 }
 
@@ -43,7 +43,8 @@ export function usePostsListParams() {
         .slice(0, MAX_POST_TERM_LENGTH),
       filter: parseFilter(searchParams.get("filter")),
       sortBy: parseSortBy(searchParams.get("sort")),
-      categoryId: parseCategoryId(searchParams.get("category")),
+      categoryId: parseId(searchParams.get("category")),
+      authorId: parseId(searchParams.get("author")),
       page: Math.max(1, Math.floor(Number(searchParams.get("page"))) || 1),
     }),
     [searchParams],
@@ -86,6 +87,9 @@ export function usePostsListParams() {
       }
       if (changes.categoryId !== undefined) {
         updates.category = changes.categoryId || null;
+      }
+      if (changes.authorId !== undefined) {
+        updates.author = changes.authorId || null;
       }
 
       replaceParams(updates);

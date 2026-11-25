@@ -173,6 +173,7 @@ export async function getDashboardPosts({
   filter,
   sortBy,
   categoryId,
+  authorId,
   page,
   pageSize,
 }: DashboardPostsParams): Promise<DashboardPostsResult> {
@@ -187,6 +188,9 @@ export async function getDashboardPosts({
   }
   if (categoryId) {
     params.set("categoryId", categoryId);
+  }
+  if (authorId) {
+    params.set("authorId", authorId);
   }
 
   return apiClient<DashboardPostsResult>(

@@ -8,6 +8,7 @@ import { useDashboardPosts } from "@/hooks/api/useDashboardPosts";
 import { usePostsListParams } from "@/hooks/api/usePostsListParams";
 import { getErrorMessage } from "@/lib/api/errorMessages";
 import { cn } from "@/lib/utils";
+import { UserLevel, isUserLevelAtLeast } from "@/types/api/account";
 import { ApiError } from "@/types/api/common";
 import type { PostSummaryResponse } from "@/types/api/post";
 import type { PostViewer } from "./postPermissions";
@@ -37,11 +38,15 @@ export function PostsList({
   onDelete,
 }: PostsListProps) {
   const { state, setFilters, setPage } = usePostsListParams();
+  const canFilterByAuthor = isUserLevelAtLeast(viewer.level, UserLevel.Admin);
+  const authorId = canFilterByAuthor ? state.authorId : "";
   const { term, filter, categoryId, page } = state;
-  const hasActiveFilters = term !== "" || filter !== "All" || categoryId !== "";
+  const filters = { ...state, authorId };
+  const hasActiveFilters =
+    term !== "" || filter !== "All" || categoryId !== "" || authorId !== "";
 
   const { data, isLoading, isFetching, isPlaceholderData, error, refetch } =
-    useDashboardPosts({ ...state, pageSize: PAGE_SIZE });
+    useDashboardPosts({ ...filters, pageSize: PAGE_SIZE });
 
   useEffect(() => {
     if (!data || isPlaceholderData) return;
@@ -143,7 +148,12 @@ export function PostsList({
 
   return (
     <section className="flex w-full flex-col gap-4">
-      <PostsToolbar filters={state} onChange={setFilters} />
+      <PostsToolbar
+        filters={filters}
+        viewerId={viewer.id}
+        canFilterByAuthor={canFilterByAuthor}
+        onChange={setFilters}
+      />
       {renderContent()}
     </section>
   );

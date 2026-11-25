@@ -12,11 +12,13 @@ import { DashboardPageHeading } from "@/components/pages/dashboard/shared/Dashbo
 import { DASHBOARD_PANEL_GRID_CLASS_NAME } from "@/components/pages/dashboard/shared/layout";
 import { PostsActivityChart } from "@/components/pages/dashboard/shared/PostsActivityChart";
 import { PostsDistribution } from "@/components/pages/dashboard/shared/PostsDistribution";
-import { dashboardQueryKey } from "@/hooks/api/useDashboardOverview";
 import { useChangePostStatus } from "@/hooks/api/useChangePostStatus";
-import { useDashboardOverview } from "@/hooks/api/useDashboardOverview";
-import { useDeletePost } from "@/hooks/api/useDeletePost";
 import { postsQueryKey } from "@/hooks/api/useDashboardPosts";
+import {
+  dashboardQueryKey,
+  useDashboardOverview,
+} from "@/hooks/api/useDashboardOverview";
+import { useDeletePost } from "@/hooks/api/useDeletePost";
 import { usePublishDraft } from "@/hooks/api/usePublishDraft";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { MAX_REPORT_RANGE_DAYS } from "@/lib/api/dashboard";
@@ -25,6 +27,10 @@ import {
   type ChangePostStatusAction,
   type PostSummaryResponse,
 } from "@/types/api/post";
+import {
+  ChangePostStatusDialog,
+  type PostStatusChangeTarget,
+} from "./ChangePostStatusDialog";
 import { DeletePostDialog } from "./DeletePostDialog";
 import { PostsList } from "./PostsList";
 import { PostsOverviewStats } from "./PostsOverviewStats";
@@ -76,6 +82,8 @@ export function DashboardPosts() {
   const [postToDelete, setPostToDelete] = useState<PostSummaryResponse | null>(
     null,
   );
+  const [statusChange, setStatusChange] =
+    useState<PostStatusChangeTarget | null>(null);
 
   const busyPostId = isChangingStatus
     ? statusVariables?.postId
@@ -90,10 +98,11 @@ export function DashboardPosts() {
     queryClient.invalidateQueries({ queryKey: dashboardQueryKey });
   };
 
-  const handleChangeStatus = (
-    post: PostSummaryResponse,
-    action: ChangePostStatusAction,
-  ) => {
+  const handleConfirmStatusChange = () => {
+    if (!statusChange) return;
+
+    const { post, action } = statusChange;
+
     changeStatus(
       { postId: post.id, action },
       {
@@ -161,8 +170,8 @@ export function DashboardPosts() {
         <PostsList
           viewer={profile}
           busyPostId={busyPostId}
-          onApprove={(post) => handleChangeStatus(post, "Approve")}
-          onReject={(post) => handleChangeStatus(post, "Reject")}
+          onApprove={(post) => setStatusChange({ post, action: "Approve" })}
+          onReject={(post) => setStatusChange({ post, action: "Reject" })}
           onPublish={handlePublish}
           onDelete={setPostToDelete}
         />
@@ -186,6 +195,12 @@ export function DashboardPosts() {
       </DashboardPageHeading>
 
       {renderBody()}
+
+      <ChangePostStatusDialog
+        target={statusChange}
+        onOpenChange={(open) => !open && setStatusChange(null)}
+        onConfirm={handleConfirmStatusChange}
+      />
 
       <DeletePostDialog
         post={postToDelete}
