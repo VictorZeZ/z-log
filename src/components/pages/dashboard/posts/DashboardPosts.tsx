@@ -22,11 +22,7 @@ import { useDeletePost } from "@/hooks/api/useDeletePost";
 import { usePublishDraft } from "@/hooks/api/usePublishDraft";
 import { handleApiError } from "@/lib/api/errorHandler";
 import { MAX_REPORT_RANGE_DAYS } from "@/lib/api/dashboard";
-import {
-  PostStatus,
-  type ChangePostStatusAction,
-  type PostSummaryResponse,
-} from "@/types/api/post";
+import { PostStatus, type PostSummaryResponse } from "@/types/api/post";
 import {
   ChangePostStatusDialog,
   type PostStatusChangeTarget,
@@ -34,11 +30,7 @@ import {
 import { DeletePostDialog } from "./DeletePostDialog";
 import { PostsList } from "./PostsList";
 import { PostsOverviewStats } from "./PostsOverviewStats";
-
-const STATUS_CHANGE_MESSAGES: Record<ChangePostStatusAction, string> = {
-  Approve: "Post approved.",
-  Reject: "Post rejected.",
-};
+import { POST_STATUS_ACTIONS } from "./postStatusActions";
 
 function PostsSummarySkeleton() {
   return (
@@ -106,7 +98,8 @@ export function DashboardPosts() {
     changeStatus(
       { postId: post.id, action },
       {
-        onSuccess: () => toast.success(STATUS_CHANGE_MESSAGES[action]),
+        onSuccess: () =>
+          toast.success(POST_STATUS_ACTIONS[action].successMessage),
         onError: handleApiError,
         onSettled: refreshPosts,
       },
@@ -170,8 +163,7 @@ export function DashboardPosts() {
         <PostsList
           viewer={profile}
           busyPostId={busyPostId}
-          onApprove={(post) => setStatusChange({ post, action: "Approve" })}
-          onReject={(post) => setStatusChange({ post, action: "Reject" })}
+          onChangeStatus={(post, action) => setStatusChange({ post, action })}
           onPublish={handlePublish}
           onDelete={setPostToDelete}
         />

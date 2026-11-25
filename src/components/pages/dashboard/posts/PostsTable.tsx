@@ -12,6 +12,7 @@ import { cn, formatDate } from "@/lib/utils";
 import {
   PostStatus,
   postStatusLabels,
+  type ChangePostStatusAction,
   type PostSummaryResponse,
 } from "@/types/api/post";
 import { getPostPermissions, type PostViewer } from "./postPermissions";
@@ -24,8 +25,10 @@ type PostsTableProps = {
   posts: PostSummaryResponse[];
   viewer: PostViewer;
   busyPostId?: string;
-  onApprove: (post: PostSummaryResponse) => void;
-  onReject: (post: PostSummaryResponse) => void;
+  onChangeStatus: (
+    post: PostSummaryResponse,
+    action: ChangePostStatusAction,
+  ) => void;
   onPublish: (post: PostSummaryResponse) => void;
   onDelete: (post: PostSummaryResponse) => void;
 };
@@ -34,8 +37,7 @@ export function PostsTable({
   posts,
   viewer,
   busyPostId,
-  onApprove,
-  onReject,
+  onChangeStatus,
   onPublish,
   onDelete,
 }: PostsTableProps) {
@@ -99,8 +101,7 @@ export function PostsTable({
                 post={post}
                 permissions={getPostPermissions(post, viewer)}
                 isBusy={busyPostId === post.id}
-                onApprove={onApprove}
-                onReject={onReject}
+                onChangeStatus={onChangeStatus}
                 onPublish={onPublish}
                 onDelete={onDelete}
               />

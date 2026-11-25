@@ -116,7 +116,9 @@ export type DashboardPostsResult = PagedResult<PostSummaryResponse> & {
   hasPreviousPage: boolean;
 };
 
-export type ChangePostStatusAction = "Approve" | "Reject";
+// Mirrors the ChangePostStatusAction enum of the admin post status endpoint.
+export type ChangePostStatusAction =
+  "Approve" | "Reject" | "ReturnToPending" | "ReturnToDraft";
 
 export type ChangePostStatusRequest = {
   postId: string;

@@ -14,34 +14,11 @@ import type {
   ChangePostStatusAction,
   PostSummaryResponse,
 } from "@/types/api/post";
+import { POST_STATUS_ACTIONS } from "./postStatusActions";
 
 export type PostStatusChangeTarget = {
   post: PostSummaryResponse;
   action: ChangePostStatusAction;
-};
-
-const COPY: Record<
-  ChangePostStatusAction,
-  {
-    title: string;
-    description: string;
-    confirmLabel: string;
-    variant: "default" | "destructive";
-  }
-> = {
-  Approve: {
-    title: "Approve this post?",
-    description: "will be published and become visible to every reader.",
-    confirmLabel: "Approve",
-    variant: "default",
-  },
-  Reject: {
-    title: "Reject this post?",
-    description:
-      "will be marked as rejected and hidden from readers. You can approve it again later.",
-    confirmLabel: "Reject",
-    variant: "destructive",
-  },
 };
 
 type ChangePostStatusDialogProps = {
@@ -55,21 +32,21 @@ export function ChangePostStatusDialog({
   onOpenChange,
   onConfirm,
 }: ChangePostStatusDialogProps) {
-  const copy = target ? COPY[target.action] : null;
+  const config = target ? POST_STATUS_ACTIONS[target.action] : null;
 
   return (
     <AlertDialog open={target !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{copy?.title}</AlertDialogTitle>
+          <AlertDialogTitle>{config?.dialogTitle}</AlertDialogTitle>
           <AlertDialogDescription className="wrap-break-word">
-            {target?.post.title} {copy?.description}
+            {target?.post.title} {config?.dialogDescription}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction variant={copy?.variant} onClick={onConfirm}>
-            {copy?.confirmLabel}
+          <AlertDialogAction variant={config?.variant} onClick={onConfirm}>
+            {config?.confirmLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

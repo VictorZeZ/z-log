@@ -10,7 +10,10 @@ import { getErrorMessage } from "@/lib/api/errorMessages";
 import { cn } from "@/lib/utils";
 import { UserLevel, isUserLevelAtLeast } from "@/types/api/account";
 import { ApiError } from "@/types/api/common";
-import type { PostSummaryResponse } from "@/types/api/post";
+import type {
+  ChangePostStatusAction,
+  PostSummaryResponse,
+} from "@/types/api/post";
 import type { PostViewer } from "./postPermissions";
 import { PostsTable } from "./PostsTable";
 import { PostsToolbar } from "./PostsToolbar";
@@ -23,8 +26,10 @@ const buildHref = () => "#";
 type PostsListProps = {
   viewer: PostViewer;
   busyPostId?: string;
-  onApprove: (post: PostSummaryResponse) => void;
-  onReject: (post: PostSummaryResponse) => void;
+  onChangeStatus: (
+    post: PostSummaryResponse,
+    action: ChangePostStatusAction,
+  ) => void;
   onPublish: (post: PostSummaryResponse) => void;
   onDelete: (post: PostSummaryResponse) => void;
 };
@@ -32,8 +37,7 @@ type PostsListProps = {
 export function PostsList({
   viewer,
   busyPostId,
-  onApprove,
-  onReject,
+  onChangeStatus,
   onPublish,
   onDelete,
 }: PostsListProps) {
@@ -118,8 +122,7 @@ export function PostsList({
             posts={data.items}
             viewer={viewer}
             busyPostId={busyPostId}
-            onApprove={onApprove}
-            onReject={onReject}
+            onChangeStatus={onChangeStatus}
             onPublish={onPublish}
             onDelete={onDelete}
           />

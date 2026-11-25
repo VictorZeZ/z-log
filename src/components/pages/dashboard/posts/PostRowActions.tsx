@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Ban, Check, Ellipsis, Eye, Send, Trash2 } from "lucide-react";
+import { Ellipsis, Eye, Send, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,15 +8,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { PostSummaryResponse } from "@/types/api/post";
+import type {
+  ChangePostStatusAction,
+  PostSummaryResponse,
+} from "@/types/api/post";
 import type { PostPermissions } from "./postPermissions";
+import { POST_STATUS_ACTIONS } from "./postStatusActions";
 
 type PostRowActionsProps = {
   post: PostSummaryResponse;
   permissions: PostPermissions;
   isBusy: boolean;
-  onApprove: (post: PostSummaryResponse) => void;
-  onReject: (post: PostSummaryResponse) => void;
+  onChangeStatus: (
+    post: PostSummaryResponse,
+    action: ChangePostStatusAction,
+  ) => void;
   onPublish: (post: PostSummaryResponse) => void;
   onDelete: (post: PostSummaryResponse) => void;
 };
@@ -25,12 +31,11 @@ export function PostRowActions({
   post,
   permissions,
   isBusy,
-  onApprove,
-  onReject,
+  onChangeStatus,
   onPublish,
   onDelete,
 }: PostRowActionsProps) {
-  const { canApprove, canReject, canPublish, canDelete } = permissions;
+  const { statusActions, canPublish, canDelete } = permissions;
 
   return (
     <DropdownMenu>
@@ -59,19 +64,19 @@ export function PostRowActions({
           </DropdownMenuItem>
         )}
 
-        {canApprove && (
-          <DropdownMenuItem onClick={() => onApprove(post)}>
-            <Check />
-            Approve
-          </DropdownMenuItem>
-        )}
+        {statusActions.map((action) => {
+          const { label, icon: Icon } = POST_STATUS_ACTIONS[action];
 
-        {canReject && (
-          <DropdownMenuItem onClick={() => onReject(post)}>
-            <Ban />
-            Reject
-          </DropdownMenuItem>
-        )}
+          return (
+            <DropdownMenuItem
+              key={action}
+              onClick={() => onChangeStatus(post, action)}
+            >
+              <Icon />
+              {label}
+            </DropdownMenuItem>
+          );
+        })}
 
         {canDelete && (
           <>
